@@ -19,26 +19,34 @@ from retentionbehaviourreport import generate_retentionbehaviour_report
 
 class Entry(BaseEntry):
 
+    def generate_report(self):
+        package_name = __name__.split('.')[-2]
+        print 'current package name: ', package_name
+        if package_name != self.project_config.project_name:
+            print 'package name not equal project name, return'
+            return
+        return super(Entry, self).generate_report()
+
     def do_generate_report(self):
         print 'mergegarden do_generate_report'
         # 开启代理
         if self.option & ReportFlag.mail:
-            generate_mail_report(self.query_config, this.start_date)
+            generate_mail_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
-            generate_lostplant_report(self.query_config, this.start_date)
+            generate_lostplant_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
-            generate_retentionplant_report(self.query_config, this.start_date)
+            generate_retentionplant_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
-            generate_stage_report(self.query_config, this.start_date)
+            generate_stage_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
-            generate_new_ads_report(self.query_config, this.start_date)
+            generate_new_ads_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
-            generate_retention_ads_report(self.query_config, this.start_date)
+            generate_retention_ads_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
-            generate_total_ads_report(self.query_config, this.start_date)
+            generate_total_ads_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
-            generate_iap_behaviour_report(self.query_config, this.start_date)
+            generate_iap_behaviour_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
-            generate_lostbehaviour_report(self.query_config, this.start_date)
+            generate_lostbehaviour_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
-            generate_retentionbehaviour_report(self.query_config, this.start_date)
+            generate_retentionbehaviour_report(self.query_config, self.start_date)

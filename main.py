@@ -5,7 +5,7 @@ from project.entry import generate_report
 from project.base.config import ReportFlag
 
 if __name__ == '__main__':
-    option = ReportFlag(
+    flags = [
         ReportFlag.mail,
         ReportFlag.lost_level,
         ReportFlag.retention_level,
@@ -16,6 +16,7 @@ if __name__ == '__main__':
         ReportFlag.iap_behaviour,
         ReportFlag.lost_behaviour,
         ReportFlag.retention_behaviour
-    ).option
+    ]
+    option = ReportFlag(flags).option
     generate_report(option, 'mergegarden', 'analytics_195246954', 'ANDROID', 'United States', '20190329')
     generate_report(option, 'mergegarden', 'analytics_195246954', 'IOS', 'United States', '20190329')

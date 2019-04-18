@@ -2,13 +2,14 @@
 # coding=utf-8
 
 import os
+import pytz
 from datetime import timedelta, date, datetime
 
 class Date:
     def __init__(self, date_string):
       self.date_string = date_string
 
-    def enddate():
+    def enddate(self):
         tz = pytz.timezone('America/Los_Angeles')
         end_date = datetime.now(tz) + timedelta(days=-1)
         return end_date.strftime('%Y%m%d')

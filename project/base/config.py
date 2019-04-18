@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # coding=utf-8
 import os
-from enum import Enum
+import json
 from date import *
 
-class ReportFlag(Enum):
+class ReportFlag:
     mail = 1
     lost_level = 1 << 1
     retention_level = 1 << 2
@@ -16,7 +16,7 @@ class ReportFlag(Enum):
     lost_behaviour = 1 << 8
     retention_behaviour = 1 << 9
 
-    def __init__(self, *flags):
+    def __init__(self, flags):
         self.option = 0
         for x in flags:
             self.option = self.option | x
@@ -30,7 +30,7 @@ class ProjectConfig:
         self.etc_path = os.path.join('./etc', self.project_name)
         self.credentials_path = os.path.join('./credentials', self.project_name)
 
-    def set_env_from_config(config, key):
+    def set_env_from_config(self, config, key):
         if config.has_key(key):
             os.environ[key] = config[key]
 
