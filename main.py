@@ -19,4 +19,4 @@ if __name__ == '__main__':
     ]
     option = ReportFlag(flags).option
     generate_report(option, 'mergegarden', 'analytics_195246954', 'ANDROID', 'United States', '20190329')
-    generate_report(option, 'mergegarden', 'analytics_195246954', 'IOS', 'United States', '20190329')
+    generate_report(option, 'mergegarden', 'analytics_195246954', 'IOS', 'United States', '20190326')

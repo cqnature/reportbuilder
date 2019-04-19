@@ -64,9 +64,9 @@ class Report(BaseReport):
             lines[0] = lines[0].strip().format(Date(date).formatmd())
             lines[1] = lines[1].strip().format(firstopen_usercount)
             # 次日留存用户数
-            retention_usercount = self.get_retention_count(date, date_add(date, add_day))
+            retention_usercount = self.get_retention_count(date, Date(date).adddays(add_day))
             lines[2] = lines[2].strip().format(retention_usercount, 100*float(retention_usercount)/float(firstopen_usercount))
-            behaviour_results = self.get_result("behaviour_of_retention_users.sql", date, date_add(date, add_day), level)
+            behaviour_results = self.get_result("behaviour_of_retention_users.sql", date, Date(date).adddays(add_day), level)
             level_retention_usercount = sum(1 for _ in behaviour_results)
             lines[3] = lines[3].strip().format(level, level_retention_usercount, 100*float(level_retention_usercount)/float(firstopen_usercount))
             lines[4] = lines[4].strip().format(level)
