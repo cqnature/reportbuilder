@@ -6,8 +6,8 @@ from project.base.config import ReportFlag
 
 if __name__ == '__main__':
     flags = [
-        ReportFlag.mail,
-        ReportFlag.lost_level,
+        # ReportFlag.mail,
+        # ReportFlag.lost_level,
         ReportFlag.retention_level,
         ReportFlag.stage,
         ReportFlag.new_ads,

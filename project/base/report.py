@@ -24,6 +24,7 @@ class BaseReport(object):
         self.querysql = QuerySql(self.query_config)
         self.start_date = date.date_string
         self.end_date = date.enddate()
+        self.max_retention_date = min(self.end_date, date.adddays(7))
 
     def generate(self):
         if self.mode == ReportMode.file:
@@ -55,6 +56,10 @@ class BaseReport(object):
 
     def get_result(self, filename, *parameter):
         return self.querysql.get_result(filename, *parameter)
+
+    def append_output_filename(self, filename):
+        splits = os.path.splitext(self.output_filepath)
+        return splits[0] + filename + splits[1]
 
     def get_firstopen_count(self, date):
         return get_firstopen_usercount(self.querysql, date)

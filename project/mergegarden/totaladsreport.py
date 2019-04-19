@@ -6,48 +6,48 @@ import json
 from ..base.date import *
 from ..base.helper import *
 from ..base.query import *
+from ..base.report import *
 
-def generate_total_ads_report_at_date(report_lines, platform, date, start_date, end_date):
-    print("generate_total_ads_report_at_date ", date)
-    if date == start_date:
-        with open("./etc/total_ads_view_of_users.csv") as file:
-            lines = file.readlines()
-            for k in range(2):
-                append_line(report_lines, k, lines[k].strip())
-            for single_date in Date(date).rangeto(end_date, True):
-                append_line(report_lines, 0, lines[2].strip().format(Date(date).between(single_date) - 1))
-                append_line(report_lines, 1, lines[3].strip())
-            file.close()
+def generate_total_ads_report(query_config, date):
+    Report(query_config, date).generate()
 
-    index = len(report_lines)
-    append_line(report_lines, index, "{0},".format(Date(date).formatmd()))
-    for single_date in Date(date).rangeto(end_date, True):
-        ads_view_count_results = querysql("./sql/ads_view_of_retention_users.sql", platform, date, single_date)
-        user_count = 0
-        if date == single_date:
-            user_count = get_firstopen_usercount(platform, single_date)
-        else:
-            user_count = get_retention_usercount(platform, date, single_date)
-        view_count = sum(1 for _ in ads_view_count_results)
-        average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
-        append_line(report_lines, index, "{0},{1},{2:.2f},".format(user_count, view_count, average_view_count))
+class Report(BaseReport):
+    def __init__(self, query_config, date):
+        super(Report, self).__init__(query_config, date)
+        self.etc_filename = 'total_ads_view_of_users.csv'
+        self.output_filename = 'total_ads_report.csv'
 
-def generate_total_ads_report(platform, start_date, end_date):
-    if platform != "IOS" and platform != "ANDROID":
-        print("You must pass platform in IOS or ANDROID")
-        exit(1)
-    try:
-        validate(start_date)
-        validate(end_date)
-    except ValueError, Argument:
-        print(Argument)
-        exit(1)
+    def do_generate(self):
+        print 'do generate report'
+        with open(self.output_filepath, mode='w+') as out:
+            report_lines = []
+            for single_date in Date(self.start_date).rangeto(self.end_date, True):
+                self.generate_total_ads_report_at_date(report_lines, single_date)
+            reportstring = '\n'.join(report_lines)
+            out.write(reportstring)
+            out.close()
 
-    output = "output/total_ads_report_{0}_from_{1}_to_{2}.csv".format(platform, start_date, end_date)
-    with open(output, mode='w+') as out:
-        report_lines = []
-        for single_date in Date(start_date).rangeto(end_date, True):
-            generate_total_ads_report_at_date(report_lines, platform, single_date, start_date, end_date)
-        reportstring = '\n'.join(report_lines)
-        out.write(reportstring)
-        out.close()
+    def generate_total_ads_report_at_date(self, report_lines, date):
+        print("generate_total_ads_report_at_date ", date)
+        if date == self.start_date:
+            with open(self.etc_filepath) as file:
+                lines = file.readlines()
+                for k in range(2):
+                    append_line(report_lines, k, lines[k].strip())
+                for single_date in Date(date).rangeto(self.end_date, True):
+                    append_line(report_lines, 0, lines[2].strip().format(Date(date).between(single_date) - 1))
+                    append_line(report_lines, 1, lines[3].strip())
+                file.close()
+
+        index = len(report_lines)
+        append_line(report_lines, index, "{0},".format(Date(date).formatmd()))
+        for single_date in Date(date).rangeto(self.end_date, True):
+            ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
+            user_count = 0
+            if date == single_date:
+                user_count = self.get_firstopen_count(single_date)
+            else:
+                user_count = self.get_retention_count(date, single_date)
+            view_count = sum(1 for _ in ads_view_count_results)
+            average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
+            append_line(report_lines, index, "{0},{1},{2:.2f},".format(user_count, view_count, average_view_count))

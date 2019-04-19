@@ -34,19 +34,19 @@ class Entry(BaseEntry):
             generate_mail_report(self.query_config, self.start_date)
         if self.option & ReportFlag.lost_level:
             generate_lostplant_report(self.query_config, self.start_date)
-        if self.option & ReportFlag.lost_level:
+        if self.option & ReportFlag.retention_level:
             generate_retentionplant_report(self.query_config, self.start_date)
-        if self.option & ReportFlag.lost_level:
+        if self.option & ReportFlag.stage:
             generate_stage_report(self.query_config, self.start_date)
-        if self.option & ReportFlag.lost_level:
+        if self.option & ReportFlag.new_ads:
             generate_new_ads_report(self.query_config, self.start_date)
-        if self.option & ReportFlag.lost_level:
+        if self.option & ReportFlag.retention_ads:
             generate_retention_ads_report(self.query_config, self.start_date)
-        if self.option & ReportFlag.lost_level:
+        if self.option & ReportFlag.total_ads:
             generate_total_ads_report(self.query_config, self.start_date)
-        if self.option & ReportFlag.lost_level:
+        if self.option & ReportFlag.iap_behaviour:
             generate_iap_behaviour_report(self.query_config, self.start_date)
-        if self.option & ReportFlag.lost_level:
+        if self.option & ReportFlag.lost_behaviour:
             generate_lostbehaviour_report(self.query_config, self.start_date)
-        if self.option & ReportFlag.lost_level:
+        if self.option & ReportFlag.retention_behaviour:
             generate_retentionbehaviour_report(self.query_config, self.start_date)

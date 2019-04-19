@@ -22,7 +22,7 @@ class Report(BaseReport):
         with open(self.output_filepath, mode='w+') as out:
             report_lines = []
             for single_date in Date(self.start_date).rangeto(self.end_date, True):
-                self.generate_lostplant_report(report_lines, single_date)
+                self.generate_lostplant_report_at_date(report_lines, single_date)
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
@@ -35,7 +35,7 @@ class Report(BaseReport):
             file.close()
         return max_level;
 
-    def generate_lostplant_report(self, report_lines, date):
+    def generate_lostplant_report_at_date(self, report_lines, date):
         print("generate_lostplant_report_at_date ", date)
         max_level = self.get_plane_max_level()
         with open(self.etc_filepath) as file:
@@ -75,7 +75,7 @@ class Report(BaseReport):
             lost_base_datas = []
             lost_base_usercount = 0
             lost_day_progress_lines = []
-            for single_date in Date(date).rangeto(self.end_date):
+            for single_date in Date(date).rangeto(self.max_retention_date):
                 # 留存率查询
                 current_lost_usercount = self.get_lost_count(date, single_date)
                 # 流失分布查询

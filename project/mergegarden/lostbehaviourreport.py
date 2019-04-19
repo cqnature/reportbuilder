@@ -39,12 +39,12 @@ class Report(BaseReport):
     def do_generate(self):
         print 'do generate report'
         for level in range(7, 9):
-            with open(self.output_filepath, mode='w+') as out:
+            with open(self.append_output_filename('_level_' + level), mode='w+') as out:
                 report_lines = []
                 for single_date in Date(self.start_date).rangeto(self.end_date, True):
-                    if Date(single_date).between(end_date) <= add_day:
+                    if Date(single_date).between(self.end_date) <= add_day:
                         continue
-                    self.generate_lostbehaviour_report(report_lines, single_date, level)
+                    self.generate_lostbehaviour_report_at_date(report_lines, single_date, level)
                 reportstring = '\n'.join(report_lines)
                 out.write(reportstring)
                 out.close()
