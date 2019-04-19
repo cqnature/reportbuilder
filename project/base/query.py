@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# coding=utf-8
+
 import os
 import json
 from config import *
@@ -37,9 +39,9 @@ class QuerySql:
             result = None
             with open(file_path) as file:
                 try:
+                    result = []
                     file_content = json.load(file)
                     if (len(file_content) > 0):
-                        result = []
                         for x in file_content:
                             result.append(bigquery.Row(x['values'], x['field_to_index']))
                 except ValueError:
@@ -69,20 +71,20 @@ class QuerySql:
             print 'query result for: ', filename
             for k in range(self.config.retry_count):
                 try:
-                    result = self.do_query(filepath)
-                except Exception:
-                    print 'catch exception'
+                    result = self.do_query(filepath, *parameter)
+                except Exception, e:
+                    print 'catch exception', e
                 if result != None:
                     break
             if result == None:
                 print 'query result failed!'
                 exit(1)
-            self.set_cache(rows, filename, *parameter)
-            return rows
+            self.set_cache(result, filename, *parameter)
+            return result
         else:
             print "Make sure you have sql file in path: ", filepath
 
-    def do_query(self, filepath):
+    def do_query(self, filepath, *parameter):
         client = bigquery.Client()
         with open(filepath) as file:
             content = file.read()

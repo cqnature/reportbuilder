@@ -56,16 +56,6 @@ def generate_iap_behaviour_report_at_date(report_lines, platform, date, end_date
         file.close()
 
 def generate_iap_behaviour_report(platform, start_date, end_date):
-    if platform != "IOS" and platform != "ANDROID":
-        print("You must pass platform in IOS or ANDROID")
-        exit(1)
-    try:
-        validate(start_date)
-        validate(end_date)
-    except ValueError, Argument:
-        print(Argument)
-        exit(1)
-
     output = "output/iap_behaviour_report_{0}_from_{1}_to_{2}.csv".format(platform, start_date, end_date)
     with open(output, mode='w+') as out:
         report_lines = []
