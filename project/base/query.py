@@ -39,9 +39,9 @@ class QuerySql:
             result = None
             with open(file_path) as file:
                 try:
-                    result = []
                     file_content = json.load(file)
                     if (len(file_content) > 0):
+                        result = []
                         for x in file_content:
                             result.append(bigquery.Row(x['values'], x['field_to_index']))
                 except ValueError:
