@@ -19,7 +19,7 @@ class QuerySql:
         sql_file = os.path.splitext(os.path.basename(filename))[0]
         folders = (self.config.cache_folder, sql_file) + parameter
         path = '.'
-        for x in folders: path = os.path.join(path, x)
+        for x in folders: path = os.path.join(path, str(x))
         if not os.path.exists(path):
             try:
                 os.makedirs(path)

@@ -31,9 +31,9 @@ class BaseReport(object):
             path = self.create_output_folder()
             self.output_filepath = os.path.join(path, self.output_filename)
         else:
-            self.subject = "{0}平台{1}数据报表".format(self.query_config.platform, self.end_date)
+            self.subject = "{0}项目{1}平台{2}数据总报表".format(self.project_config.project_name, self.query_config.platform, self.end_date)
         self.etc_filepath = os.path.join(self.project_config.etc_path, self.etc_filename)
-        self.do_generate()
+        return self.do_generate()
 
     def create_output_folder(self):
         project_name = self.query_config.project_config.project_name
@@ -53,6 +53,7 @@ class BaseReport(object):
 
     def do_generate(self):
         print 'do generate report'
+        return []
 
     def get_result(self, filename, *parameter):
         return self.querysql.get_result(filename, *parameter)

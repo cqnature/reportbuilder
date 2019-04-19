@@ -28,7 +28,7 @@ def print_map(lines, map, start_index, max_count, first_open_usercount):
             append_line(lines, start_index + k, "{0},{1},{2:.2f}%,".format(key, value, 100*float(value)/float(first_open_usercount)))
 
 def generate_lostbehaviour_report(query_config, date):
-    Report(query_config, date).generate()
+    return Report(query_config, date).generate()
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -38,8 +38,11 @@ class Report(BaseReport):
 
     def do_generate(self):
         print 'do generate report'
+        report_filepaths = []
         for level in range(7, 9):
-            with open(self.append_output_filename('_level_' + level), mode='w+') as out:
+            filepath = self.append_output_filename('_level_' + str(level))
+            report_filepaths.append(filepath)
+            with open(filepath, mode='w+') as out:
                 report_lines = []
                 for single_date in Date(self.start_date).rangeto(self.end_date, True):
                     if Date(single_date).between(self.end_date) <= add_day:
@@ -48,6 +51,7 @@ class Report(BaseReport):
                 reportstring = '\n'.join(report_lines)
                 out.write(reportstring)
                 out.close()
+        return report_filepaths
 
     def generate_lostbehaviour_report_at_date(self, report_lines, date, level):
         print("generate_lostbehaviour_report_at_date ", date)

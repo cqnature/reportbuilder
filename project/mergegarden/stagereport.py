@@ -9,7 +9,7 @@ from ..base.query import *
 from ..base.report import *
 
 def generate_stage_report(query_config, date):
-    Report(query_config, date).generate()
+    return Report(query_config, date).generate()
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -26,10 +26,11 @@ class Report(BaseReport):
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
+        return [self.output_filepath]
 
     def get_stage_configs(self):
         stage_configs = None
-        with open(os.path.join(self.project_config.etc_path, "stage.json") as file:
+        with open(os.path.join(self.project_config.etc_path, "stage.json")) as file:
             file_config = json.load(file)
             stage_configs = file_config['property']
             file.close()

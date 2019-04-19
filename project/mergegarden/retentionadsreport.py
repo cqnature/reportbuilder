@@ -9,7 +9,7 @@ from ..base.query import *
 from ..base.report import *
 
 def generate_retention_ads_report(query_config, date):
-    Report(query_config, date).generate()
+    return Report(query_config, date).generate()
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -26,6 +26,7 @@ class Report(BaseReport):
             reportstring = ''.join(report_lines)
             out.write(reportstring)
             out.close()
+        return [self.output_filepath]
 
     def generate_retention_ads_report_at_date(self, report_lines, date):
         print("generate_retention_ads_report_at_date ", date)

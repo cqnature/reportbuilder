@@ -12,7 +12,7 @@ def event_timestamp(e):
   return e.event_timestamp
 
 def generate_iap_behaviour_report(query_config, date):
-    Report(query_config, date).generate()
+    return Report(query_config, date).generate()
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -29,6 +29,7 @@ class Report(BaseReport):
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
+        return [self.output_filepath]
 
     def generate_iap_behaviour_report_at_date(self, report_lines, date):
         print("generate_iap_behaviour_report_at_date ", date)
@@ -41,7 +42,7 @@ class Report(BaseReport):
             iap_purchase_lines = [x.strip() for x in lines[0:1]]
             iap_purchase_lines[0] = iap_purchase_lines[0].format(Date(date).formatmd())
             spend_gems_map = {}
-            for i in range(3, len(lines) - 1):
+            for i in range(3, len(lines)):
                 line = lines[i].strip()
                 linesegments = line.split('|', 1)
                 spend_scene = linesegments[0]

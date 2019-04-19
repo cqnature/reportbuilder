@@ -15,7 +15,7 @@ def sortbydate(e):
     return e['start']
 
 def generate_mail_report(query_config, date):
-    Report(query_config, date).generate()
+    return Report(query_config, date).generate()
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -24,8 +24,8 @@ class Report(BaseReport):
 
     def do_generate(self):
         print 'do generate report'
-        self.generate_mail_report()
-        # send_mail(self.subject, self.generate_mail_report())
+        send_mail(self.subject, self.generate_mail_report())
+        return []
 
     def generate_mail_report(self):
         doc, tag, text, line = Doc().ttl()
@@ -95,6 +95,8 @@ class Report(BaseReport):
                 single_date = Date(date).adddays(k)
                 if Date(single_date).between(self.end_date) < 0:
                     cells.append("0")
+                    cells.append("0")
+                    cells.append("0.00")
                 else:
                     ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
                     user_count = 0
