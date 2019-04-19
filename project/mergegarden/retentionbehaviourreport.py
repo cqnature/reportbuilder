@@ -34,7 +34,7 @@ def generate_retentionbehaviour_report_at_date(report_lines, platform, date, lev
         if firstopen_usercount == 0:
             return;
         lines = file.readlines()
-        lines[0] = lines[0].strip().format(formatdate(date))
+        lines[0] = lines[0].strip().format(Date(date).formatmd())
         lines[1] = lines[1].strip().format(firstopen_usercount)
         # 次日留存用户数
         retention_usercount = get_retention_usercount(platform, date, date_add(date, add_day))

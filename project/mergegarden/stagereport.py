@@ -27,7 +27,7 @@ def generate_stage_report_at_date(report_lines, platform, date, end_date):
         lines = file.readlines()
         signup_day_progress_lines = [x.strip() for x in lines[0:4]]
         signup_day_progress_results = querysql("./sql/stage_progress_of_signup_users.sql", platform, date)
-        signup_day_progress_lines[1] = signup_day_progress_lines[1].format(formatdate(date))
+        signup_day_progress_lines[1] = signup_day_progress_lines[1].format(Date(date).formatmd())
         signup_day_progress_lines[3] = signup_day_progress_lines[3].format(firstopen_usercount, 100)
         signup_base_datas = []
         stage_config_maps = {}
@@ -71,7 +71,7 @@ def generate_stage_report_at_date(report_lines, platform, date, end_date):
                     lost_base_data[1] = row.user_count
                     lost_base_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
                 lost_base_usercount = current_lost_usercount
-                lost_day_progress_lines[1] = lost_day_progress_lines[1].format(formatdate(date))
+                lost_day_progress_lines[1] = lost_day_progress_lines[1].format(Date(date).formatmd())
                 lost_day_progress_lines[3] = lost_day_progress_lines[3].format(firstopen_usercount, 100)
                 lost_day_progress_lines[4] = lost_day_progress_lines[4].format(firstopen_usercount - current_lost_usercount, 100*float(firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
                 lost_day_progress_lines[5] = lost_day_progress_lines[5].format(lost_base_usercount, 100* float(lost_base_usercount)/float(firstopen_usercount))
@@ -95,10 +95,10 @@ def generate_stage_report_at_date(report_lines, platform, date, end_date):
                 origin_lost_base_usercount = lost_base_usercount
                 lost_base_usercount = current_lost_usercount
                 relative_lost_usercount = current_lost_usercount - origin_lost_base_usercount
-                lost_day_progress_lines[0] = lost_day_progress_lines[0].format(betweenday(date, single_date))
-                lost_day_progress_lines[1] = lost_day_progress_lines[1].format(formatdate(date))
+                lost_day_progress_lines[0] = lost_day_progress_lines[0].format(Date(date).between(single_date))
+                lost_day_progress_lines[1] = lost_day_progress_lines[1].format(Date(date).formatmd())
                 lost_day_progress_lines[3] = lost_day_progress_lines[3].format(firstopen_usercount, 100)
-                lost_day_progress_lines[4] = lost_day_progress_lines[4].format(betweenday(date, single_date), firstopen_usercount - current_lost_usercount, 100*float(firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
+                lost_day_progress_lines[4] = lost_day_progress_lines[4].format(Date(date).between(single_date), firstopen_usercount - current_lost_usercount, 100*float(firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
                 lost_day_progress_lines[5] = lost_day_progress_lines[5].format(relative_lost_usercount, 100*float(relative_lost_usercount)/float(firstopen_usercount))
                 for k in range(len(current_lost_datas)):
                     data = current_lost_datas[k]

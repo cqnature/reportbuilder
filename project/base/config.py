@@ -52,6 +52,7 @@ class QueryConfig:
         self.geo_country = geo_country
         self.cache_folder = 'library'
         self.file_name = 'cache.json'
+        self.retry_count = 10
 
     def set_platform(self, platform):
         self.platform = platform

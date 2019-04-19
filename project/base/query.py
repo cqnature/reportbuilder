@@ -55,7 +55,7 @@ class QuerySql:
         with open(file_path, mode='w+') as out:
             result = []
             for row in rows:
-                result.append({'values', row._xxx_values, 'field_to_index', row._xxx_field_to_index})
+                result.append({'values': row._xxx_values, 'field_to_index': row._xxx_field_to_index})
             out.write(json.dumps(result))
             out.close()
 
@@ -67,15 +67,28 @@ class QuerySql:
         filepath = os.path.join(self.config.project_config.sql_path, filename)
         if os.path.exists(filepath) and os.path.isfile(filepath):
             print 'query result for: ', filename
-            client = bigquery.Client()
-            with open(filepath) as file:
-                content = file.read()
-                sql = content.format(*parameter)
-                query_job = client.query(sql)
-                results = query_job.result()  # Waits for job to complete.
-                file.close()
-            rows = list(results)
+            for k in range(self.config.retry_count):
+                try:
+                    result = self.do_query(filepath)
+                except Exception:
+                    print 'catch exception'
+                if result != None:
+                    break
+            if result == None:
+                print 'query result failed!'
+                exit(1)
             self.set_cache(rows, filename, *parameter)
             return rows
         else:
             print "Make sure you have sql file in path: ", filepath
+
+    def do_query(self, filepath):
+        client = bigquery.Client()
+        with open(filepath) as file:
+            content = file.read()
+            sql = content.format(*parameter)
+            query_job = client.query(sql)
+            results = query_job.result()  # Waits for job to complete.
+            file.close()
+        rows = list(results)
+        return rows

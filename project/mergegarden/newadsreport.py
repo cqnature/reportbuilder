@@ -15,7 +15,7 @@ def generate_new_ads_report_at_date(report_lines, platform, date):
         if len(ads_view_count_results) == 0:
             return
         ads_view_user_results = querysql("./sql/new_ads_view_users.sql", platform, date)
-        lines[0] = lines[0].format(formatdate(date))
+        lines[0] = lines[0].format(Date(date).formatmd())
         lines[1] = lines[1].format(ads_view_count_results[0].new_user_count)
         for i in range(3, len(lines) - 1):
             line = lines[i]

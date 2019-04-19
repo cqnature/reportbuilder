@@ -19,7 +19,7 @@ def generate_iap_behaviour_report_at_date(report_lines, platform, date, end_date
             return
         spend_gems_results = querysql("./sql/spend_virtual_currency_detail.sql", platform, date, end_date)
         iap_purchase_lines = [x.strip() for x in lines[0:1]]
-        iap_purchase_lines[0] = iap_purchase_lines[0].format(formatdate(date))
+        iap_purchase_lines[0] = iap_purchase_lines[0].format(Date(date).formatmd())
         spend_gems_map = {}
         for i in range(3, len(lines) - 1):
             line = lines[i].strip()

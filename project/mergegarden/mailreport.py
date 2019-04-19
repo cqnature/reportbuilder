@@ -27,7 +27,7 @@ def generate_mail_lately_report(querysql, start_date, end_date):
         if first_user_count == 0:
             break
         cells = []
-        cells.append(formatdate(date))
+        cells.append(Date(date).formatmd())
         cells.append(str(first_user_count))
         for k in range(3):
             single_date = Date(date).adddays(k)
@@ -59,7 +59,7 @@ def generate_mail_ads_report(querysql, start_date, end_date):
     htmlcode.rows.append(cells)
     for date in Date(start_date).rangeto(end_date, True):
         cells = []
-        cells.append(formatdate(date))
+        cells.append(Date(date).formatmd())
         for k in range(8):
             single_date = Date(date).adddays(k)
             ads_view_count_results = querysql.get_result("ads_view_of_retention_users.sql", date, single_date)
@@ -90,7 +90,7 @@ def generate_mail_retention_report(querysql, start_date, end_date):
         if first_user_count == 0:
             break
         cells = []
-        cells.append(formatdate(date))
+        cells.append(Date(date).formatmd())
         cells.append(str(first_user_count))
         for k in range(8):
             single_date = Date(date).adddays(k)

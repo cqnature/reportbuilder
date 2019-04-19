@@ -34,7 +34,7 @@ def generate_lostbehaviour_report_at_date(report_lines, platform, date, level):
         if firstopen_usercount == 0:
             return;
         lines = file.readlines()
-        lines[0] = lines[0].strip().format(formatdate(date))
+        lines[0] = lines[0].strip().format(Date(date).formatmd())
         lines[1] = lines[1].strip().format(firstopen_usercount)
         # 次日留存用户数
         retention_usercount = get_retention_usercount(platform, date, date_add(date, add_day))
@@ -75,7 +75,7 @@ def generate_lostbehaviour_report(platform, start_date, end_date):
         with open(output, mode='w+') as out:
             report_lines = []
             for single_date in daterange(start_date, end_date, True):
-                if betweenday(single_date, end_date) <= add_day:
+                if Date(single_date).between(end_date) <= add_day:
                     continue
                 generate_lostbehaviour_report_at_date(report_lines, platform, single_date, level)
             reportstring = '\n'.join(report_lines)
