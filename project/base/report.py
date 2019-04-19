@@ -3,20 +3,23 @@
 
 import os
 from date import *
+from query import *
 from enum import Enum
 
 class ReportMode(Enum):
     file = 1
     mail = 2
 
-class Report:
+class BaseReport:
     def __init__(self, query_config, date):
         self.mode = ReportMode.file
         self.output_folder = 'output'
         self.etc_filename = ''
         self.output_filename = ''
         self.output_filepath = ''
+        self.subject = ''
         self.query_config = query_config
+        self.querysql = QuerySql(self.query_config)
         self.start_date = date.date_string
         self.end_date = date.enddate()
 
@@ -24,7 +27,8 @@ class Report:
         if self.mode == ReportMode.file:
             path = self.create_output_folder()
             self.output_filepath = os.path.join(path, self.output_filename)
-
+        else:
+            self.subject = "{0}平台{1}数据报表".format(self.query_config.platform, self.end_date)
         self.do_generate()
 
     def create_output_folder(self):
