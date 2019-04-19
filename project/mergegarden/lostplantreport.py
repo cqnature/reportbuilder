@@ -75,11 +75,11 @@ class Report(BaseReport):
             lost_base_datas = []
             lost_base_usercount = 0
             lost_day_progress_lines = []
-            for single_date in Date(date).rangeto(end_date):
+            for single_date in Date(date).rangeto(self.end_date):
                 # 留存率查询
-                current_lost_usercount = get_lost_usercount(platform, date, single_date)
+                current_lost_usercount = self.get_lost_count(date, single_date)
                 # 流失分布查询
-                lost_day_results = querysql("./sql/plant_progress_of_lost_users.sql", platform, date, single_date)
+                lost_day_results = self.get_result("plant_progress_of_lost_users.sql", date, single_date)
                 if currentDayIndex == 1:
                     lost_day_progress_lines.extend([x.strip() for x in lines[4:10]])
                     progress_data_map = {}
