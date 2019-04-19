@@ -57,7 +57,7 @@ def generate_new_ads_report(platform, start_date, end_date):
     output = "output/new_ads_report_{0}_from_{1}_to_{2}.csv".format(platform, start_date, end_date)
     with open(output, mode='w+') as out:
         report_lines = []
-        for single_date in daterange(start_date, end_date, True):
+        for single_date in Date(start_date).rangeto(end_date, True):
             generate_new_ads_report_at_date(report_lines, platform, single_date)
         reportstring = ''.join(report_lines)
         out.write(reportstring)

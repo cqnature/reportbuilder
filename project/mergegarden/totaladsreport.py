@@ -14,14 +14,14 @@ def generate_total_ads_report_at_date(report_lines, platform, date, start_date, 
             lines = file.readlines()
             for k in range(2):
                 append_line(report_lines, k, lines[k].strip())
-            for single_date in daterange(date, end_date, True):
+            for single_date in Date(date).rangeto(end_date, True):
                 append_line(report_lines, 0, lines[2].strip().format(Date(date).between(single_date) - 1))
                 append_line(report_lines, 1, lines[3].strip())
             file.close()
 
     index = len(report_lines)
     append_line(report_lines, index, "{0},".format(Date(date).formatmd()))
-    for single_date in daterange(date, end_date, True):
+    for single_date in Date(date).rangeto(end_date, True):
         ads_view_count_results = querysql("./sql/ads_view_of_retention_users.sql", platform, date, single_date)
         user_count = 0
         if date == single_date:
@@ -46,7 +46,7 @@ def generate_total_ads_report(platform, start_date, end_date):
     output = "output/total_ads_report_{0}_from_{1}_to_{2}.csv".format(platform, start_date, end_date)
     with open(output, mode='w+') as out:
         report_lines = []
-        for single_date in daterange(start_date, end_date, True):
+        for single_date in Date(start_date).rangeto(end_date, True):
             generate_total_ads_report_at_date(report_lines, platform, single_date, start_date, end_date)
         reportstring = '\n'.join(report_lines)
         out.write(reportstring)

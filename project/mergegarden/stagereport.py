@@ -52,7 +52,7 @@ def generate_stage_report_at_date(report_lines, platform, date, end_date):
         lost_base_datas = []
         lost_base_usercount = 0
         lost_day_progress_lines = []
-        for single_date in daterange(date, end_date):
+        for single_date in Date(date).rangeto(end_date):
             # 留存率查询
             current_lost_usercount = get_lost_usercount(platform, date, single_date)
             # 流失分布查询
@@ -129,7 +129,7 @@ def generate_stage_report(platform, start_date, end_date):
     output = "output/stage_report_{0}_from_{1}_to_{2}.csv".format(platform, start_date, end_date)
     with open(output, mode='w+') as out:
         report_lines = []
-        for single_date in daterange(start_date, end_date, True):
+        for single_date in Date(start_date).rangeto(end_date, True):
             generate_stage_report_at_date(report_lines, platform, single_date, end_date)
         reportstring = '\n'.join(report_lines)
         out.write(reportstring)

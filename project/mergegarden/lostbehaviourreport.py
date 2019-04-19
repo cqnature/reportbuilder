@@ -6,6 +6,7 @@ import json
 from ..base.date import *
 from ..base.helper import *
 from ..base.query import *
+from ..base.report import *
 
 # 次留=1 三留=2 四留=3
 add_day = 2
@@ -26,58 +27,58 @@ def print_map(lines, map, start_index, max_count, first_open_usercount):
             value = map.get(key)
             append_line(lines, start_index + k, "{0},{1},{2:.2f}%,".format(key, value, 100*float(value)/float(first_open_usercount)))
 
-def generate_lostbehaviour_report_at_date(report_lines, platform, date, level):
-    print("generate_lostbehaviour_report_at_date ", date)
-    with open("./etc/behaviour_of_lost_users.csv") as file:
-        # 新增用户数
-        firstopen_usercount = get_firstopen_usercount(platform, date)
-        if firstopen_usercount == 0:
-            return;
-        lines = file.readlines()
-        lines[0] = lines[0].strip().format(Date(date).formatmd())
-        lines[1] = lines[1].strip().format(firstopen_usercount)
-        # 次日留存用户数
-        retention_usercount = get_retention_usercount(platform, date, date_add(date, add_day))
-        lines[2] = lines[2].strip().format(retention_usercount, 100*float(retention_usercount)/float(firstopen_usercount))
-        behaviour_results = querysql("./sql/behaviour_of_lost_users.sql", platform, date, date_add(date, add_day), date_add(date, add_day - 1), level)
-        lost_usercount = sum(1 for _ in behaviour_results)
-        lines[3] = lines[3].strip().format(level, lost_usercount, 100*float(lost_usercount)/float(firstopen_usercount))
-        lines[4] = lines[4].strip().format(level)
-        dataset_map = []
-        key_count = 16
-        key_offset = 2
-        for k in range(key_count):
-            dataset_map.append({})
-        for k in range(len(behaviour_results)):
-            behaviour_result = behaviour_results[k]
-            for t in range(key_count):
-                add_map_key_count(dataset_map[t], behaviour_result[t + key_offset])
-        max_count = max(len(map) for map in dataset_map)
-        start_index = len(lines)
-        for k in range(key_count):
-            print_map(lines, dataset_map[k], start_index, max_count, firstopen_usercount)
-        report_lines.extend(lines)
-        file.close()
+def generate_lostbehaviour_report(query_config, date):
+    Report(query_config, date).generate()
 
-def generate_lostbehaviour_report(platform, start_date, end_date):
-    if platform != "IOS" and platform != "ANDROID":
-        print("You must pass platform in IOS or ANDROID")
-        exit(1)
-    try:
-        validate(start_date)
-        validate(end_date)
-    except ValueError, Argument:
-        print(Argument)
-        exit(1)
+class Report(BaseReport):
+    def __init__(self, query_config, date):
+        super(Report, self).__init__(query_config, date)
+        self.etc_filename = 'behaviour_of_lost_users.csv'
+        self.output_filename = 'lostuser_behaviour_report.csv'
 
-    for level in range(7, 9):
-        output = "output/lostuser_behaviour_report_{0}_from_{1}_to_{2}_level_{3}.csv".format(platform, start_date, end_date, level)
-        with open(output, mode='w+') as out:
-            report_lines = []
-            for single_date in daterange(start_date, end_date, True):
-                if Date(single_date).between(end_date) <= add_day:
-                    continue
-                generate_lostbehaviour_report_at_date(report_lines, platform, single_date, level)
-            reportstring = '\n'.join(report_lines)
-            out.write(reportstring)
-            out.close()
+    def do_generate(self):
+        print 'do generate report'
+        for level in range(7, 9):
+            with open(self.output_filepath, mode='w+') as out:
+                report_lines = []
+                for single_date in Date(self.start_date).rangeto(self.end_date, True):
+                    if Date(single_date).between(end_date) <= add_day:
+                        continue
+                    self.generate_lostbehaviour_report(report_lines, single_date, level)
+                reportstring = '\n'.join(report_lines)
+                out.write(reportstring)
+                out.close()
+
+    def generate_lostbehaviour_report_at_date(self, report_lines, date, level):
+        print("generate_lostbehaviour_report_at_date ", date)
+        with open(self.etc_filepath) as file:
+            # 新增用户数
+            firstopen_usercount = get_firstopen_usercount(self.querysql, date)
+            if firstopen_usercount == 0:
+                return;
+            lines = file.readlines()
+            lines[0] = lines[0].strip().format(Date(date).formatmd())
+            lines[1] = lines[1].strip().format(firstopen_usercount)
+            # 次日留存用户数
+            cur_date = Date(date)
+            retention_usercount = get_retention_usercount(self.querysql, date, cur_date.adddays(add_day))
+            lines[2] = lines[2].strip().format(retention_usercount, 100*float(retention_usercount)/float(firstopen_usercount))
+            behaviour_results = self.querysql.get_result("behaviour_of_lost_users.sql", date, cur_date.adddays(add_day), cur_date.adddays(add_day - 1), level)
+            lost_usercount = sum(1 for _ in behaviour_results)
+            lines[3] = lines[3].strip().format(level, lost_usercount, 100*float(lost_usercount)/float(firstopen_usercount))
+            lines[4] = lines[4].strip().format(level)
+            dataset_map = []
+            key_count = 16
+            key_offset = 2
+            for k in range(key_count):
+                dataset_map.append({})
+            for k in range(len(behaviour_results)):
+                behaviour_result = behaviour_results[k]
+                for t in range(key_count):
+                    add_map_key_count(dataset_map[t], behaviour_result[t + key_offset])
+            max_count = max(len(map) for map in dataset_map)
+            start_index = len(lines)
+            for k in range(key_count):
+                print_map(lines, dataset_map[k], start_index, max_count, firstopen_usercount)
+            report_lines.extend(lines)
+            file.close()

@@ -59,7 +59,7 @@ def generate_iap_behaviour_report(platform, start_date, end_date):
     output = "output/iap_behaviour_report_{0}_from_{1}_to_{2}.csv".format(platform, start_date, end_date)
     with open(output, mode='w+') as out:
         report_lines = []
-        for single_date in daterange(start_date, end_date, True):
+        for single_date in Date(start_date).rangeto(end_date, True):
             generate_iap_behaviour_report_at_date(report_lines, platform, single_date, end_date)
         reportstring = '\n'.join(report_lines)
         out.write(reportstring)

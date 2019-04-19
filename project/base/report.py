@@ -4,13 +4,14 @@
 import os
 from date import *
 from query import *
+from helper import *
 from enum import Enum
 
 class ReportMode(Enum):
     file = 1
     mail = 2
 
-class BaseReport:
+class BaseReport(object):
     def __init__(self, query_config, date):
         self.mode = ReportMode.file
         self.output_folder = 'output'
@@ -19,6 +20,7 @@ class BaseReport:
         self.output_filepath = ''
         self.subject = ''
         self.query_config = query_config
+        self.project_config = self.query_config.project_config
         self.querysql = QuerySql(self.query_config)
         self.start_date = date.date_string
         self.end_date = date.enddate()
@@ -29,6 +31,7 @@ class BaseReport:
             self.output_filepath = os.path.join(path, self.output_filename)
         else:
             self.subject = "{0}平台{1}数据报表".format(self.query_config.platform, self.end_date)
+        self.etc_filepath = os.path.join(self.project_config.etc_path, self.etc_filename)
         self.do_generate()
 
     def create_output_folder(self):
@@ -49,3 +52,15 @@ class BaseReport:
 
     def do_generate(self):
         print 'do generate report'
+
+    def get_result(self, filename, *parameter):
+        return self.querysql.get_result(filename, *parameter)
+
+    def get_firstopen_count(self, date):
+        return get_firstopen_usercount(self.querysql, date)
+
+    def get_lost_count(self, start_date, end_date):
+        return get_lost_usercount(self.querysql, start_date, end_date)
+
+    def get_retention_count(self, start_date, end_date):
+        return get_retention_usercount(self.querysql, start_date, end_date)

@@ -74,7 +74,7 @@ def generate_retentionbehaviour_report(platform, start_date, end_date):
         output = "output/retentionuser_behaviour_report_{0}_from_{1}_to_{2}_level_{3}.csv".format(platform, start_date, end_date, level)
         with open(output, mode='w+') as out:
             report_lines = []
-            for single_date in daterange(start_date, end_date, True):
+            for single_date in Date(start_date).rangeto(end_date, True):
                 if single_date == end_date:
                     continue
                 generate_retentionbehaviour_report_at_date(report_lines, platform, single_date, level)

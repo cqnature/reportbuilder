@@ -18,6 +18,10 @@ def generate_mail_report(query_config, date):
     Report(query_config, date).generate()
 
 class Report(BaseReport):
+    def __init__(self, query_config, date):
+        super(Report, self).__init__(query_config, date)
+        self.mode = ReportMode.mail
+
     def do_generate(self):
         print 'do generate report'
         send_mail(self.subject, self.generate_mail_report())
@@ -49,7 +53,7 @@ class Report(BaseReport):
         htmlcode.rows.append(cells)
         lately_date = max(Date(self.end_date).adddays(-2), self.start_date)
         for date in Date(lately_date).rangeto(self.end_date, True):
-            first_user_count = get_firstopen_usercount(self.querysql, date)
+            first_user_count = self.get_firstopen_count(date)
             if first_user_count == 0:
                 break
             cells = []
@@ -57,14 +61,14 @@ class Report(BaseReport):
             cells.append(str(first_user_count))
             for k in range(3):
                 single_date = Date(date).adddays(k)
-                ads_view_count_results = self.querysql.get_result("ads_view_of_retention_users.sql", date, single_date)
-                user_count = get_retention_usercount(self.querysql, date, single_date)
+                ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
+                user_count = self.get_retention_count(date, single_date)
                 view_count = sum(1 for _ in ads_view_count_results)
                 average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
                 cells.append("{0:.2f}".format(average_view_count))
             for k in range(2):
                 single_date = Date(date).adddays(k + 1)
-                user_count = get_retention_usercount(self.querysql, date, single_date)
+                user_count = self.get_retention_count(date, single_date)
                 cells.append("{0:.2f}%".format(100*float(user_count)/float(first_user_count)))
             htmlcode.rows.append(cells)
         return htmlcode
@@ -88,12 +92,12 @@ class Report(BaseReport):
             cells.append(Date(date).formatmd())
             for k in range(8):
                 single_date = Date(date).adddays(k)
-                ads_view_count_results = self.querysql.get_result("ads_view_of_retention_users.sql", date, single_date)
+                ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
                 user_count = 0
                 if date == single_date:
-                    user_count = get_firstopen_usercount(self.querysql, single_date)
+                    user_count = self.get_firstopen_count(single_date)
                 else:
-                    user_count = get_retention_usercount(self.querysql, date, single_date)
+                    user_count = self.get_retention_count(date, single_date)
                 view_count = sum(1 for _ in ads_view_count_results)
                 average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
                 cells.append(str(user_count))
@@ -112,7 +116,7 @@ class Report(BaseReport):
             cells.append(TableCell("D{0}留存".format(k), header=True, bgcolor='grey'))
         htmlcode.rows.append(cells)
         for date in Date(self.start_date).rangeto(self.end_date, True):
-            first_user_count = get_firstopen_usercount(self.querysql, date)
+            first_user_count = self.get_firstopen_count(date)
             if first_user_count == 0:
                 break
             cells = []
@@ -120,7 +124,7 @@ class Report(BaseReport):
             cells.append(str(first_user_count))
             for k in range(8):
                 single_date = Date(date).adddays(k)
-                user_count = get_retention_usercount(self.querysql, date, single_date)
+                user_count = self.get_retention_count(date, single_date)
                 cells.append("{0:.2f}%".format(100*float(user_count)/float(first_user_count)))
             htmlcode.rows.append(cells)
         return htmlcode
