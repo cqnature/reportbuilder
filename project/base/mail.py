@@ -39,7 +39,6 @@ def send_mail(subject, htmlBody, attachments = [], receivers = []):
 
     #设置附件
     for attachment in attachments:
-        print 'path.basename(attachment), ', path.basename(attachment)
         # 构造附件，传送指定文件
         att = MIMEText(open(attachment, 'rb').read(), 'base64', 'utf-8')
         att["Content-Type"] = 'application/octet-stream'
