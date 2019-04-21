@@ -73,7 +73,7 @@ class Report(BaseReport):
             lost_base_datas = []
             lost_base_usercount = 0
             lost_day_progress_lines = []
-            for single_date in Date(date).rangeto(self.max_retention_date):
+            for single_date in Date(date).rangeto(self.get_retention_date(date)):
                 # 留存率查询
                 current_lost_usercount = self.get_lost_count(date, single_date)
                 # 流失分布查询

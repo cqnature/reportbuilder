@@ -74,7 +74,7 @@ class Report(BaseReport):
 
             currentDayIndex = 1
             retention_day_progress_lines = []
-            for single_date in Date(date).rangeto(self.max_retention_date):
+            for single_date in Date(date).rangeto(self.get_retention_date(date)):
                 # 留存率查询
                 current_retention_usercount = self.get_retention_count(date, single_date)
                 # 留存分布查询

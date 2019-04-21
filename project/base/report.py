@@ -24,7 +24,9 @@ class BaseReport(object):
         self.querysql = QuerySql(self.query_config)
         self.start_date = date.date_string
         self.end_date = date.enddate()
-        self.max_retention_date = min(self.end_date, date.adddays(7))
+
+    def get_retention_date(self, date_string):
+        return min(self.end_date, Date(date_string).adddays(7))
 
     def generate(self):
         if self.mode == ReportMode.file:

@@ -56,7 +56,7 @@ class Report(BaseReport):
         for date in Date(lately_date).rangeto(self.end_date, True):
             first_user_count = self.get_firstopen_count(date)
             if first_user_count == 0:
-                break
+                continue
             cells = []
             cells.append(Date(date).formatmd())
             cells.append(str(first_user_count))
@@ -124,7 +124,7 @@ class Report(BaseReport):
         for date in Date(self.start_date).rangeto(self.end_date, True):
             first_user_count = self.get_firstopen_count(date)
             if first_user_count == 0:
-                break
+                continue
             cells = []
             cells.append(Date(date).formatmd())
             cells.append(str(first_user_count))
