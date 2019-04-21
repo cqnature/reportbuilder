@@ -3,7 +3,9 @@
 
 import os
 import json
+import requests
 from config import *
+from date import *
 from google.cloud import bigquery
 
 class BaseQuery(object):
@@ -126,7 +128,7 @@ class QueryReport(BaseQuery):
         return self.get_result('daily_report', *parameter)
 
     def get_result(self, report_type, *parameter):
-        parameter = (self.config.project_config.appsflyer_api_token) + parameter
+        parameter = (self.config.project_config.appsflyer_api_token,) + parameter
         folders = (self.config.project_config.project_name, report_type) + parameter
         result = self.get_cache(report_type, *folders)
         if result != None:
@@ -146,6 +148,11 @@ class QueryReport(BaseQuery):
         return result
 
     def do_query(self, report_type, *parameter):
+        params = {
+            'api_token': parameter[0],
+            'from': Date(parameter[1]).formatymd(),
+            'to': Date(parameter[2]).formatymd()
+        }
         request_url = 'https://hq.appsflyer.com/export/{}/{}/v5'.format(self.config.project_config.app_id, report_type)
         res = requests.request('GET', request_url, params=params)
         if res.status_code != 200:

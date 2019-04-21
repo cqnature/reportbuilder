@@ -36,6 +36,10 @@ class Date:
         date = datetime.strptime(self.date_string, "%Y%m%d").date()
         return date.strftime("%m-%d")
 
+    def formatymd(self):
+        date = datetime.strptime(self.date_string, "%Y%m%d").date()
+        return date.strftime("%Y-%m-%d")
+
     def between(self, end_date_string, adddays = 1):
         start_date = datetime.strptime(self.date_string, "%Y%m%d").date()
         end_date = datetime.strptime(end_date_string, "%Y%m%d").date() + timedelta(days=adddays)
