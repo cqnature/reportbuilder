@@ -8,7 +8,7 @@ import time
 from config import *
 from date import *
 from google.cloud import bigquery
-from io import open
+from io import open as ioopen
 
 class BaseQuery(object):
     def __init__(self, config):
@@ -112,7 +112,7 @@ class QueryReport(BaseQuery):
             return None
         else:
             result = None
-            with open(file_path, encoding="utf-8") as file:
+            with ioopen(file_path, encoding="utf-8") as file:
                 result = file.read()
                 file.close()
                 print 'load cache in file path: ', path
@@ -122,14 +122,14 @@ class QueryReport(BaseQuery):
         path = self.create_folder(report_type, *parameter)
         print 'save cache in file path: ', path
         file_path = os.path.join(path, self.config.file_name)
-        with open(file_path, mode='w+', encoding="utf-8") as out:
+        with ioopen(file_path, mode='w+', encoding="utf-8") as out:
             out.write(text)
             out.close()
 
     def get_daily_result(self, *parameter):
         return self.get_result('daily_report', *parameter)
 
-    def get_partners_daily_result(self *parameter):
+    def get_partners_daily_result(self, *parameter):
         return self.get_result("partners_by_date_report", *parameter)
 
     def get_result(self, report_type, *parameter):
@@ -156,7 +156,8 @@ class QueryReport(BaseQuery):
         params = {
             'api_token': parameter[0],
             'from': Date(parameter[1]).formatymd(),
-            'to': Date(parameter[2]).formatymd()
+            'to': Date(parameter[2]).formatymd(),
+            'timezone': 'America/Los_Angeles'
         }
         request_url = 'https://hq.appsflyer.com/export/{}/{}/v5'.format(self.config.project_config.app_id, report_type)
         res = requests.request('GET', request_url, params=params)
