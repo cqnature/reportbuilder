@@ -23,13 +23,15 @@ class ReportFlag:
             self.option = self.option | x
 
 class ProjectConfig:
-    def __init__(self, project_name, table_prefix):
+    def __init__(self, project_name, table_prefix, appsflyer_api_token, app_id):
         self.project_name = project_name
         self.table_prefix = table_prefix
         self.project_path = os.path.join('./project', self.project_name)
         self.sql_path = os.path.join('./sql', self.project_name)
         self.etc_path = os.path.join('./etc', self.project_name)
         self.credentials_path = os.path.join('./credentials', self.project_name)
+        self.appsflyer_api_token = appsflyer_api_token
+        self.app_id = app_id
 
     def set_env_from_config(self, config, key):
         if config.has_key(key):
