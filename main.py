@@ -18,5 +18,9 @@ if __name__ == '__main__':
         ReportFlag.retention_behaviour
     ]
     option = ReportFlag(flags).option
+
+    # generate_report(option, 'mergefood', 'analytics_188328474', 'ANDROID', 'United States', '20190401')
+    generate_report(option, 'mergefood', 'analytics_188328474', 'IOS', 'China', '20190401')
+
     generate_report(option, 'mergegarden', 'analytics_195246954', 'ANDROID', 'United States', '20190329')
     generate_report(option, 'mergegarden', 'analytics_195246954', 'IOS', 'United States', '20190326')
