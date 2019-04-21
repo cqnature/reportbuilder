@@ -61,6 +61,9 @@ class BaseReport(object):
     def get_daily_report(self, *parameter):
         return self.queryreport.get_daily_result(*parameter)
 
+    def get_partners_daily_report(self, *parameter):
+        return self.queryreport.get_partners_daily_result(*parameter)
+
     def get_result(self, filename, *parameter):
         return self.querysql.get_result(filename, *parameter)
 

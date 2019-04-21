@@ -4,9 +4,11 @@
 import os
 import json
 import requests
+import time
 from config import *
 from date import *
 from google.cloud import bigquery
+from io import open
 
 class BaseQuery(object):
     def __init__(self, config):
@@ -110,7 +112,7 @@ class QueryReport(BaseQuery):
             return None
         else:
             result = None
-            with open(file_path) as file:
+            with open(file_path, encoding="utf-8") as file:
                 result = file.read()
                 file.close()
                 print 'load cache in file path: ', path
@@ -120,12 +122,15 @@ class QueryReport(BaseQuery):
         path = self.create_folder(report_type, *parameter)
         print 'save cache in file path: ', path
         file_path = os.path.join(path, self.config.file_name)
-        with open(file_path, mode='w+') as out:
+        with open(file_path, mode='w+', encoding="utf-8") as out:
             out.write(text)
             out.close()
 
     def get_daily_result(self, *parameter):
         return self.get_result('daily_report', *parameter)
+
+    def get_partners_daily_result(self *parameter):
+        return self.get_result("partners_by_date_report", *parameter)
 
     def get_result(self, report_type, *parameter):
         parameter = (self.config.project_config.appsflyer_api_token,) + parameter
@@ -155,6 +160,7 @@ class QueryReport(BaseQuery):
         }
         request_url = 'https://hq.appsflyer.com/export/{}/{}/v5'.format(self.config.project_config.app_id, report_type)
         res = requests.request('GET', request_url, params=params)
+        time.sleep(60)
         if res.status_code != 200:
             if res.status_code == 404:
                 raise RuntimeError('There is a problem with the request URL. Make sure that it is correct')
