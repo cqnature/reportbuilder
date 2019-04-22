@@ -23,7 +23,7 @@ class ReportFlag:
             self.option = self.option | x
 
 class ProjectConfig:
-    def __init__(self, project_name, table_prefix, appsflyer_api_token, app_id):
+    def __init__(self, project_name, table_prefix, appsflyer_api_token, app_id, fb_app_id, fb_access_token):
         self.project_name = project_name
         self.table_prefix = table_prefix
         self.project_path = os.path.join('./project', self.project_name)
@@ -32,6 +32,8 @@ class ProjectConfig:
         self.credentials_path = os.path.join('./credentials', self.project_name)
         self.appsflyer_api_token = appsflyer_api_token
         self.app_id = app_id
+        self.fb_app_id = fb_app_id
+        self.fb_access_token = fb_access_token
 
     def set_env_from_config(self, config, key):
         if config.has_key(key):
@@ -49,13 +51,14 @@ class ProjectConfig:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(self.credentials_path, 'credentials.json')
 
 class QueryConfig:
-    def __init__(self, project_config, platform, geo_country):
+    def __init__(self, project_config, platform, geo_country, country_code):
         self.project_config = project_config
         self.platform = platform
         self.geo_country = geo_country
+        self.country_code = country_code
         self.cache_folder = 'library'
         self.file_name = 'cache.json'
-        self.retry_count = 10
+        self.retry_count = 3
 
     def set_platform(self, platform):
         self.platform = platform

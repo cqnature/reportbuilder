@@ -23,6 +23,7 @@ class BaseReport(object):
         self.project_config = self.query_config.project_config
         self.querysql = QuerySql(self.query_config)
         self.queryreport = QueryReport(self.query_config)
+        self.queryads = QueryAds(self.query_config)
         self.start_date = date.date_string
         self.end_date = date.enddate()
 
