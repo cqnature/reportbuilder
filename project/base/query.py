@@ -47,8 +47,8 @@ class QuerySql(BaseQuery):
             with open(file_path) as file:
                 try:
                     file_content = json.load(file)
-                    result = []
                     if (len(file_content) > 0):
+                        result = []
                         for x in file_content:
                             result.append(bigquery.Row(x['values'], x['field_to_index']))
                 except ValueError:
