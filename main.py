@@ -3,6 +3,7 @@
 
 from project.entry import generate_report
 from project.base.config import ReportFlag
+import os
 
 if __name__ == '__main__':
     flags = [
@@ -19,8 +20,8 @@ if __name__ == '__main__':
     ]
     option = ReportFlag(flags).option
 
-    # generate_report(option, 'mergefood', 'analytics_188328474', 'e81c8f3a-07e9-4445-8528-2eca4d1609fe', 'com.peakx.mergefood', 'ANDROID', 'United States', '20190401')
-    generate_report(option, 'mergefood', 'analytics_188328474', 'e81c8f3a-07e9-4445-8528-2eca4d1609fe', 'id1441087650', 'IOS', 'China', '20190401')
-
-    generate_report(option, 'mergegarden', 'analytics_195246954', 'e81c8f3a-07e9-4445-8528-2eca4d1609fe', 'com.peakx.mergegarden', 'ANDROID', 'United States', '20190329')
-    generate_report(option, 'mergegarden', 'analytics_195246954', 'e81c8f3a-07e9-4445-8528-2eca4d1609fe', 'id1457946808', 'IOS', 'United States', '20190326')
+    with open('./config/params.json') as file:
+        content = json.load(file)
+        for x in content:
+            generate_report(option, x['start_dateZ'], x['project_name'], x['table_prefix'], x['appsflyer_api_token'], x['app_id'], x['fb_app_id'], x['fb_access_token'], x['admob_app_id'], x['platform'], x['geo_country'], x['contain_roi'])
+        file.close()

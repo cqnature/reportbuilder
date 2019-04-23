@@ -8,10 +8,10 @@ from mail import *
 class BaseEntry(object):
     def __init__(self, option, *parameter):
         self.option = option
-        self.project_config = ProjectConfig(parameter[0], parameter[1], parameter[2], parameter[3], parameter[4], parameter[5], parameter[6])
-        self.query_config = QueryConfig(self.project_config, parameter[7], parameter[8], parameter[9])
-        self.start_date = Date(parameter[10])
+        self.start_date = Date(parameter[0])
         self.end_date = Date(self.start_date).enddate()
+        self.project_config = ProjectConfig(parameter[1], parameter[2], parameter[3], parameter[4], parameter[5], parameter[6], parameter[7])
+        self.query_config = QueryConfig(self.project_config, parameter[8], parameter[9], parameter[10])
         self.detail_email = []
 
     def generate_report(self):

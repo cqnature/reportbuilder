@@ -200,7 +200,7 @@ class QueryAds(BaseQuery):
             out.close()
 
     def get_result(self, *parameter):
-        folder = (self.config.project_config.fb_app_id, self.config.country_code, self.config.platform) + parameter
+        folder = (self.config.project_config.fb_app_id, self.config.platform) + parameter
         result = self.get_cache(*folder)
         if result != None:
             return result
@@ -223,7 +223,7 @@ class QueryAds(BaseQuery):
         return content['data'][0]['results']
 
     def do_query(self, *parameter):
-        return run_async_request_for_result(self.config.project_config.fb_app_id, self.config.project_config.fb_access_token, self.config.country_code, self.config.platform.lower(), parameter[0], parameter[1])
+        return run_async_request_for_result(self.config.project_config.fb_app_id, self.config.project_config.fb_access_token, self.config.platform.lower(), parameter[0], parameter[1])
 
 class QueryAdScene(BaseQuery):
 
