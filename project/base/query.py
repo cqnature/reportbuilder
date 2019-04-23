@@ -10,6 +10,7 @@ from date import *
 from google.cloud import bigquery
 from io import open as ioopen
 from ..fbadnw.adnw_examples import *
+from ..adscene.generate_report import *
 
 class BaseQuery(object):
     def __init__(self, config):
@@ -218,8 +219,58 @@ class QueryAds(BaseQuery):
             print 'query result failed!'
             exit(1)
         self.set_cache(result, *folder)
-        content = json.load(result)
+        content = json.loads(result)
         return content['data'][0]['results']
 
     def do_query(self, *parameter):
         return run_async_request_for_result(self.config.project_config.fb_app_id, self.config.project_config.fb_access_token, self.config.country_code, self.config.platform.lower(), parameter[0], parameter[1])
+
+class QueryAdScene(BaseQuery):
+
+    def get_cache(self, *parameter):
+        path = self.create_folder(*parameter)
+        print 'try to get cache in file path: ', path
+        file_path = os.path.join(path, self.config.file_name)
+        if not os.path.exists(file_path):
+            return None
+        else:
+            result = None
+            with open(file_path) as file:
+                result = file.read()
+                file.close()
+                print 'load cache in file path: ', path
+        return result
+
+    def set_cache(self, text, *parameter):
+        path = self.create_folder(*parameter)
+        print 'save cache in file path: ', path
+        file_path = os.path.join(path, self.config.file_name)
+        with open(file_path, mode='w+') as out:
+            out.write(text)
+            out.close()
+
+    def get_result(self, *parameter):
+        folder = ('admob', self.config.project_config.project_name, self.config.platform) + parameter
+        result = self.get_cache(*folder)
+        if result != None:
+            return result
+        for k in range(self.config.retry_count):
+            try:
+                result = self.do_query(*parameter)
+                if result != None:
+                    break
+            except adnw_exception.ValidationError, error:
+                print(error.message)
+                """Waiting 60 seconds if first async request fails, because clustering too many requests
+                in our backend will slow your process of fetching results."""
+                sleep(60)
+                continue
+        if result == None:
+            print 'query result failed!'
+            exit(1)
+        self.set_cache(result, *folder)
+        content = json.loads(result)
+        return content['rows'][0]
+
+    def do_query(self, *parameter):
+        return generate_report(self.config.project_config.admob_app_id, self.config.platform, parameter[0], parameter[1])

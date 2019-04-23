@@ -24,6 +24,7 @@ class BaseReport(object):
         self.querysql = QuerySql(self.query_config)
         self.queryreport = QueryReport(self.query_config)
         self.queryads = QueryAds(self.query_config)
+        self.queryadscene = QueryAdScene(self.query_config)
         self.start_date = date.date_string
         self.end_date = date.enddate()
 

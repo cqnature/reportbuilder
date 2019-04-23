@@ -23,7 +23,7 @@ class ReportFlag:
             self.option = self.option | x
 
 class ProjectConfig:
-    def __init__(self, project_name, table_prefix, appsflyer_api_token, app_id, fb_app_id, fb_access_token):
+    def __init__(self, project_name, table_prefix, appsflyer_api_token, app_id, fb_app_id, fb_access_token, admob_app_id):
         self.project_name = project_name
         self.table_prefix = table_prefix
         self.project_path = os.path.join('./project', self.project_name)
@@ -34,6 +34,7 @@ class ProjectConfig:
         self.app_id = app_id
         self.fb_app_id = fb_app_id
         self.fb_access_token = fb_access_token
+        self.admob_app_id = admob_app_id
 
     def set_env_from_config(self, config, key):
         if config.has_key(key):

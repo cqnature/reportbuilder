@@ -58,3 +58,5 @@ config
 library
 *.pyc
 setup.lock
+adsense.dat
+client_secrets.json
