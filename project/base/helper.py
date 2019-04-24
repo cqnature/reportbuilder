@@ -25,3 +25,8 @@ def get_retention_usercount(querysql, start_date, end_date):
     retention_user_ids = querysql.get_result("retention_user_id.sql", start_date, end_date)
     current_retention_usercount = sum(1 for _ in retention_user_ids)
     return current_retention_usercount
+
+def get_daily_usercount(querysql, date):
+    daily_results = querysql.get_result("daily_user_id.sql", date)
+    daily_usercount = sum(1 for _ in daily_results)
+    return daily_usercount

@@ -203,14 +203,15 @@ class QueryAds(BaseQuery):
         folder = (self.config.project_config.fb_app_id, self.config.platform) + parameter
         result = self.get_cache(*folder)
         if result != None:
-            return result
+            content = json.loads(result)
+            return content['data'][0]['results']
         for k in range(self.config.retry_count):
             try:
                 result = self.do_query(*parameter)
                 if result != None:
                     break
-            except adnw_exception.ValidationError, error:
-                print(error.message)
+            except Exception, e:
+                print(e.message)
                 """Waiting 60 seconds if first async request fails, because clustering too many requests
                 in our backend will slow your process of fetching results."""
                 sleep(60)
@@ -253,14 +254,15 @@ class QueryAdScene(BaseQuery):
         folder = ('admob', self.config.project_config.project_name, self.config.platform) + parameter
         result = self.get_cache(*folder)
         if result != None:
-            return result
+            content = json.loads(result)
+            return content['rows'][0]
         for k in range(self.config.retry_count):
             try:
                 result = self.do_query(*parameter)
                 if result != None:
                     break
-            except adnw_exception.ValidationError, error:
-                print(error.message)
+            except Exception, e:
+                print(e.message)
                 """Waiting 60 seconds if first async request fails, because clustering too many requests
                 in our backend will slow your process of fetching results."""
                 sleep(60)

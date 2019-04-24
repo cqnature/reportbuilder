@@ -81,3 +81,6 @@ class BaseReport(object):
 
     def get_retention_count(self, start_date, end_date):
         return get_retention_usercount(self.querysql, start_date, end_date)
+
+    def get_daily_count(self, date):
+        return get_daily_usercount(self.querysql, date)
