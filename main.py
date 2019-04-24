@@ -9,7 +9,7 @@ import json
 if __name__ == '__main__':
     flags = [
         ReportFlag.mail,
-        # ReportFlag.lost_level,
+        ReportFlag.lost_level,
         # ReportFlag.retention_level,
         # ReportFlag.stage,
         # ReportFlag.new_ads,
