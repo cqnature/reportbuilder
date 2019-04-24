@@ -79,7 +79,7 @@ class Report(BaseReport):
             cells.append(str(daily_user_count))
             cells.append(str(total_revenue))
             cells.append(TableCell("{0:.3f}".format(total_revenue/float(daily_user_count)), bgcolor='lightpink'))
-            cells.append(TableCell(("N/A" if total_cost == 0 else "{0:.1f}%".format(total_revenue/total_cost)), bgcolor='lightpink'))
+            cells.append(TableCell(("N/A" if total_cost == 0 else "{0:.1f}%".format(100*total_revenue/total_cost)), bgcolor='lightpink'))
             cells.append("{0:.2f}".format(ad_revenue))
             cells.append("{0:.3f}".format(ad_revenue/float(daily_user_count)))
             cells.append("{0:.2f}".format(ad_revenue/float(ad_imp/1000)))
