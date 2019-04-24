@@ -139,7 +139,7 @@ class QueryReport(BaseQuery):
 
     def get_result(self, report_type, *parameter):
         parameter = (self.config.project_config.appsflyer_api_token,) + parameter
-        folders = (self.config.project_config.project_name, report_type) + parameter
+        folders = (self.config.project_config.project_name, self.config.platform) + parameter
         result = self.get_cache(report_type, *folders)
         if result != None:
             return result
