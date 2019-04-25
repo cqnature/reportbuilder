@@ -14,7 +14,7 @@ from lostplantreport import generate_lostplant_report
 # from newadsreport import generate_new_ads_report
 # from totaladsreport import generate_total_ads_report
 # from iapbehaviourreport import generate_iap_behaviour_report
-# from lostbehaviourreport import generate_lostbehaviour_report
+from lostbehaviourreport import generate_lostbehaviour_report
 # from retentionbehaviourreport import generate_retentionbehaviour_report
 
 class Entry(BaseEntry):
@@ -50,8 +50,8 @@ class Entry(BaseEntry):
         #     report_filepaths.extend(generate_total_ads_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.iap_behaviour:
         #     report_filepaths.extend(generate_iap_behaviour_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.lost_behaviour:
-        #     report_filepaths.extend(generate_lostbehaviour_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.lost_behaviour:
+            report_filepaths.extend(generate_lostbehaviour_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_behaviour:
         #     report_filepaths.extend(generate_retentionbehaviour_report(self.query_config, self.start_date))
         return report_filepaths

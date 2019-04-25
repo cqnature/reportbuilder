@@ -56,7 +56,7 @@ def generate_report(app_id, platform, from_date, to_date):
         result = service.accounts().reports().generate(
             accountId=account_id, startDate=report_from_date, endDate=report_to_date,
             filter=['APP_ID=={}'.format(app_id), 'APP_PLATFORM=={}'.format(ad_platform)],
-            metric=['AD_REQUESTS', 'IMPRESSIONS', 'EARNINGS'],
+            metric=['AD_REQUESTS', 'VIEWED_IMPRESSIONS', 'EARNINGS'],
             dimension=['APP_ID', 'APP_PLATFORM'],
             sort=['+DAY']).execute()
         result = DataCollator([result]).collate_data()
