@@ -93,7 +93,7 @@ class Report(BaseReport):
             cells.append(Date(date).formatmd())
             for k in range(8):
                 single_date = Date(date).adddays(k)
-                if Date(single_date).between(self.end_date) < 0:
+                if Date(single_date).between(self.end_date) <= 0:
                     cells.append("0")
                     cells.append("0")
                     cells.append("0.00")
@@ -130,7 +130,7 @@ class Report(BaseReport):
             cells.append(str(first_user_count))
             for k in range(8):
                 single_date = Date(date).adddays(k)
-                if Date(single_date).between(self.end_date) < 0:
+                if Date(single_date).between(self.end_date) <= 0:
                     cells.append("0%")
                 else:
                     user_count = self.get_retention_count(date, single_date)
