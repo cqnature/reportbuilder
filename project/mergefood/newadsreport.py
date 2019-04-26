@@ -23,7 +23,7 @@ class Report(BaseReport):
             report_lines = []
             for single_date in Date(self.start_date).rangeto(self.end_date, True):
                 self.generate_new_ads_report_at_date(report_lines, single_date)
-            reportstring = ''.join(report_lines)
+            reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
         return [self.output_filepath]
@@ -31,7 +31,7 @@ class Report(BaseReport):
     def generate_new_ads_report_at_date(self, report_lines, date):
         print("generate_new_ads_report_at_date ", date)
         with open(self.etc_filepath) as file:
-            lines = file.readlines()
+            lines = [x.strip() for x in file.readlines()]
             result_lines = []
             for add_day in range(3):
                 retention_date = Date(date).adddays(add_day)
