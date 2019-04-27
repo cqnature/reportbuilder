@@ -29,12 +29,7 @@ class Report(BaseReport):
         return [self.output_filepath]
 
     def get_plane_max_level(self):
-        max_level = 0
-        with open(os.path.join(self.project_config.etc_path, 'food.json')) as file:
-            file_config = json.load(file)
-            max_level = file_config['config']['maxId']
-            file.close()
-        return max_level;
+        return 4;
 
     def generate_lostplant_report_at_date(self, report_lines, date):
         print("generate_lostplant_report_at_date ", date)
@@ -53,7 +48,7 @@ class Report(BaseReport):
             signup_day_progress_lines[3] = signup_day_progress_lines[3].format(firstopen_usercount, 100)
             signup_base_datas = []
             progress_data_map = {}
-            for k in range(1, max_level + 1):
+            for k in range(0, max_level + 1):
                 signup_base_data = [k, 0, 0]
                 signup_base_datas.append(signup_base_data)
                 progress_data_map[k] = signup_base_data
@@ -84,7 +79,7 @@ class Report(BaseReport):
                 if currentDayIndex == 1:
                     lost_day_progress_lines.extend([x.strip() for x in lines[4:10]])
                     progress_data_map = {}
-                    for k in range(1, max_level + 1):
+                    for k in range(0, max_level + 1):
                         lost_base_data = [k, 0, 0]
                         lost_base_datas.append(lost_base_data)
                         progress_data_map[k] = lost_base_data
@@ -106,7 +101,7 @@ class Report(BaseReport):
                     current_lost_datas = []
                     lost_day_progress_lines.extend([x.strip() for x in lines[10:]])
                     progress_data_map = {}
-                    for k in range(1, max_level + 1):
+                    for k in range(0, max_level + 1):
                         current_lost_data = [k, 0, 0]
                         current_lost_datas.append(current_lost_data)
                         progress_data_map[k] = current_lost_data

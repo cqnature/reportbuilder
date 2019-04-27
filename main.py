@@ -9,15 +9,15 @@ import json
 if __name__ == '__main__':
     flags = [
         ReportFlag.mail,
-        # ReportFlag.lost_level,
-        # ReportFlag.retention_level,
-        # ReportFlag.stage,
-        # ReportFlag.new_ads,
-        # ReportFlag.retention_ads,
-        # ReportFlag.total_ads,
-        # ReportFlag.iap_behaviour,
-        # ReportFlag.lost_behaviour,
-        # ReportFlag.retention_behaviour
+        ReportFlag.lost_level,
+        ReportFlag.retention_level,
+        ReportFlag.stage,
+        ReportFlag.new_ads,
+        ReportFlag.retention_ads,
+        ReportFlag.total_ads,
+        ReportFlag.iap_behaviour,
+        ReportFlag.lost_behaviour,
+        ReportFlag.retention_behaviour
     ]
     option = ReportFlag(flags).option
 
