@@ -7,6 +7,8 @@ from ..base.config import *
 from ..base.date import *
 from ..base.entry import *
 from mailreport import generate_mail_report
+from lostplantreport import generate_lostplant_report
+from retentionplantreport import generate_retentionplant_report
 from retentionadsreport import generate_retention_ads_report
 from newadsreport import generate_new_ads_report
 from totaladsreport import generate_total_ads_report
@@ -30,14 +32,14 @@ class Entry(BaseEntry):
         # 开启代理
         if self.option & ReportFlag.mail:
             report_filepaths.extend(generate_mail_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.lost_level:
-        #     report_filepaths.extend(generate_lostplant_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.retention_level:
-        #     report_filepaths.extend(generate_retentionplant_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.lost_level:
+            report_filepaths.extend(generate_lostplant_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.retention_level:
+            report_filepaths.extend(generate_retentionplant_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.stage:
         #     report_filepaths.extend(generate_stage_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.new_ads:
-        #     report_filepaths.extend(generate_new_ads_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.new_ads:
+            report_filepaths.extend(generate_new_ads_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_ads:
         #     report_filepaths.extend(generate_retention_ads_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.total_ads:
