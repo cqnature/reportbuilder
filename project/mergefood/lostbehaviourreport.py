@@ -39,7 +39,7 @@ class Report(BaseReport):
     def do_generate(self):
         print 'do generate report'
         report_filepaths = []
-        for level in range(10, 17):
+        for level in range(10, 13):
             filepath = self.append_output_filename('_level_' + str(level))
             report_filepaths.append(filepath)
             with open(filepath, mode='w+') as out:
@@ -72,7 +72,7 @@ class Report(BaseReport):
             lines[3] = lines[3].strip().format(level, lost_usercount, 100*float(lost_usercount)/float(firstopen_usercount))
             lines[4] = lines[4].strip().format(level)
             dataset_map = []
-            key_count = 2
+            key_count = 4
             key_offset = 2
             for k in range(key_count):
                 dataset_map.append({})

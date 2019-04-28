@@ -1,6 +1,8 @@
 SELECT
   A.max_level,
   A.user_pseudo_id,
+  B.compound_count,
+  C.enter_shop_count,
   P.online_time,
   Q.engagement_count
 FROM (
@@ -61,6 +63,57 @@ FROM (
 LEFT JOIN (
   SELECT
     user_pseudo_id,
+    COUNT(event_timestamp) AS compound_count
+  FROM
+    `{0}.events_*` AS T,
+    T.event_params
+  WHERE
+    event_name = 'af_compound_food'
+    AND event_params.key = 'level'
+    AND event_params.value.int_value = {6}
+    AND _TABLE_SUFFIX BETWEEN '{3}'
+    AND '{4}'
+  GROUP BY
+    user_pseudo_id ) AS B
+ON
+  A.user_pseudo_id = B.user_pseudo_id
+LEFT JOIN (
+  SELECT
+      D.user_pseudo_id,
+      COUNT(D.event_timestamp) as enter_shop_count
+    FROM (
+    SELECT
+      user_pseudo_id,
+      event_timestamp
+    FROM
+      `{0}.events_*` AS T,
+      T.event_params
+    WHERE
+      event_name = 'af_click_button'
+      AND event_params.key = 'af_button_name'
+      AND event_params.value.string_value = 'menu_click'
+      AND _TABLE_SUFFIX BETWEEN '{5}'
+      AND '{5}') AS D,
+    (SELECT
+      user_pseudo_id,
+      event_timestamp
+    FROM
+      `{0}.events_*` AS T,
+      T.event_params
+    WHERE
+      event_name = 'af_click_button'
+      AND event_params.key = 'level'
+      AND event_params.value.int_value = {6}
+      AND _TABLE_SUFFIX BETWEEN '{5}'
+      AND '{5}') AS E
+    WHERE D.user_pseudo_id = E.user_pseudo_id
+    AND D.event_timestamp = E.event_timestamp
+    GROUP BY user_pseudo_id ) AS C
+ON
+    A.user_pseudo_id = C.user_pseudo_id
+LEFT JOIN (
+  SELECT
+    user_pseudo_id,
     CAST(ROUND(SUM(online_time)/60) AS INT64) AS online_time
   FROM (
     SELECT
@@ -94,7 +147,7 @@ LEFT JOIN (
     WHERE
       event_name = 'af_alive_time'
       AND event_params.key = 'af_time'
-      AND event_params.value.double_value > 60
+      AND event_params.value.double_value > 120
       AND _TABLE_SUFFIX BETWEEN '{3}'
       AND '{4}')
   GROUP BY
