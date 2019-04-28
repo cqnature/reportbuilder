@@ -24,8 +24,18 @@ if __name__ == '__main__':
 
     my_app_id = '579011819262592'
     my_app_secret = '510f69548ee4b16210dc43dc2f2da641'
-    my_access_token = 'EAAIOm7HO0oABAGEQBgos9REILAF6pacppBZBLf0k9Ti1aQRqkTw2hCOlf8dd0fwoawucCF6OKEZCgydTh32WxnX9FnyBqrpWezeyhTDadqdToGHUGTtMoP63Bk3eRZBTj3rZCOzaI7zWTZArhchYl9imBZBjzQA7CznYpWRPlFpU9pVQZARcpVU'
+    my_access_token = 'EAAIOm7HO0oABAIn0k5cnocVcEhEdfZA8uIGKYPnMcIKZB2je48UZB3V4Mb9PIJfD55DbrjB4jM8aZBZAfJxQHbdOIobDemmZA4qyozypIxn7REPBuyXVmC1O9PTZCn5lBsMeg8YIJvoYBwYkyMlpL9DWGr3eaW5BVzYSv6kRU5UMFdyCO3aygJu'
     FacebookAdsApi.init(access_token=my_access_token)
     my_account = AdAccount('act_516803115131473')
-    campaigns = my_account.get_campaigns()
+    fields = [
+        'name',
+        'objective',
+    ]
+    params = {
+        'effective_status': ['ACTIVE','PAUSED'],
+    }
+    campaigns = my_account.get_campaigns(
+        fields=fields,
+        params=params,
+    )
     print(campaigns)
