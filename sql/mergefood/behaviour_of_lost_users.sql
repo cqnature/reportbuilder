@@ -61,20 +61,40 @@ FROM (
       AND '{5}' )
     AND max_level = {6} ) AS A
 LEFT JOIN (
-  SELECT
-    user_pseudo_id,
-    COUNT(event_timestamp) AS compound_count
-  FROM
-    `{0}.events_*` AS T,
-    T.event_params
+    SELECT
+    F.user_pseudo_id,
+    COUNT(F.event_timestamp) AS compound_count
+  FROM (
+    SELECT
+      user_pseudo_id,
+      event_timestamp
+    FROM
+      `{0}.events_*` AS T,
+      T.event_params
+    WHERE
+      event_name = 'af_compound_food'
+      AND event_params.key = 'af_customer_user_id'
+      AND _TABLE_SUFFIX BETWEEN '{3}'
+      AND '{4}' ) AS F,
+    (
+    SELECT
+      user_pseudo_id,
+      MIN(event_timestamp) AS min_event_timestamp
+    FROM
+      `{0}.events_*` AS T,
+      T.event_params
+    WHERE
+      event_name = 'af_compound_food'
+      AND event_params.key = 'level'
+      AND event_params.value.int_value = {6}
+      AND _TABLE_SUFFIX BETWEEN '{3}'
+      AND '{4}'
+    GROUP BY
+      user_pseudo_id) AS G
   WHERE
-    event_name = 'af_compound_food'
-    AND event_params.key = 'level'
-    AND event_params.value.int_value = {6}
-    AND _TABLE_SUFFIX BETWEEN '{3}'
-    AND '{4}'
-  GROUP BY
-    user_pseudo_id ) AS B
+    F.user_pseudo_id = G.user_pseudo_id
+    AND F.event_timestamp > G.min_event_timestamp
+  GROUP BY user_pseudo_id ) AS B
 ON
   A.user_pseudo_id = B.user_pseudo_id
 LEFT JOIN (
