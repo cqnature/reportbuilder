@@ -73,7 +73,7 @@ class Report(BaseReport):
             cells = []
             cells.append(Date(date).formatmd())
             cells.append(str(total_cost))
-            cells.append("{0:.2f}".format(appsflyer_data[0]/float(appsflyer_data[1])))
+            cells.append("{0:.2f}".format((0 if appsflyer_data[1] == 0 else appsflyer_data[0]/float(appsflyer_data[1]))))
             cells.append(str(appsflyer_data[1]))
             cells.append(str(appsflyer_data[2]))
             cells.append(str(daily_user_count))
