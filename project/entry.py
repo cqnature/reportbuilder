@@ -8,4 +8,4 @@ from idlesheep.entry import Entry as IdleSheepEntry
 def generate_report(option, *parameter):
     MergeFoodEntry(option, *parameter).generate_report()
     # MergeGardenEntry(option, *parameter).generate_report()
-    # IdleSheepEntry(option, *parameter).generate_report()
+    IdleSheepEntry(option, *parameter).generate_report()
