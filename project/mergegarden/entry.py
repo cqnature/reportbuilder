@@ -20,7 +20,7 @@ from retentionbehaviourreport import generate_retentionbehaviour_report
 class Entry(BaseEntry):
     def __init__(self, option, *parameter):
         super(Entry, self).__init__(option, *parameter)
-        self.detail_email.extend(['nero@peakxgames.com', 'bear@peakxgames.com'])
+        self.detail_email.extend(['nero@peakxgames.com', 'near@peakxgames.com', 'bear@peakxgames.com'])
 
     def generate_report(self):
         package_name = __name__.split('.')[-2]
