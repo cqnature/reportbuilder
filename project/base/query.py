@@ -153,7 +153,7 @@ class QueryReport(BaseQuery):
                 break
         if result == None:
             print 'query result failed!'
-            exit(1)
+            return result
         self.set_cache(result, report_type, *folders)
         return result
 

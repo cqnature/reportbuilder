@@ -95,6 +95,8 @@ class Report(BaseReport):
 
     def get_appsflyer_detail(self, date):
         dailyreport = self.get_daily_report(date, date)
+        if dailyreport == None:
+            return (0, 0, 0)
         datas = [x.strip() for x in dailyreport.split('\n')[1:]]
         cost = 0
         organic_install_count = 0
