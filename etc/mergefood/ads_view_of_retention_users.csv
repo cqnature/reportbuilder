@@ -9,5 +9,6 @@ offline_earnings|离线奖励,{0},{1:.2f}%,{2},{3:.2f}
 merge_new_food_after|分享菜品,{0},{1:.2f}%,{2},{3:.2f}
 turntable|转盘,{0},{1:.2f}%,{2},{3:.2f}
 speed_up_waitress|服务员加速,{0},{1:.2f}%,{2},{3:.2f}
-collect|收集获得宝石,{0},{1:.2f}%,{2},{3:.2f}
+collect_food|收集食物获得宝石,{0},{1:.2f}%,{2},{3:.2f},
+collect_newspaper|收集称号获得宝石,{0},{1:.2f}%,{2},{3:.2f},
 ,,,总计,{0:.2f}
