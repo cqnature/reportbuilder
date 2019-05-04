@@ -83,8 +83,11 @@ class Report(BaseReport):
             cells.append(TableCell("D{0}".format(k), header=True, bgcolor='grey', attribs={"colspan":3}))
         htmlcode.rows.append(cells)
         cells = []
-        for k in range(8):
-            cells.append(TableCell("观看人数".format(k), bgcolor='grey'))
+        cells.append(TableCell("注册人数".format(k), bgcolor='grey'))
+        cells.append(TableCell("观看次数".format(k), bgcolor='grey'))
+        cells.append(TableCell("人均次数".format(k), bgcolor='grey'))
+        for k in range(7):
+            cells.append(TableCell("留存人数".format(k), bgcolor='grey'))
             cells.append(TableCell("观看次数".format(k), bgcolor='grey'))
             cells.append(TableCell("人均次数".format(k), bgcolor='grey'))
         htmlcode.rows.append(cells)
