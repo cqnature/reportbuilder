@@ -9,8 +9,8 @@ FROM (
     `{0}.events_*` AS T,
     T.event_params
   WHERE
-    event_name = 'level_up'
-    AND event_params.key = 'level'
+    event_name = 'af_event_level_achieved'
+    AND event_params.key = 'af_event_id'
     AND _TABLE_SUFFIX BETWEEN '{3}' AND '{3}'
     AND user_pseudo_id IN (
       SELECT
