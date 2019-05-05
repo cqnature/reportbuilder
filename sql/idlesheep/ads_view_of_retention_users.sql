@@ -8,7 +8,6 @@ FROM
 WHERE
   event_name = 'af_ad_view'
   AND event_params.key = 'af_event_id'
-  AND event_params.value.int_value = 0 /* 修改为event id，主场景为0，其他依次为1/2/3 */
   AND geo.country = '{2}' /* 修改为指定国家 */
   AND platform = '{1}'
   AND _TABLE_SUFFIX BETWEEN '{4}'
