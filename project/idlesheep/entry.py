@@ -12,6 +12,7 @@ from retentionplantreport import generate_retentionplant_report
 from retentionadsreport import generate_retention_ads_report
 from newadsreport import generate_new_ads_report
 from totaladsreport import generate_total_ads_report
+from stagereport import generate_stage_report
 
 class Entry(BaseEntry):
     def __init__(self, option, *parameter):
@@ -36,8 +37,8 @@ class Entry(BaseEntry):
             report_filepaths.extend(generate_lostplant_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_level:
         #     report_filepaths.extend(generate_retentionplant_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.stage:
-        #     report_filepaths.extend(generate_stage_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.stage:
+            report_filepaths.extend(generate_stage_report(self.query_config, self.start_date))
         if self.option & ReportFlag.new_ads:
             report_filepaths.extend(generate_new_ads_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_ads:
