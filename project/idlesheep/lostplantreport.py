@@ -57,6 +57,9 @@ class Report(BaseReport):
                 progress_data[1] = row.user_count
                 progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
                 total_level_user_count += row.user_count
+            first_progress_data = progress_data_map[0]
+            first_progress_data[1] = first_progress_data[1] + firstopen_usercount - total_level_user_count
+            first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
             for k in range(len(signup_base_datas)):
                 data = signup_base_datas[k]
                 signup_day_progress_lines.append("{0},{1},{2:.2f}%,".format(data[0], data[1], data[2]))
@@ -84,6 +87,9 @@ class Report(BaseReport):
                         progress_data = progress_data_map[row.max_level]
                         progress_data[1] = row.user_count
                         progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
+                    first_progress_data = progress_data_map[0]
+                    first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in lost_base_datas))
+                    first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
                     lost_base_usercount = current_lost_usercount
                     lost_day_progress_lines[1] = lost_day_progress_lines[1].format(Date(date).formatmd())
                     lost_day_progress_lines[3] = lost_day_progress_lines[3].format(firstopen_usercount, 100)
@@ -104,6 +110,9 @@ class Report(BaseReport):
                         progress_data = progress_data_map[row.max_level]
                         progress_data[1] = row.user_count
                         progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
+                    first_progress_data = progress_data_map[0]
+                    first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in current_lost_datas))
+                    first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
                     origin_lost_base_usercount = lost_base_usercount
                     lost_base_usercount = current_lost_usercount
                     relative_lost_usercount = current_lost_usercount - origin_lost_base_usercount
