@@ -88,7 +88,7 @@ class Report(BaseReport):
                         progress_data[1] = row.user_count
                         progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
                     first_progress_data = progress_data_map[0]
-                    first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in lost_base_datas))
+                    first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in lost_base_datas)
                     first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
                     lost_base_usercount = current_lost_usercount
                     lost_day_progress_lines[1] = lost_day_progress_lines[1].format(Date(date).formatmd())
@@ -111,7 +111,7 @@ class Report(BaseReport):
                         progress_data[1] = row.user_count
                         progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
                     first_progress_data = progress_data_map[0]
-                    first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in current_lost_datas))
+                    first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in current_lost_datas)
                     first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
                     origin_lost_base_usercount = lost_base_usercount
                     lost_base_usercount = current_lost_usercount
