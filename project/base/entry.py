@@ -11,7 +11,7 @@ class BaseEntry(object):
         self.start_date = Date(parameter[0])
         self.end_date = Date(self.start_date).enddate()
         self.project_config = ProjectConfig(parameter[1], parameter[2], parameter[3], parameter[4], parameter[5], parameter[6], parameter[7])
-        self.query_config = QueryConfig(self.project_config, parameter[8], parameter[9], parameter[10])
+        self.query_config = QueryConfig(self.project_config, parameter[8], parameter[9], parameter[10], parameter[11])
         self.detail_email = []
 
     def generate_report(self):

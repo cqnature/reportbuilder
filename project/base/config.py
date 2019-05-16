@@ -52,11 +52,12 @@ class ProjectConfig:
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(self.credentials_path, 'credentials.json')
 
 class QueryConfig:
-    def __init__(self, project_config, platform, geo_country, contain_roi):
+    def __init__(self, project_config, platform, geo_country, contain_roi, send_partner_email):
         self.project_config = project_config
         self.platform = platform
         self.geo_country = geo_country
         self.contain_roi = contain_roi
+        self.send_partner_email = send_partner_email
         self.cache_folder = 'library'
         self.file_name = 'cache.json'
         self.retry_count = 3

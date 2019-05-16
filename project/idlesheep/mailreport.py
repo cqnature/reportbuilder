@@ -28,7 +28,8 @@ class Report(BaseReport):
         print 'do generate report'
         mail_content = self.generate_mail_report()
         send_mail(self.subject, mail_content)
-        send_mail(self.subject, mail_content, [], self.partner_email)
+        if self.query_config.send_partner_email:
+            send_mail(self.subject, mail_content, [], self.partner_email)
         return []
 
     def generate_mail_report(self):

@@ -24,5 +24,5 @@ if __name__ == '__main__':
     with open('./config/params.json') as file:
         content = json.load(file)
         for x in content:
-            generate_report(option, x['start_date'], x['project_name'], x['table_prefix'], x['appsflyer_api_token'], x['app_id'], x['fb_app_id'], x['fb_access_token'], x['admob_app_id'], x['platform'], x['geo_country'], x['contain_roi'])
+            generate_report(option, x['start_date'], x['project_name'], x['table_prefix'], x['appsflyer_api_token'], x['app_id'], x['fb_app_id'], x['fb_access_token'], x['admob_app_id'], x['platform'], x['geo_country'], x['contain_roi'], x['send_partner_email'])
         file.close()
