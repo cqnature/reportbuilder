@@ -8,7 +8,7 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
-def generate_stage_report(query_config, date):
+def generate_retention_stage_report(query_config, date):
     return Report(query_config, date).generate()
 
 class Report(BaseReport):
