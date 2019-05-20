@@ -1,0 +1,14 @@
+{0}观看广告基础数据,,,
+新用户,{0},,
+D{0},,,
+广告场景,场景出现次数,观看广告次数,观看次数占比
+internet_star_2x|网红翻倍,{0},{1},{2:.2f}%
+internet_star_plate|网红盘子,{0},{1},{2:.2f}%
+buy_dish|商店免费获得菜品,{0},{1},{2:.2f}%
+upgrade_dish_after_buy|购买后免费升级菜品,{0},{1},{2:.2f}%
+offline_earnings|离线奖励,{0},{1},{2:.2f}%
+merge_new_food_after|分享菜品,{0},{1},{2:.2f}%
+turntable|转盘,{0},{1},{2:.2f}%
+speed_up_waitress|服务员加速,{0},{1},{2:.2f}%
+collect_food|收集食物获得宝石,{0},{1},{2:.2f}%
+collect_newspaper|收集称号获得宝石,{0},{1},{2:.2f}%

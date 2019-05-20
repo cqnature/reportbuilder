@@ -17,6 +17,7 @@ class ReportFlag:
     iap_behaviour = 1 << 8
     lost_behaviour = 1 << 9
     retention_behaviour = 1 << 10
+    will_ad = 1 << 11
 
     def __init__(self, flags):
         self.option = 0
