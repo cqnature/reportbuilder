@@ -22,7 +22,7 @@ class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
         self.mode = ReportMode.mail
-        self.partner_email = ["river@aladinfun.com", "yinlong@clicksplay.com", "daniel@clicksplay.com", "liuliang@clicksplay.com"]
+        self.partner_email = []
 
     def do_generate(self):
         print 'do generate report'

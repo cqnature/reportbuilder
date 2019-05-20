@@ -15,7 +15,7 @@ class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
         self.etc_filename = 'stage_progress_of_users.csv'
-        self.output_filename = 'level_report.csv'
+        self.output_filename = 'lost_level_report.csv'
 
     def do_generate(self):
         print 'do generate report'
@@ -82,7 +82,7 @@ class Report(BaseReport):
                 for k in range(len(lost_day_progress_lines)):
                     append_line(report_lines, lineIndex + k, lost_day_progress_lines[k])
                 lineIndex += len(lost_day_progress_lines)
-                
+
             for k in range(lineIndex, 400):
                 append_line(report_lines, k, ",,,")
             file.close()
