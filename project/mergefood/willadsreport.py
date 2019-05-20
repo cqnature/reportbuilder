@@ -20,7 +20,7 @@ class Report(BaseReport):
     def do_generate(self):
         print 'do generate report'
         report_filepaths = []
-        for level in range(6, 8):
+        for level in range(6, 11):
             filepath = self.append_output_filename('_level_' + str(level))
             report_filepaths.append(filepath)
             with open(filepath, mode='w+') as out:
@@ -37,7 +37,7 @@ class Report(BaseReport):
         with open(self.etc_filepath) as file:
             lines = [x.strip() for x in file.readlines()]
             result_lines = []
-            for add_day in range(6):
+            for add_day in range(1):
                 retention_date = Date(date).adddays(add_day)
                 if Date(retention_date).between(self.end_date) <= 0:
                     break
