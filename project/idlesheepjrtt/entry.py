@@ -13,7 +13,7 @@ from retentionadsreport import generate_retention_ads_report
 from newadsreport import generate_new_ads_report
 from totaladsreport import generate_total_ads_report
 from stagereport import generate_stage_report
-from retentionstagereport import generate_stage_report
+from retentionstagereport import generate_retention_stage_report
 
 class Entry(BaseEntry):
     def __init__(self, option, *parameter):

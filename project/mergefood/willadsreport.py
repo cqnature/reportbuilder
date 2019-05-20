@@ -68,6 +68,7 @@ class Report(BaseReport):
                         if ads_view_count_result.af_ad_scene == ads_scene:
                             ad_view_play_count = ads_view_count_result.ad_play_count
                             break
-                    append_line(result_lines, i, formatstring.format(ad_view_show_count, ad_view_play_count, float(ad_view_play_count)/float(ad_view_show_count) * 100))
+                    ad_view_play_rate = float(ad_view_play_count)/float(ad_view_show_count) * 100 if ad_view_show_count > 0 else 0
+                    append_line(result_lines, i, formatstring.format(ad_view_show_count, ad_view_play_count, ad_view_play_rate))
             report_lines.extend(result_lines)
             file.close()

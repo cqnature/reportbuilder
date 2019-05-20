@@ -4,7 +4,7 @@ SELECT
 FROM (
   SELECT
     af_ad_scene,
-    COUNT(user_pseudo_id) AS ad_view_count
+    COUNT(user_pseudo_id) AS ad_show_count
   FROM (
     SELECT
       A.user_pseudo_id,
@@ -78,7 +78,7 @@ FROM (
           AND geo.country = '{2}' /* 修改为指定国家 */
           AND platform = '{1}'
           AND _TABLE_SUFFIX BETWEEN '{4}'
-          AND '{4}' ) AS C,
+          AND '{4}' ) AS C
     WHERE
       A.user_pseudo_id = B.user_pseudo_id
       AND A.event_timestamp = B.event_timestamp
