@@ -55,6 +55,6 @@ class Entry(BaseEntry):
         #     report_filepaths.extend(generate_lostbehaviour_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_behaviour:
         #     report_filepaths.extend(generate_retentionbehaviour_report(self.query_config, self.start_date))
-        if self.option & ReportFlag.will_ad:
+        if self.option & ReportFlag.will_ads:
             report_filepaths.extend(generate_will_ads_report(self.query_config, self.start_date))
         return report_filepaths
