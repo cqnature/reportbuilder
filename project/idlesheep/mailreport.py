@@ -202,7 +202,8 @@ class Report(BaseReport):
         htmlcode = Table()
         cells = []
         cells.append(TableCell("日期", header=True, bgcolor='grey'))
-        cells.append(TableCell("用户数", header=True, bgcolor='grey'))
+        cells.append(TableCell("DAU", header=True, bgcolor='grey'))
+        cells.append(TableCell("新用户数", header=True, bgcolor='grey'))
         for k in range(8):
             cells.append(TableCell("D{0}留存".format(k), header=True, bgcolor='grey'))
         htmlcode.rows.append(cells)
@@ -212,6 +213,8 @@ class Report(BaseReport):
                 continue
             cells = []
             cells.append(Date(date).formatmd())
+            daily_user_count = self.get_daily_count(date)
+            cells.append(str(daily_user_count))
             cells.append(str(first_user_count))
             for k in range(8):
                 single_date = Date(date).adddays(k)
