@@ -57,6 +57,9 @@ class Report(BaseReport):
                 progress_data[1] = row.user_count
                 progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
                 total_level_user_count += row.user_count
+            first_progress_data = progress_data_map[0]
+            first_progress_data[1] = first_progress_data[1] + firstopen_usercount - total_level_user_count
+            first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
             for k in range(len(signup_base_datas)):
                 data = signup_base_datas[k]
                 signup_day_progress_lines.append("{0},{1},{2:.2f}%,".format(data[0], data[1], data[2]))
@@ -92,6 +95,8 @@ class Report(BaseReport):
                     retention_day_progress_lines[4] = retention_day_progress_lines[4].format(current_retention_usercount, 100*float(current_retention_usercount)/float(firstopen_usercount))
                 else:
                     retention_day_progress_lines[4] = retention_day_progress_lines[4].format(Date(date).between(single_date), current_retention_usercount, 100*float(current_retention_usercount)/float(firstopen_usercount))
+                current_retention_datas[0][1] = current_retention_datas[0][1] + current_retention_usercount - sum(t[1] for t in current_retention_datas)
+                current_retention_datas[0][2] = 100*float(current_retention_datas[0][1])/float(firstopen_usercount)
                 for k in range(len(current_retention_datas)):
                     data = current_retention_datas[k]
                     retention_day_progress_lines.append("{0},{1},{2:.2f}%,".format(data[0], data[1], data[2]))

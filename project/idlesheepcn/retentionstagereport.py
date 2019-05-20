@@ -23,9 +23,9 @@ class Report(BaseReport):
             tmp_lines = []
             for single_date in Date(self.start_date).rangeto(self.end_date, True):
                 report_single_lines = self.generate_retention_stage_report_at_date(single_date)
-                tmp_lines.append(report_single_lines)
+                if report_single_lines != None:
+                    tmp_lines.append(report_single_lines)
             report_lines = append_line_list(tmp_lines, ',,,')
-            for t in report_lines:
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
@@ -33,6 +33,7 @@ class Report(BaseReport):
 
     def generate_retention_stage_report_at_date(self, date):
         print("generate_retention_stage_report_at_date ", date)
+        report_lines = []
         with open(self.etc_filepath) as file:
             firstopen_usercount = self.get_firstopen_count(date)
             if firstopen_usercount == 0:
@@ -69,6 +70,7 @@ class Report(BaseReport):
                 else:
                     retention_day_progress_lines.extend([x.strip() for x in lines[9:]])
                     retention_day_progress_lines[0] = retention_day_progress_lines[0].format(Date(date).between(single_date))
+                retention_base_datas = []
                 for row in retention_day_results:
                     retention_base_data = [row.rebirth, row.level, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                     retention_base_datas.append(retention_base_data)
@@ -84,6 +86,7 @@ class Report(BaseReport):
                 for k in range(len(retention_base_datas)):
                     data = retention_base_datas[k]
                     retention_day_progress_lines.append("{0}-{1},{2},{3:.2f}%,".format(data[0], data[1], data[2], data[3]))
+
                 # 数据拼接
                 for k in range(len(retention_day_progress_lines)):
                     append_line(report_lines, lineIndex + k, retention_day_progress_lines[k])
@@ -93,3 +96,4 @@ class Report(BaseReport):
                 # 清空缓存
                 del retention_day_progress_lines[:]
             file.close()
+        return report_lines

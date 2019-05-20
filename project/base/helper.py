@@ -19,7 +19,7 @@ def append_line_list(report_line_list, append_text):
     result = []
     for i in range(0, max_line_count):
         for report_lines in report_line_list:
-            appendLine(result, i, report_lines[i])
+            append_line(result, i, report_lines[i])
     return result
 
 def get_firstopen_usercount(querysql, date):
