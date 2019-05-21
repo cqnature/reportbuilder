@@ -149,7 +149,7 @@ class Report(BaseReport):
                     for k in range(len(current_lost_datas)):
                         data = current_lost_datas[k]
                         base_data = lost_base_datas[k]
-                        lost_day_progress_lines.append("{0}-{1},{1},{2:.2f}%,".format(data[0], data[1], data[2] - base_data[2], data[3] - base_data[3]))
+                        lost_day_progress_lines.append("{0}-{1},{2},{3:.2f}%,".format(data[0], data[1], data[2] - base_data[2], data[3] - base_data[3]))
                     lost_base_datas = current_lost_datas
                 # 数据拼接
                 for k in range(len(lost_day_progress_lines)):
