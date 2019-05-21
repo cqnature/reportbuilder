@@ -49,6 +49,8 @@ class Report(BaseReport):
                 for n in range(1, max_level + 1):
                     signup_base_data = [k, n, 0, 0]
                     signup_base_datas.append(signup_base_data)
+                    if not stage_config_maps.has_key(k):
+                        stage_config_maps[k] = {}
                     stage_config_maps[k][n] = signup_base_data
             for row in signup_day_progress_results:
                 if row.rebirth > max_rebirth or row.level > max_level:
@@ -86,6 +88,8 @@ class Report(BaseReport):
                         for n in range(1, max_level + 1):
                             lost_base_data = [k, n, 0, 0]
                             lost_base_datas.append(lost_base_data)
+                            if not stage_config_maps.has_key(k):
+                                stage_config_maps[k] = {}
                             stage_config_maps[k][n] = lost_base_data
                     for row in lost_day_results:
                         if row.rebirth > max_rebirth or row.level > max_level:
@@ -108,7 +112,7 @@ class Report(BaseReport):
                     lost_day_progress_lines[5] = lost_day_progress_lines[5].format(lost_base_usercount, 100* float(lost_base_usercount)/float(firstopen_usercount))
                     for k in range(len(lost_base_datas)):
                         data = lost_base_datas[k]
-                        lost_day_progress_lines.append("{0},{1},{2:.2f}%,".format(data[0], data[1], data[2]))
+                        lost_day_progress_lines.append("{0}-{1},{2},{3:.2f}%,".format(data[0], data[1], data[2], data[3]))
                 else:
                     current_lost_datas = []
                     lost_day_progress_lines.extend([x.strip() for x in lines[10:]])
@@ -117,6 +121,8 @@ class Report(BaseReport):
                         for n in range(1, max_level + 1):
                             current_lost_data = [k, n, 0, 0]
                             current_lost_datas.append(current_lost_data)
+                            if not stage_config_maps.has_key(k):
+                                stage_config_maps[k] = {}
                             stage_config_maps[k][n] = current_lost_data
                     for row in lost_day_results:
                         if row.rebirth > max_rebirth or row.level > max_level:
@@ -143,7 +149,7 @@ class Report(BaseReport):
                     for k in range(len(current_lost_datas)):
                         data = current_lost_datas[k]
                         base_data = lost_base_datas[k]
-                        lost_day_progress_lines.append("{0},{1},{2:.2f}%,".format(data[0], data[1] - base_data[1], data[2] - base_data[2]))
+                        lost_day_progress_lines.append("{0}-{1},{1},{2:.2f}%,".format(data[0], data[1], data[2] - base_data[2], data[3] - base_data[3]))
                     lost_base_datas = current_lost_datas
                 # 数据拼接
                 for k in range(len(lost_day_progress_lines)):
