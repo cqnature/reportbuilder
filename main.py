@@ -19,7 +19,9 @@ if __name__ == '__main__':
         ReportFlag.iap_behaviour,
         ReportFlag.lost_behaviour,
         ReportFlag.retention_behaviour,
-        ReportFlag.will_ads
+        ReportFlag.will_ads,
+        ReportFlag.day_stage,
+        ReportFlag.button_behaviour
     ]
     option = ReportFlag(flags).option
 
