@@ -5,7 +5,7 @@ internet_star_2x|网红翻倍,{0},{1:.2f}%,{2},{3:.2f}
 internet_star_plate|网红盘子,{0},{1:.2f}%,{2},{3:.2f}
 buy_dish|商店免费获得菜品,{0},{1:.2f}%,{2},{3:.2f}
 upgrade_dish_after_buy|购买后免费升级菜品,{0},{1:.2f}%,{2},{3:.2f}
-upgrade_dish_after_quick_buy|快捷购买后免费升级菜品,{0},{1},{2:.2f}%
+upgrade_dish_after_quick_buy|快捷购买后免费升级菜品,{0},{1:.2f}%,{2},{3:.2f}
 offline_earnings|离线奖励,{0},{1:.2f}%,{2},{3:.2f}
 merge_new_food_after|分享菜品,{0},{1:.2f}%,{2},{3:.2f}
 turntable|转盘,{0},{1:.2f}%,{2},{3:.2f}
