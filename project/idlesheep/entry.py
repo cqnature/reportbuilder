@@ -56,8 +56,8 @@ class Entry(BaseEntry):
         #     report_filepaths.extend(generate_lostbehaviour_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_behaviour:
         #     report_filepaths.extend(generate_retentionbehaviour_report(self.query_config, self.start_date))
-        if self.option & ReportFlag.day_stage:
-            report_filepaths.extend(generate_day_stage_report(self.query_config, self.start_date))
+        # if self.option & ReportFlag.day_stage:
+        #     report_filepaths.extend(generate_day_stage_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.button_behaviour:
         #     report_filepaths.extend(generate_button_behaviour_report(self.query_config, self.start_date))
         return report_filepaths
