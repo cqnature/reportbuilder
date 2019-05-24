@@ -7,4 +7,6 @@ speedupprop|羊毛加速,{0},{1:.2f}%,{2},{3:.2f}
 levelup|等级升级,{0},{1:.2f}%,{2},{3:.2f}
 freeupgrade|免费升级,{0},{1:.2f}%,{2},{3:.2f}
 offline_earnings|离线奖励,{0},{1:.2f}%,{2},{3:.2f}
+gameinsaddreward|副本奖励加倍,{0},{1:.2f}%,{2},{3:.2f}
+gameinsaddtime|副本加时间,{0},{1:.2f}%,{2},{3:.2f}
 ,,,总计,{0:.2f}
