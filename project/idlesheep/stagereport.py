@@ -83,6 +83,6 @@ class Report(BaseReport):
                     append_line(report_lines, lineIndex + k, lost_day_progress_lines[k])
                 lineIndex += len(lost_day_progress_lines)
 
-            for k in range(lineIndex, 400):
+            for k in range(lineIndex, 1000):
                 append_line(report_lines, k, ",,,")
             file.close()
