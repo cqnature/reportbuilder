@@ -2,7 +2,10 @@ SELECT
   A.max_level,
   A.user_pseudo_id,
   P.online_time,
-  Q.engagement_count
+  Q.engagement_count,
+  H.max_speedup_level,
+  I.max_output_level,
+  J.max_buoy_id
 FROM (
   SELECT
     user_pseudo_id,
@@ -15,7 +18,7 @@ FROM (
       `{0}.events_*` AS T,
       T.event_params
     WHERE
-      event_name = 'level_up'
+      event_name = 'af_event_level_achieved'
       AND event_params.key = 'level'
       AND _TABLE_SUFFIX BETWEEN '{3}'
       AND '{4}'
@@ -57,7 +60,7 @@ FROM (
       AND platform = '{1}'
       AND _TABLE_SUFFIX BETWEEN '{5}'
       AND '{5}' )
-    AND max_level = {6} ) AS A
+    AND max_level = 2 ) AS A
 LEFT JOIN (
   SELECT
     user_pseudo_id,
@@ -101,3 +104,66 @@ LEFT JOIN (
     user_pseudo_id) AS Q
 ON
   A.user_pseudo_id = Q.user_pseudo_id
+  LEFT JOIN (
+    SELECT
+      user_pseudo_id,
+      MAX(speedup_level) AS max_speedup_level
+    FROM (
+      SELECT
+        event_timestamp,
+        event_params.value.int_value AS speedup_level,
+        user_pseudo_id
+      FROM
+        `{0}.events_*` AS T,
+        T.event_params
+      WHERE
+        event_name = 'af_speedup_upgrade'
+        AND event_params.key = 'level'
+        AND _TABLE_SUFFIX BETWEEN '{3}'
+        AND '{4}')
+    GROUP BY
+      user_pseudo_id) AS H
+  ON
+    A.user_pseudo_id = H.user_pseudo_id
+    LEFT JOIN (
+      SELECT
+        user_pseudo_id,
+        MAX(output_level) AS max_output_level
+      FROM (
+        SELECT
+          event_timestamp,
+          event_params.value.int_value AS output_level,
+          user_pseudo_id
+        FROM
+          `{0}.events_*` AS T,
+          T.event_params
+        WHERE
+          event_name = 'af_output_upgrade'
+          AND event_params.key = 'level'
+          AND _TABLE_SUFFIX BETWEEN '{3}'
+          AND '{4}')
+      GROUP BY
+        user_pseudo_id) AS I
+    ON
+      A.user_pseudo_id = I.user_pseudo_id
+      LEFT JOIN (
+        SELECT
+          user_pseudo_id,
+          MAX(buoy_id) AS max_buoy_id
+        FROM (
+          SELECT
+            event_timestamp,
+            event_params.value.int_value AS buoy_id,
+            user_pseudo_id
+          FROM
+            `{0}.events_*` AS T,
+            T.event_params
+          WHERE
+            event_name = 'af_buoy_upgrade'
+            AND event_params.key = 'af_buoy_id'
+            AND _TABLE_SUFFIX BETWEEN '{3}'
+            AND '{4}')
+        GROUP BY
+          user_pseudo_id) AS J
+      ON
+        A.user_pseudo_id = J.user_pseudo_id
