@@ -33,7 +33,7 @@ FROM (
           T.event_params
         WHERE
           event_name = 'first_open'
-          AND geo.country = '{2}' /* 修改为指定国家 */
+          AND geo.country != '{2}' /* 修改为指定国家 */
           AND platform = '{1}'
           AND _TABLE_SUFFIX BETWEEN '{3}'
           AND '{3}' ) ) AS A,

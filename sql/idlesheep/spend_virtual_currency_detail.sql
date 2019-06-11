@@ -14,7 +14,7 @@ FROM (
   WHERE
     event_name = 'spend_virtual_currency'
     AND event_params.key = 'item_name'
-    AND geo.country = '{2}'
+    AND geo.country != '{2}'
     AND platform = '{1}'
     AND _TABLE_SUFFIX BETWEEN '{3}'
     AND '{4}'
@@ -26,7 +26,7 @@ FROM (
       T.event_params
     WHERE
       event_name = 'first_open'
-      AND geo.country = '{2}'
+      AND geo.country != '{2}'
       AND platform = '{1}'
       AND _TABLE_SUFFIX BETWEEN '{3}'
       AND '{3}' ) ) AS A,
@@ -41,7 +41,7 @@ FROM (
   WHERE
     event_name = 'spend_virtual_currency'
     AND event_params.key = 'value'
-    AND geo.country = '{2}'
+    AND geo.country != '{2}'
     AND platform = '{1}'
     AND _TABLE_SUFFIX BETWEEN '{3}'
     AND '{4}' ) AS B

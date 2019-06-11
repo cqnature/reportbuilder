@@ -8,7 +8,7 @@ FROM
 WHERE
   event_name = 'in_app_purchase'
   AND event_params.key = 'product_id'
-  AND geo.country = '{2}'
+  AND geo.country != '{2}'
   AND platform = '{1}'
   AND _TABLE_SUFFIX BETWEEN '{3}'
   AND '{4}'
@@ -20,7 +20,7 @@ WHERE
     T.event_params
   WHERE
     event_name = 'first_open'
-    AND geo.country = '{2}'
+    AND geo.country != '{2}'
     AND platform = '{1}'
     AND _TABLE_SUFFIX BETWEEN '{3}'
     AND '{3}' )

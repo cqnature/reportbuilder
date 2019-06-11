@@ -22,7 +22,7 @@ FROM (
       WHERE
         event_name = 'af_ad_view'
         AND event_params.key = 'af_event_id'
-        AND geo.country = '{2}' /* 修改为指定国家 */
+        AND geo.country != '{2}' /* 修改为指定国家 */
         AND platform = '{1}'
         AND _TABLE_SUFFIX BETWEEN '{3}'
         AND '{3}' ) AS A,
@@ -37,7 +37,7 @@ FROM (
       WHERE
         event_name = 'af_ad_view'
         AND event_params.key = 'af_ad_scene'
-        AND geo.country = '{2}' /* 修改为指定国家 */
+        AND geo.country != '{2}' /* 修改为指定国家 */
         AND platform = '{1}'
         AND _TABLE_SUFFIX BETWEEN '{3}'
         AND '{3}' ) AS B
@@ -54,7 +54,7 @@ FROM (
     T.event_params
   WHERE
     event_name = 'user_engagement'
-    AND geo.country = '{2}' /* 修改为指定国家 */
+    AND geo.country != '{2}' /* 修改为指定国家 */
     AND platform = '{1}'
     AND _TABLE_SUFFIX BETWEEN '{3}'
     AND '{3}') AS D

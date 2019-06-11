@@ -6,7 +6,7 @@ FROM
 WHERE
   event_name = 'in_app_purchase'
   AND event_params.key = 'price'
-  --AND geo.country = '{2}'
+  --AND geo.country != '{2}'
   AND platform = '{1}'
   AND _TABLE_SUFFIX BETWEEN '{3}'
   AND '{4}'
