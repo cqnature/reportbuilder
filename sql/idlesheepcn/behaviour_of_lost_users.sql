@@ -46,7 +46,7 @@ FROM (
             AND geo.country = '{2}' /* 修改为指定国家 */
             AND platform = '{1}'
             AND _TABLE_SUFFIX BETWEEN '{3}'
-            AND '{3}' /* 修改为注册日期范围 */ INTERSECT DISTINCT
+            AND '{3}' /* 修改为注册日期范围 */ EXCEPT DISTINCT
           SELECT
             user_pseudo_id
           FROM
