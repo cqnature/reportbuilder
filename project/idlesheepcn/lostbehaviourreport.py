@@ -38,18 +38,25 @@ class Report(BaseReport):
 
     def do_generate(self):
         print 'do generate report'
-        with open(self.output_filepath, mode='w+') as out:
-            report_lines = []
-            for single_date in Date(self.start_date).rangeto(self.end_date, True):
-                if Date(single_date).between(self.end_date) <= add_day:
+        report_filepaths = []
+        for rebirth in range(0, 2):
+            for level in range(1, 5):
+                if rebirth == 1 and level == 1:
                     continue
-                self.generate_lostbehaviour_report_at_date(report_lines, single_date)
-            reportstring = '\n'.join(report_lines)
-            out.write(reportstring)
-            out.close()
-        return [self.output_filepath]
+                filepath = self.append_output_filename('_rebirth_' + str(rebirth) + '_level_' + str(level))
+                report_filepaths.append(filepath)
+                with open(filepath, mode='w+') as out:
+                    report_lines = []
+                    for single_date in Date(self.start_date).rangeto(self.end_date, True):
+                        if Date(single_date).between(self.end_date) <= add_day:
+                            continue
+                        self.generate_lostbehaviour_report_at_date(report_lines, single_date, rebirth, level)
+                    reportstring = '\n'.join(report_lines)
+                    out.write(reportstring)
+                    out.close()
+        return report_filepaths
 
-    def generate_lostbehaviour_report_at_date(self, report_lines, date):
+    def generate_lostbehaviour_report_at_date(self, report_lines, date, rebirth, level):
         print("generate_lostbehaviour_report_at_date ", date)
         with open(self.etc_filepath) as file:
             # 新增用户数
@@ -63,13 +70,17 @@ class Report(BaseReport):
             cur_date = Date(date)
             retention_usercount = get_retention_usercount(self.querysql, date, cur_date.adddays(add_day))
             lines[2] = lines[2].strip().format(retention_usercount, 100*float(retention_usercount)/float(firstopen_usercount))
-            behaviour_results = self.querysql.get_result("behaviour_of_lost_users.sql", date, cur_date.adddays(add_day), cur_date.adddays(add_day - 1))
+            behaviour_results = None
+            if rebirth == 0 and level == 1:
+                behaviour_results = self.querysql.get_result("behaviour_of_lost_users_0.sql", date, cur_date.adddays(add_day), cur_date.adddays(add_day - 1))
+            else:
+                behaviour_results = self.querysql.get_result("behaviour_of_lost_users.sql", date, cur_date.adddays(add_day), cur_date.adddays(add_day - 1), rebirth, level)
             lost_usercount = sum(1 for _ in behaviour_results)
-            lines[3] = lines[3].strip().format(lost_usercount, 100*float(lost_usercount)/float(firstopen_usercount))
+            lines[3] = lines[3].strip().format(rebirth, level, lost_usercount, 100*float(lost_usercount)/float(firstopen_usercount))
             lines[4] = lines[4].strip()
             dataset_map = []
             key_count = 5
-            key_offset = 2
+            key_offset = 3
             for k in range(key_count):
                 dataset_map.append({})
             for k in range(len(behaviour_results)):
