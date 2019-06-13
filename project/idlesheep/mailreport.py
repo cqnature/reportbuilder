@@ -189,14 +189,17 @@ class Report(BaseReport):
                     cells.append("0.00")
                 else:
                     ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
-                    first_user_count = self.get_firstopen_count(single_date)
+                    first_user_count = self.get_firstopen_count(date)
                     retention_user_count = self.get_retention_count(date, single_date)
+                    view_count = sum(1 for _ in ads_view_count_results)
+                    user_count = 0
                     average_view_count = 0
                     if date == single_date:
+                        user_count = first_user_count
                         average_view_count = 0 if first_user_count == 0 else float(view_count)/float(first_user_count)
                     else:
+                        user_count = retention_user_count
                         average_view_count = 0 if retention_user_count == 0 else float(view_count)/float(retention_user_count)
-                    view_count = sum(1 for _ in ads_view_count_results)
                     install_average_view_count = 0 if first_user_count == 0 else float(view_count)/float(first_user_count)
                     cells.append(str(user_count))
                     cells.append(str(view_count))
