@@ -185,8 +185,8 @@ ON
   A.user_pseudo_id = Q.user_pseudo_id
   LEFT JOIN (
     SELECT
-      user_pseudo_id,
-      MAX(speedup_level) AS max_speedup_level
+      A.user_pseudo_id,
+      MAX(A.speedup_level) AS max_speedup_level
     FROM (
       SELECT
         event_timestamp,
@@ -199,15 +199,31 @@ ON
         event_name = 'af_speedup_upgrade'
         AND event_params.key = 'level'
         AND _TABLE_SUFFIX BETWEEN '{3}'
-        AND '{4}')
+        AND '{4}') AS A,
+    (
+      SELECT
+        event_timestamp,
+        event_params.value.int_value AS event_id,
+        user_pseudo_id
+      FROM
+        `{0}.events_*` AS T,
+        T.event_params
+      WHERE
+        event_name = 'af_speedup_upgrade'
+        AND event_params.key = 'af_event_id'
+        AND _TABLE_SUFFIX BETWEEN '{3}'
+        AND '{4}') AS B
+    WHERE A.user_pseudo_id = B.user_pseudo_id
+    AND A.event_timestamp = B.event_timestamp
+    AND B.event_id = {6}
     GROUP BY
       user_pseudo_id) AS H
   ON
     A.user_pseudo_id = H.user_pseudo_id
     LEFT JOIN (
       SELECT
-        user_pseudo_id,
-        MAX(output_level) AS max_output_level
+        A.user_pseudo_id,
+        MAX(A.output_level) AS max_output_level
       FROM (
         SELECT
           event_timestamp,
@@ -220,15 +236,31 @@ ON
           event_name = 'af_output_upgrade'
           AND event_params.key = 'level'
           AND _TABLE_SUFFIX BETWEEN '{3}'
-          AND '{4}')
+          AND '{4}') AS A,
+      (
+        SELECT
+          event_timestamp,
+          event_params.value.int_value AS event_id,
+          user_pseudo_id
+        FROM
+          `{0}.events_*` AS T,
+          T.event_params
+        WHERE
+          event_name = 'af_output_upgrade'
+          AND event_params.key = 'af_event_id'
+          AND _TABLE_SUFFIX BETWEEN '{3}'
+          AND '{4}') AS B
+      WHERE A.user_pseudo_id = B.user_pseudo_id
+      AND A.event_timestamp = B.event_timestamp
+      AND B.event_id = {6}
       GROUP BY
         user_pseudo_id) AS I
     ON
       A.user_pseudo_id = I.user_pseudo_id
       LEFT JOIN (
         SELECT
-          user_pseudo_id,
-          MAX(buoy_id) AS max_buoy_id
+          A.user_pseudo_id,
+          MAX(A.buoy_id) AS max_buoy_id
         FROM (
           SELECT
             event_timestamp,
@@ -241,7 +273,23 @@ ON
             event_name = 'af_buoy_upgrade'
             AND event_params.key = 'af_buoy_id'
             AND _TABLE_SUFFIX BETWEEN '{3}'
-            AND '{4}')
+            AND '{4}') AS A,
+        (
+          SELECT
+            event_timestamp,
+            event_params.value.int_value AS event_id,
+            user_pseudo_id
+          FROM
+            `{0}.events_*` AS T,
+            T.event_params
+          WHERE
+            event_name = 'af_buoy_upgrade'
+            AND event_params.key = 'af_event_id'
+            AND _TABLE_SUFFIX BETWEEN '{3}'
+            AND '{4}') AS B
+        WHERE A.user_pseudo_id = B.user_pseudo_id
+        AND A.event_timestamp = B.event_timestamp
+        AND B.event_id = {6}
         GROUP BY
           user_pseudo_id) AS J
       ON
