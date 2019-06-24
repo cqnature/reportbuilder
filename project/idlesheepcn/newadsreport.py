@@ -37,6 +37,7 @@ class Report(BaseReport):
                 retention_date = Date(date).adddays(add_day)
                 if Date(retention_date).between(self.end_date) <= 0:
                     break
+                retention_user_count = self.get_retention_count(date, retention_date)
                 ads_view_count_results = self.get_result("new_ads_view_count.sql", date, retention_date)
                 if len(ads_view_count_results) == 0:
                     break
@@ -53,8 +54,20 @@ class Report(BaseReport):
                     formatstring = linesegments[1]
                     ad_view_count = 0
                     daily_average_ad_view_count = 0
+                    ad_view_trigger_user_count = 0
                     ad_view_user_count = 0
                     daily_ad_view_user_percent = 0
+                    if ads_scene == 'levelup':
+                        max_level = 10 if Date(retention_date).between('20190621', 0) <= 0 else 2
+                        trigger_user_results = self.get_result("trigger_levelup_ads_user_id.sql", date, retention_date, max_level)
+                        ad_view_trigger_user_count = sum(1 for _ in trigger_user_results)
+                    elif ads_scene == 'freeupgrade':
+                        if Date(retention_date).between('20190621', 0) <= 0:
+                            trigger_user_results = self.get_result("trigger_freeupgrade_ads_user_id_2.sql", date, retention_date)
+                            ad_view_trigger_user_count = sum(1 for _ in trigger_user_results)
+                        else:
+                            trigger_user_results = self.get_result("trigger_freeupgrade_ads_user_id.sql", date, retention_date)
+                            ad_view_trigger_user_count = sum(1 for _ in trigger_user_results)
                     for k in range(len(ads_view_count_results)):
                         ads_view_count_result = ads_view_count_results[k]
                         if ads_view_count_result.af_ad_scene == ads_scene:
@@ -67,7 +80,7 @@ class Report(BaseReport):
                             ad_view_user_count = ads_view_user_result.ad_view_user_count
                             daily_ad_view_user_percent = ads_view_user_result.daily_ad_view_user_percent
                             break
-                    append_line(result_lines, i, formatstring.format(ad_view_user_count, daily_ad_view_user_percent * 100, ad_view_count, daily_average_ad_view_count))
+                    append_line(result_lines, i, formatstring.format(ad_view_trigger_user_count, float(ad_view_trigger_user_count) / float(retention_user_count) * 100, ad_view_user_count, daily_ad_view_user_percent * 100, ad_view_count, daily_average_ad_view_count))
                 append_line(result_lines, len(lines) - 1, lines[len(lines) - 1].format(sum(t.daily_average_ad_view_count for t in ads_view_count_results)))
             report_lines.extend(result_lines)
             file.close()
