@@ -11,11 +11,11 @@ from idledisaster.entry import Entry as IdleDisasterEntry
 from idledisastercn.entry import Entry as IdleDisasterCnEntry
 
 def generate_report(option, *parameter):
-    # MergeFoodEntry(option, *parameter).generate_report()
+    MergeFoodEntry(option, *parameter).generate_report()
     # MergeGardenEntry(option, *parameter).generate_report()
     # MergeGardenJrttEntry(option, *parameter).generate_report()
-    # IdleSheepEntry(option, *parameter).generate_report()
-    # IdleSheepCnEntry(option, *parameter).generate_report()
+    IdleSheepEntry(option, *parameter).generate_report()
+    IdleSheepCnEntry(option, *parameter).generate_report()
     # IdleSheepJrttEntry(option, *parameter).generate_report()
-    # IdleDisasterEntry(option, *parameter).generate_report()
+    IdleDisasterEntry(option, *parameter).generate_report()
     IdleDisasterCnEntry(option, *parameter).generate_report()
