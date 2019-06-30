@@ -8,6 +8,7 @@ from mergegardenjrtt.entry import Entry as MergeGardenJrttEntry
 from idlesheepjrtt.entry import Entry as IdleSheepJrttEntry
 from idlesheepcn.entry import Entry as IdleSheepCnEntry
 from idledisaster.entry import Entry as IdleDisasterEntry
+from idledisastercn.entry import Entry as IdleDisasterCnEntry
 
 def generate_report(option, *parameter):
     # MergeFoodEntry(option, *parameter).generate_report()
@@ -16,4 +17,5 @@ def generate_report(option, *parameter):
     # IdleSheepEntry(option, *parameter).generate_report()
     # IdleSheepCnEntry(option, *parameter).generate_report()
     # IdleSheepJrttEntry(option, *parameter).generate_report()
-    IdleDisasterEntry(option, *parameter).generate_report()
+    # IdleDisasterEntry(option, *parameter).generate_report()
+    IdleDisasterCnEntry(option, *parameter).generate_report()
