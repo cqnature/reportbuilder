@@ -30,8 +30,8 @@ class Report(BaseReport):
 
     def generate_day_stage_report_at_date(self, report_lines, date):
         print("generate_stage_report_at_date ", date)
-        max_rebirth = 0
-        max_level = 60
+        max_rebirth = 1
+        max_level = 100
         with open(self.etc_filepath) as file:
             firstopen_usercount = self.get_firstopen_count(date)
             if firstopen_usercount == 0:
