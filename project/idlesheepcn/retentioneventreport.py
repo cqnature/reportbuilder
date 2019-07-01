@@ -47,7 +47,7 @@ class Report(BaseReport):
             signup_day_progress_lines[3] = signup_day_progress_lines[3].format(firstopen_usercount, 100)
             signup_base_datas = []
             for row in signup_day_progress_results:
-                signup_base_data = [row.instancegame_id, row.stage_id, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
+                signup_base_data = [row.instancegame_id, row.event_count, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                 signup_base_datas.append(signup_base_data)
             for k in range(len(signup_base_datas)):
                 data = signup_base_datas[k]
@@ -70,7 +70,7 @@ class Report(BaseReport):
                     retention_day_progress_lines[0] = retention_day_progress_lines[0].format(Date(date).between(single_date))
                 retention_base_datas = []
                 for row in retention_day_results:
-                    retention_base_data = [row.rebirth, row.level, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
+                    retention_base_data = [row.instancegame_id, row.event_count, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                     retention_base_datas.append(retention_base_data)
 
                 retention_day_progress_lines[1] = retention_day_progress_lines[1].format(Date(date).formatmd())
