@@ -33,7 +33,7 @@ class Report(BaseReport):
         with open(self.etc_filepath) as file:
             lines = [x.strip() for x in file.readlines()]
             result_lines = []
-            for add_day in range(3):
+            for add_day in range(7):
                 retention_date = Date(date).adddays(add_day)
                 if Date(retention_date).between(self.end_date) <= 0:
                     break
