@@ -26,7 +26,7 @@ class BaseReport(object):
         self.queryads = QueryAds(self.query_config)
         self.queryadscene = QueryAdScene(self.query_config)
         self.start_date = date.date_string
-        self.end_date = date.enddate()
+        self.end_date = date.enddate(self.query_config.geo_country)
 
     def get_retention_date(self, date_string):
         return min(self.end_date, Date(date_string).adddays(7))

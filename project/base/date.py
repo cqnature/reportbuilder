@@ -9,8 +9,11 @@ class Date:
     def __init__(self, date_string):
       self.date_string = date_string
 
-    def enddate(self):
-        tz = pytz.timezone('America/Los_Angeles')
+    def enddate(self, country = 'United States'):
+        timezone = 'America/Los_Angeles'
+        if country == 'China':
+            timezone = 'Asia/Shanghai'
+        tz = pytz.timezone(timezone)
         end_date = datetime.now(tz) + timedelta(days=-1)
         return end_date.strftime('%Y%m%d')
 
