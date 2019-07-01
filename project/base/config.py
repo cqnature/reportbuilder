@@ -20,6 +20,7 @@ class ReportFlag:
     will_ads = 1 << 11
     day_stage = 1 << 12
     button_behaviour = 1 << 13
+    retention_event = 1 << 14
 
     def __init__(self, flags):
         self.option = 0

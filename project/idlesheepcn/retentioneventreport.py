@@ -21,7 +21,7 @@ class Report(BaseReport):
         print 'do generate report'
         with open(self.output_filepath, mode='w+') as out:
             tmp_lines = []
-            for single_date in Date(self.start_date).rangeto(self.end_date, True):
+            for single_date in Date('20190629').rangeto(self.end_date, True):
                 report_single_lines = self.generate_retention_event_report_at_date(single_date)
                 if report_single_lines != None:
                     tmp_lines.append(report_single_lines)
@@ -42,15 +42,13 @@ class Report(BaseReport):
             lineIndex = 0
             lines = file.readlines()
             signup_day_progress_lines = [x.strip() for x in lines[0:4]]
-            signup_day_progress_results = self.get_result("stage_progress_of_signup_users.sql", date)
+            signup_day_progress_results = self.get_result("event_progress_of_signup_users.sql", date)
             signup_day_progress_lines[1] = signup_day_progress_lines[1].format(Date(date).formatmd())
             signup_day_progress_lines[3] = signup_day_progress_lines[3].format(firstopen_usercount, 100)
             signup_base_datas = []
             for row in signup_day_progress_results:
-                signup_base_data = [row.rebirth, row.level, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
+                signup_base_data = [row.instancegame_id, row.stage_id, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                 signup_base_datas.append(signup_base_data)
-            first_level_usercount = firstopen_usercount - sum(t[2] for t in signup_base_datas)
-            signup_base_datas.insert(0, [0, 1, first_level_usercount, 100*float(first_level_usercount)/float(firstopen_usercount)])
             for k in range(len(signup_base_datas)):
                 data = signup_base_datas[k]
                 signup_day_progress_lines.append("{0}-{1},{2},{3:.2f}%,".format(data[0], data[1], data[2], data[3]))
@@ -64,7 +62,7 @@ class Report(BaseReport):
             for single_date in Date(date).rangeto(self.get_retention_date(date)):
                 current_retention_usercount = self.get_retention_count(date, single_date)
                 # 流失分布查询
-                retention_day_results = self.get_result("stage_progress_of_retention_users.sql", date, single_date)
+                retention_day_results = self.get_result("event_progress_of_retention_users.sql", date, single_date)
                 if currentDayIndex == 1:
                     retention_day_progress_lines.extend([x.strip() for x in lines[4:9]])
                 else:
@@ -74,8 +72,6 @@ class Report(BaseReport):
                 for row in retention_day_results:
                     retention_base_data = [row.rebirth, row.level, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                     retention_base_datas.append(retention_base_data)
-                first_retention_usercount = current_retention_usercount - sum(t[2] for t in retention_base_datas)
-                retention_base_datas.insert(0, [0, 1, first_retention_usercount, 100*float(first_retention_usercount)/float(firstopen_usercount)])
 
                 retention_day_progress_lines[1] = retention_day_progress_lines[1].format(Date(date).formatmd())
                 retention_day_progress_lines[3] = retention_day_progress_lines[3].format(firstopen_usercount, 100)
