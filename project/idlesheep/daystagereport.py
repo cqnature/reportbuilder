@@ -54,7 +54,7 @@ class Report(BaseReport):
                     stage_config_maps[k][n] = signup_base_data
             for row in signup_day_progress_results:
                 if row.rebirth > max_rebirth or row.level > max_level:
-                    break
+                    continue
                 signup_base_data = stage_config_maps[row.rebirth][row.level]
                 signup_base_data[2] = row.user_count
                 signup_base_data[3] = 100*float(row.user_count)/float(firstopen_usercount)
@@ -93,7 +93,7 @@ class Report(BaseReport):
                             stage_config_maps[k][n] = lost_base_data
                     for row in lost_day_results:
                         if row.rebirth > max_rebirth or row.level > max_level:
-                            break
+                            continue
                         lost_base_data = stage_config_maps[row.rebirth][row.level]
                         lost_base_data[2] = row.user_count
                         lost_base_data[3] = 100*float(row.user_count)/float(firstopen_usercount)
@@ -126,7 +126,7 @@ class Report(BaseReport):
                             stage_config_maps[k][n] = current_lost_data
                     for row in lost_day_results:
                         if row.rebirth > max_rebirth or row.level > max_level:
-                            break
+                            continue
                         current_lost_data = stage_config_maps[row.rebirth][row.level]
                         current_lost_data[2] = row.user_count
                         current_lost_data[3] = 100*float(row.user_count)/float(firstopen_usercount)
