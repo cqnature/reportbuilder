@@ -53,7 +53,7 @@ class Report(BaseReport):
                 ads_click_users_results = self.get_result("new_ads_click_users.sql", date, retention_date)
                 for i in range(4, len(lines) - 1):
                     line = lines[i]
-                    linesegments = line.split('|', 1)
+                    linesegments = line.split('|', 2)
                     ads_scene = linesegments[0]
                     ads_click_button = linesegments[1]
                     formatstring = linesegments[2]
@@ -89,13 +89,13 @@ class Report(BaseReport):
                             break
                     for k in range(len(ads_click_count_results)):
                         ads_click_count_result = ads_click_count_results[k]
-                        if ads_click_count_result.af_ad_scene == ads_scene:
-                            ad_click_count = ads_click_count_result.ad_show_count
+                        if ads_click_count_result.af_button_name == ads_click_button:
+                            ad_click_count = ads_click_count_result.ad_click_count
                             break
                     for k in range(len(ads_click_users_results)):
                         ads_click_user_result = ads_click_users_results[k]
-                        if ads_click_user_result.af_ad_scene == ads_scene:
-                            ad_click_user_count = ads_click_user_result.ad_show_user_count
+                        if ads_click_user_result.af_button_name == ads_click_button:
+                            ad_click_user_count = ads_click_user_result.ad_click_user_count
                             break
                     append_line(result_lines, i, formatstring.format(ad_show_user_count, float(ad_show_user_count) / float(retention_user_count) * 100, ad_view_user_count, daily_ad_view_user_percent * 100, ad_show_count, ad_click_count, ad_view_count, daily_average_ad_view_count))
                 append_line(result_lines, len(lines) - 1, lines[len(lines) - 1].format(sum(t.daily_average_ad_view_count for t in ads_view_count_results)))
