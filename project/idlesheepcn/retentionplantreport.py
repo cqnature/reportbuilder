@@ -21,7 +21,7 @@ class Report(BaseReport):
         print 'do generate report'
         with open(self.output_filepath, mode='w+') as out:
             report_lines = []
-            for single_date in Date(self.start_date).rangeto(self.end_date, True):
+            for single_date in Date('20190701').rangeto(self.end_date, True):
                 self.generate_retentionplant_report_at_date(report_lines, single_date)
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
