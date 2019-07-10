@@ -49,9 +49,9 @@ class Report(BaseReport):
             signup_base_datas = []
             progress_data_map = {}
             for k in range(0, max_level + 1):
-                data = [k, 0, 0]
-                signup_base_datas.append(data)
-                progress_data_map[k] = data
+                signup_base_data = [k, 0, 0]
+                signup_base_datas.append(signup_base_datas)
+                progress_data_map[k] = signup_base_datas
             for row in signup_day_progress_results:
                 progress_data = progress_data_map[row.max_level]
                 progress_data[1] = row.user_count
