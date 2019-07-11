@@ -46,12 +46,15 @@ class Report(BaseReport):
                     append_line(result_lines, 1, lines[1].format(ads_view_count_results[0].new_user_count))
                 append_line(result_lines, 2, lines[2].format(Date(date).between(retention_date) - 1))
                 append_line(result_lines, 3, lines[3])
+                ads_click_count_results = self.get_result("new_ads_click_count.sql", date, retention_date)
                 for i in range(4, len(lines) - 1):
                     line = lines[i]
-                    linesegments = line.split('|', 1)
+                    linesegments = line.split('|', 2)
                     ads_scene = linesegments[0]
-                    formatstring = linesegments[1]
+                    ads_click_button = linesegments[1]
+                    formatstring = linesegments[2]
                     ad_view_count = 0
+                    ad_click_count = 0
                     daily_average_ad_view_count = 0
                     ad_view_user_count = 0
                     daily_ad_view_user_percent = 0
@@ -67,7 +70,12 @@ class Report(BaseReport):
                             ad_view_user_count = ads_view_user_result.ad_view_user_count
                             daily_ad_view_user_percent = ads_view_user_result.daily_ad_view_user_percent
                             break
-                    append_line(result_lines, i, formatstring.format(ad_view_user_count, daily_ad_view_user_percent * 100, ad_view_count, daily_average_ad_view_count))
+                    for k in range(len(ads_click_count_results)):
+                        ads_click_count_result = ads_click_count_results[k]
+                        if ads_click_count_result.af_button_name == ads_click_button:
+                            ad_click_count = ads_click_count_result.ad_click_count
+                            break
+                    append_line(result_lines, i, formatstring.format(ad_view_user_count, daily_ad_view_user_percent * 100, ad_click_count, ad_view_count, daily_average_ad_view_count))
                 append_line(result_lines, len(lines) - 1, lines[len(lines) - 1].format(sum(t.daily_average_ad_view_count for t in ads_view_count_results)))
             report_lines.extend(result_lines)
             file.close()
