@@ -50,7 +50,7 @@ class Report(BaseReport):
             progress_data_map = {}
             for k in range(0, max_level + 1):
                 signup_base_data = [k, 0, 0]
-                signup_base_datas.append(signup_base_datas)
+                signup_base_datas.append(signup_base_data)
                 progress_data_map[k] = signup_base_datas
             for row in signup_day_progress_results:
                 progress_data = progress_data_map[row.max_level]
