@@ -14,7 +14,7 @@ def generate_report_us(option, *parameter):
     # MergeFoodEntry(option, *parameter).generate_report()
     # MergeGardenEntry(option, *parameter).generate_report()
     # MergeGardenJrttEntry(option, *parameter).generate_report()
-    IdleSheepEntry(option, *parameter).generate_report()
+    # IdleSheepEntry(option, *parameter).generate_report()
     # IdleSheepCnEntry(option, *parameter).generate_report()
     # IdleSheepJrttEntry(option, *parameter).generate_report()
     IdleDisasterEntry(option, *parameter).generate_report()
