@@ -37,16 +37,16 @@ class Report(BaseReport):
                 retention_date = Date(date).adddays(add_day)
                 if Date(retention_date).between(self.end_date) <= 0:
                     break
-                ads_view_count_results = self.get_result("lost_ads_view_count.sql", date, retention_date)
+                ads_view_count_results = self.get_result("lost_ads_view_count.sql", date, retention_date, Date(retention_date).adddays(-1))
                 if len(ads_view_count_results) == 0:
                     break
-                ads_view_user_results = self.get_result("lost_ads_view_users.sql", date, retention_date)
+                ads_view_user_results = self.get_result("lost_ads_view_users.sql", date, retention_date, Date(retention_date).adddays(-1))
                 if add_day == 0:
                     append_line(result_lines, 0, lines[0].format(Date(date).formatmd()))
                     append_line(result_lines, 1, lines[1].format(ads_view_count_results[0].lost_user_count))
                 append_line(result_lines, 2, lines[2].format(Date(date).between(retention_date) - 1))
                 append_line(result_lines, 3, lines[3])
-                ads_click_count_results = self.get_result("lost_ads_click_count.sql", date, retention_date)
+                ads_click_count_results = self.get_result("lost_ads_click_count.sql", date, retention_date, Date(retention_date).adddays(-1))
                 for i in range(4, len(lines) - 1):
                     line = lines[i]
                     linesegments = line.split('|', 2)
