@@ -41,7 +41,7 @@ class Report(BaseReport):
                 if len(ads_view_count_results) == 0:
                     break
                 ads_view_user_results = self.get_result("lost_ads_view_users.sql", date, retention_date, Date(retention_date).adddays(-1))
-                if add_day == 0:
+                if add_day == 1:
                     append_line(result_lines, 0, lines[0].format(Date(date).formatmd()))
                     append_line(result_lines, 1, lines[1].format(ads_view_count_results[0].lost_user_count))
                 append_line(result_lines, 2, lines[2].format(Date(date).between(retention_date) - 1))
