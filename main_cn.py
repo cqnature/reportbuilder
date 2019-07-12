@@ -22,7 +22,8 @@ if __name__ == '__main__':
         ReportFlag.will_ads,
         ReportFlag.day_stage,
         ReportFlag.button_behaviour,
-        ReportFlag.retention_event
+        ReportFlag.retention_event,
+        ReportFlag.lost_ads
     ]
     option = ReportFlag(flags).option
 
