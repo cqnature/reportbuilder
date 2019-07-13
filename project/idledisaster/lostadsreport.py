@@ -106,13 +106,13 @@ class Report(BaseReport):
                         ads_view_count_result = ads_view_count_results[k]
                         if ads_view_count_result.af_ad_scene == ads_scene:
                             ad_view_count = ads_view_count_result.ad_view_count
-                            retetion_average_ad_view_count = ads_view_count_result.retention_average_ad_view_count
+                            retetion_average_ad_view_count = ads_view_count_result.retetion_average_ad_view_count
                             break
                     for k in range(len(ads_view_user_results)):
                         ads_view_user_result = ads_view_user_results[k]
                         if ads_view_user_result.af_ad_scene == ads_scene:
                             ad_view_user_count = ads_view_user_result.ad_view_user_count
-                            retetion_ad_view_user_percent = ads_view_user_result.retention_ad_view_user_percent
+                            retetion_ad_view_user_percent = ads_view_user_result.retetion_ad_view_user_percent
                             break
                     for k in range(len(ads_click_count_results)):
                         ads_click_count_result = ads_click_count_results[k]
@@ -120,6 +120,6 @@ class Report(BaseReport):
                             ad_click_count = ads_click_count_result.ad_click_count
                             break
                     append_line(result_lines, i, formatstring.format(ad_view_user_count, retetion_average_ad_view_count * 100, ad_click_count, ad_view_count, retetion_ad_view_user_percent))
-                append_line(result_lines, len(lines) - 1, lines[len(lines) - 1].format(sum(t.retention_average_ad_view_count for t in ads_view_count_results)))
+                append_line(result_lines, len(lines) - 1, lines[len(lines) - 1].format(sum(t.retetion_average_ad_view_count for t in ads_view_count_results)))
             report_lines.extend(result_lines)
             file.close()
