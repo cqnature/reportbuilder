@@ -49,7 +49,7 @@ class Report(BaseReport):
                 append_line(result_lines, 2, lines[2].format(Date(date).between(retention_date) - 1))
                 append_line(result_lines, 3, lines[3])
                 ads_click_count_results = self.get_result("lost_ads_click_count.sql", date, retention_date, Date(retention_date).adddays(-1))
-                currentIndex = 5 + add_scene_count
+                currentIndex = 4 + add_scene_count
                 for i in range(4, currentIndex):
                     line = lines[i]
                     linesegments = line.split('|', 2)
@@ -91,7 +91,7 @@ class Report(BaseReport):
                 append_line(result_lines, currentIndex + 3, lines[currentIndex + 3].format(Date(date).between(retention_date) - 1))
                 append_line(result_lines, currentIndex + 4, lines[currentIndex + 4])
                 ads_click_count_results = self.get_result("new_retetion_ads_click_count.sql", date, retention_date, Date(retention_date).adddays(-1))
-                for i in range(currentIndex + 5, currentIndex + 6 + add_scene_count):
+                for i in range(currentIndex + 5, currentIndex + 5 + add_scene_count):
                     line = lines[i]
                     linesegments = line.split('|', 2)
                     ads_scene = linesegments[0]
