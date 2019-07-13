@@ -40,7 +40,7 @@ class Report(BaseReport):
         print 'do generate report'
         report_filepaths = []
         for rebirth in range(0, 1):
-            for level in range(1, 2):
+            for level in range(1, 11):
                 if rebirth == 1 and level == 1:
                     continue
                 filepath = self.append_output_filename('_rebirth_' + str(rebirth) + '_level_' + str(level))
