@@ -81,16 +81,16 @@ class Report(BaseReport):
                     append_line(result_lines, i, formatstring.format(ad_view_user_count, lost_ad_view_user_percent * 100, ad_click_count, ad_view_count, lost_average_ad_view_count))
                 append_line(result_lines, currentIndex, lines[currentIndex].format(sum(t.lost_average_ad_view_count for t in ads_view_count_results)))
 
-                ads_view_count_results = self.get_result("new_retetion_ads_view_count.sql", date, retention_date, Date(retention_date).adddays(-1))
+                ads_view_count_results = self.get_result("new_retention_ads_click_count.sql", date, retention_date, Date(retention_date).adddays(-1))
                 if len(ads_view_count_results) == 0:
                     break
-                ads_view_user_results = self.get_result("new_retetion_ads_view_users.sql", date, retention_date, Date(retention_date).adddays(-1))
+                ads_view_user_results = self.get_result("new_retention_ads_view_users.sql", date, retention_date, Date(retention_date).adddays(-1))
                 if add_day == 1:
                     append_line(result_lines, currentIndex + 1, lines[currentIndex + 1].format(Date(date).formatmd()))
                     append_line(result_lines, currentIndex + 2, lines[currentIndex + 2].format(ads_view_count_results[0].retention_user_count))
                 append_line(result_lines, currentIndex + 3, lines[currentIndex + 3].format(Date(date).between(retention_date) - 1))
                 append_line(result_lines, currentIndex + 4, lines[currentIndex + 4])
-                ads_click_count_results = self.get_result("new_retetion_ads_click_count.sql", date, retention_date, Date(retention_date).adddays(-1))
+                ads_click_count_results = self.get_result("new_retention_ads_click_count.sql", date, retention_date, Date(retention_date).adddays(-1))
                 for i in range(currentIndex + 5, currentIndex + 5 + add_scene_count):
                     line = lines[i]
                     linesegments = line.split('|', 2)
