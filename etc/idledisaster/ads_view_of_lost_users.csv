@@ -13,6 +13,7 @@ unlockhouse|ad_unlock_house_click|免费解锁房屋,{0},{1:.2f}%,{2},{3},{4:.2f
 disasterspeedup|ad_disaster_speedup_click|免费释放disaster技能,{0},{1:.2f}%,{2},{3},{4:.2f},
 disasterskill|ad_disaster_skill_click|免费disaster加速技能,{0},{1:.2f}%,{2},{3},{4:.2f},
 ,,,,总计,{0:.2f},
+{0}观看广告留存用户数据,,,,,,
 留存用户数,{0},,,,,
 D{0}留存用户数据,,,,,,
 广告场景,观看广告人数,占新用户比例,点击广告次数,观看广告次数,人均观看次数,
