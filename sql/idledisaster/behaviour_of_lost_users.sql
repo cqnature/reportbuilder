@@ -185,7 +185,7 @@ ON
   A.user_pseudo_id = Q.user_pseudo_id
   LEFT JOIN (
       SELECT
-        Z.user_pseudo_id,
+        X.user_pseudo_id,
         MAX(Z.disaster_output_level) AS max_disaster_output_level
       FROM (
         SELECT
@@ -238,7 +238,7 @@ ON
     A.user_pseudo_id = T.user_pseudo_id
 LEFT JOIN (
     SELECT
-      Z.user_pseudo_id,
+      X.user_pseudo_id,
       MAX(Z.disaster_count_level) AS max_disaster_count_level
     FROM (
       SELECT
@@ -291,8 +291,8 @@ ON
   A.user_pseudo_id = R.user_pseudo_id
   LEFT JOIN (
       SELECT
-        Z.user_pseudo_id,
-        MAX(Z.output_level) AS max_output_level
+        X.user_pseudo_id,
+        MAX(Y.output_level) AS max_output_level
       FROM (
         SELECT
           user_pseudo_id,
