@@ -119,7 +119,7 @@ class Report(BaseReport):
                         if ads_click_count_result.af_button_name == ads_click_button:
                             ad_click_count = ads_click_count_result.ad_click_count
                             break
-                    append_line(result_lines, i, formatstring.format(ad_view_user_count, retetion_average_ad_view_count * 100, ad_click_count, ad_view_count, retetion_ad_view_user_percent))
+                    append_line(result_lines, i, formatstring.format(ad_view_user_count, retetion_ad_view_user_percent * 100, ad_click_count, ad_view_count, retetion_average_ad_view_count))
                 append_line(result_lines, len(lines) - 1, lines[len(lines) - 1].format(sum(t.retetion_average_ad_view_count for t in ads_view_count_results)))
             report_lines.extend(result_lines)
             file.close()
