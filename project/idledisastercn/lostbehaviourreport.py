@@ -40,7 +40,7 @@ class Report(BaseReport):
         print 'do generate report'
         report_filepaths = []
         for rebirth in range(0, 1):
-            for level in range(1, 11):
+            for level in range(1, 21):
                 if rebirth == 1 and level == 1:
                     continue
                 filepath = self.append_output_filename('_rebirth_' + str(rebirth) + '_level_' + str(level))
@@ -79,7 +79,7 @@ class Report(BaseReport):
             lines[3] = lines[3].strip().format(rebirth, level, lost_usercount, 100*float(lost_usercount)/float(firstopen_usercount))
             lines[4] = lines[4].strip()
             dataset_map = []
-            key_count = 5
+            key_count = 21
             key_offset = 3
             for k in range(key_count):
                 dataset_map.append({})
