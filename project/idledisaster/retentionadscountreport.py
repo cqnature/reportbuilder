@@ -44,14 +44,14 @@ class Report(BaseReport):
             for i in range(4, len(lines)):
                 line = lines[i]
                 linesegments = line.split('|', 2)
-                start_count = linesegments[0]
-                end_count = linesegments[1]
+                start_count = int(linesegments[0])
+                end_count = sys.maxint if linesegments[1] == '' else int(linesegments[1])
                 formatstring = linesegments[2]
                 total_user_count = 0
                 for k in range(len(ads_count_results)):
                     ads_count_result = ads_count_results[k]
-                    if ads_count_result.view_count >= start_count and (end_count == '' or ads_count_result.view_count <= end_count):
+                    if ads_count_result.view_count >= start_count and ads_count_result.view_count <= end_count:
                         total_user_count += ads_count_result.user_count
-                lines[i] = formatstring.format(total_user_count, float(total_user_count)/float(retention_user_count))
+                lines[i] = formatstring.format(total_user_count, float(total_user_count)/float(retention_user_count) * 100)
             report_lines.extend(lines)
             file.close()
