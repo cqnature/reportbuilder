@@ -10,6 +10,7 @@ from ..base.report import *
 
 # 次留=1 三留=2 四留=3
 add_day = 1
+generate_header = False
 
 def add_map_key_count(map, key):
     if key == None:
@@ -43,6 +44,7 @@ class Report(BaseReport):
         for single_date in Date(self.start_date).rangeto(self.end_date, True):
             if Date(single_date).between(self.end_date) <= add_day:
                 continue
+            generate_header = False
             filepath = self.append_output_filename('_date_' + single_date)
             report_filepaths.append(filepath)
             with open(filepath, mode='w+') as out:
@@ -59,18 +61,24 @@ class Report(BaseReport):
 
     def generate_lostbehaviour_report_at_date(self, report_lines, date, rebirth, level):
         print("generate_lostbehaviour_report_at_date ", date)
+        global generate_header
         with open(self.etc_filepath) as file:
             # 新增用户数
             firstopen_usercount = get_firstopen_usercount(self.querysql, date)
             if firstopen_usercount == 0:
                 return;
+            has_header = False
             lines = file.readlines()
-            lines[0] = lines[0].strip().format(Date(date).formatmd())
-            lines[1] = lines[1].strip().format(firstopen_usercount)
-            # 次日留存用户数
             cur_date = Date(date)
-            retention_usercount = get_retention_usercount(self.querysql, date, cur_date.adddays(add_day))
-            lines[2] = lines[2].strip().format(retention_usercount, 100*float(retention_usercount)/float(firstopen_usercount))
+            if not generate_header:
+                lines[0] = lines[0].strip().format(Date(date).formatmd())
+                lines[1] = lines[1].strip().format(firstopen_usercount)
+                # 次日留存用户数
+                retention_usercount = get_retention_usercount(self.querysql, date, cur_date.adddays(add_day))
+                lines[2] = lines[2].strip().format(retention_usercount, 100*float(retention_usercount)/float(firstopen_usercount))
+                generate_header = True
+                has_header = True
+
             behaviour_results = None
             if rebirth == 0 and level == 1:
                 behaviour_results = self.querysql.get_result("behaviour_of_lost_users_0.sql", date, cur_date.adddays(add_day), cur_date.adddays(add_day - 1))
@@ -92,5 +100,8 @@ class Report(BaseReport):
             start_index = len(lines)
             for k in range(key_count):
                 print_map(lines, dataset_map[k], start_index, max_count, firstopen_usercount)
-            report_lines.extend(lines)
+            if has_header:
+                report_lines.extend(lines)
+            else:
+                report_lines.extend(lines[3:])
             file.close()
