@@ -39,21 +39,22 @@ class Report(BaseReport):
     def do_generate(self):
         print 'do generate report'
         report_filepaths = []
-        for rebirth in range(0, 1):
-            for level in range(1, 21):
-                if rebirth == 1 and level == 1:
-                    continue
-                filepath = self.append_output_filename('_rebirth_' + str(rebirth) + '_level_' + str(level))
-                report_filepaths.append(filepath)
-                with open(filepath, mode='w+') as out:
-                    report_lines = []
-                    for single_date in Date(self.start_date).rangeto(self.end_date, True):
-                        if Date(single_date).between(self.end_date) <= add_day:
+
+        for single_date in Date(self.start_date).rangeto(self.end_date, True):
+            if Date(single_date).between(self.end_date) <= add_day:
+                continue
+            filepath = self.append_output_filename('_date_' + single_date)
+            report_filepaths.append(filepath)
+            with open(filepath, mode='w+') as out:
+                report_lines = []
+                for rebirth in range(0, 1):
+                    for level in range(1, 51):
+                        if rebirth == 1 and level == 1:
                             continue
                         self.generate_lostbehaviour_report_at_date(report_lines, single_date, rebirth, level)
-                    reportstring = '\n'.join(report_lines)
-                    out.write(reportstring)
-                    out.close()
+                reportstring = '\n'.join(report_lines)
+                out.write(reportstring)
+                out.close()
         return report_filepaths
 
     def generate_lostbehaviour_report_at_date(self, report_lines, date, rebirth, level):

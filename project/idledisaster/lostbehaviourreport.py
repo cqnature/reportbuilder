@@ -39,21 +39,22 @@ class Report(BaseReport):
     def do_generate(self):
         print 'do generate report'
         report_filepaths = []
-        for rebirth in range(0, 1):
-            for level in range(1, 11):
-                if rebirth == 1 and level == 1:
-                    continue
-                filepath = self.append_output_filename('_rebirth_' + str(rebirth) + '_level_' + str(level))
-                report_filepaths.append(filepath)
-                with open(filepath, mode='w+') as out:
-                    report_lines = []
-                    for single_date in Date(self.start_date).rangeto(self.end_date, True):
-                        if Date(single_date).between(self.end_date) <= add_day:
+
+        for single_date in Date(self.start_date).rangeto(self.end_date, True):
+            if Date(single_date).between(self.end_date) <= add_day:
+                continue
+            filepath = self.append_output_filename('_date_' + single_date)
+            report_filepaths.append(filepath)
+            with open(filepath, mode='w+') as out:
+                report_lines = []
+                for rebirth in range(0, 1):
+                    for level in range(1, 51):
+                        if rebirth == 1 and level == 1:
                             continue
                         self.generate_lostbehaviour_report_at_date(report_lines, single_date, rebirth, level)
-                    reportstring = '\n'.join(report_lines)
-                    out.write(reportstring)
-                    out.close()
+                reportstring = '\n'.join(report_lines)
+                out.write(reportstring)
+                out.close()
         return report_filepaths
 
     def generate_lostbehaviour_report_at_date(self, report_lines, date, rebirth, level):
@@ -79,7 +80,7 @@ class Report(BaseReport):
             lines[3] = lines[3].strip().format(rebirth, level, lost_usercount, 100*float(lost_usercount)/float(firstopen_usercount))
             lines[4] = lines[4].strip()
             dataset_map = []
-            key_count = 5
+            key_count = 21
             key_offset = 3
             for k in range(key_count):
                 dataset_map.append({})
