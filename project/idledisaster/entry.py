@@ -65,4 +65,6 @@ class Entry(BaseEntry):
         #     report_filepaths.extend(generate_button_behaviour_report(self.query_config, self.start_date))
         if self.option & ReportFlag.lost_ads:
             report_filepaths.extend(generate_lost_ads_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.retention_ads_count:
+            report_filepaths.extend(generate_retention_ads_count_report(self.query_config, self.start_date))
         return report_filepaths
