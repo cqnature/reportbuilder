@@ -18,6 +18,7 @@ from daystagereport import generate_day_stage_report
 from buttonbehaviourreport import generate_button_behaviour_report
 from lostbehaviourreport import generate_lostbehaviour_report
 from lostadsreport import generate_lost_ads_report
+from retentionadscountreport import generate_retention_ads_count_report
 
 class Entry(BaseEntry):
     def __init__(self, option, *parameter):

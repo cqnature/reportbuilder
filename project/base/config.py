@@ -22,6 +22,7 @@ class ReportFlag:
     button_behaviour = 1 << 13
     retention_event = 1 << 14
     lost_ads = 1 << 15
+    retention_ads_count = 1 << 16
 
     def __init__(self, flags):
         self.option = 0
