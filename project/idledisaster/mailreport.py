@@ -22,7 +22,7 @@ class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
         self.mode = ReportMode.mail
-        self.partner_email = ["river@aladinfun.com", "carl@aladinfun.com", "yinlong@clicksplay.com", "daniel@clicksplay.com", "liuliang@clicksplay.com"]
+        self.partner_email = []
 
     def do_generate(self):
         print 'do generate report'
@@ -40,17 +40,17 @@ class Report(BaseReport):
                 latelyhtmlcode = self.generate_mail_lately_report()
                 adshtmlcode = self.generate_mail_ads_report()
                 retentionhtmlcode = self.generate_mail_retention_report()
-                line('h1', '一、三日基础数据更新')
+                # line('h1', '数据总表')
                 doc.asis(str(latelyhtmlcode))
-                line('h1', '二、数据对比，分析问题')
-                line('h2', '广告人均观看次数对比')
-                doc.asis(str(adshtmlcode))
-                line('h2', '留存率对比')
-                doc.asis(str(retentionhtmlcode))
-                if self.query_config.contain_roi:
-                    line('h2', '回收数据')
-                    roihtmlcode = self.generate_mail_roi_report()
-                    doc.asis(str(roihtmlcode))
+                # line('h1', '二、数据对比，分析问题')
+                # line('h2', '广告人均观看次数对比')
+                # doc.asis(str(adshtmlcode))
+                # line('h2', '留存率对比')
+                # doc.asis(str(retentionhtmlcode))
+                # if self.query_config.contain_roi:
+                #     line('h2', '回收数据')
+                #     roihtmlcode = self.generate_mail_roi_report()
+                #     doc.asis(str(roihtmlcode))
         return doc.getvalue()
 
     def generate_mail_roi_report(self):
@@ -129,30 +129,51 @@ class Report(BaseReport):
     def generate_mail_lately_report(self):
         print 'generate_mail_lately_report from: ', self.start_date, " to: ", self.end_date
         htmlcode = Table()
-        header_row = ['日期', '新注册用户', '首日广告观看次数', '次日广告观看次数', '三日广告观看次数', '次留', '三留']
         cells = []
-        for k in range(len(header_row)):
-            cells.append(TableCell(header_row[k], header=True, bgcolor='grey'))
+        cells.append(TableCell("日期", header=True, bgcolor='grey', attribs={"rowspan":2}))
+        cells.append(TableCell("DAU", header=True, bgcolor='grey', attribs={"rowspan":2}))
+        cells.append(TableCell("新增", header=True, bgcolor='grey', attribs={"rowspan":2}))
+        cells.append(TableCell("留存", header=True, bgcolor='grey', attribs={"colspan":6}))
+        cells.append(TableCell("广告次数", header=True, bgcolor='grey', attribs={"colspan":7}))
+        cells.append(TableCell("7日总广告次数", header=True, bgcolor='grey', attribs={"rowspan":2}))
         htmlcode.rows.append(cells)
-        lately_date = max(Date(self.end_date).adddays(-2), self.start_date)
+        cells = []
+        cells.append(TableCell("次留", bgcolor='grey'))
+        for k in range(5):
+            cells.append(TableCell("{0}留".format(k + 3), header=True, bgcolor='grey'))
+        for k in range(7):
+            cells.append(TableCell("D{0}".format(k + 1), header=True, bgcolor='grey'))
+        htmlcode.rows.append(cells)
+        lately_date = max(Date(self.end_date).adddays(-14), self.start_date)
         for date in Date(lately_date).rangeto(self.end_date, True):
-            first_user_count = self.get_firstopen_count(date)
-            if first_user_count == 0:
+            daily_user_count = self.get_daily_count(date)
+            if daily_user_count == 0:
                 continue
+            first_user_count = self.get_firstopen_count(date)
             cells = []
             cells.append(Date(date).formatmd())
+            cells.append(str(daily_user_count))
             cells.append(str(first_user_count))
-            for k in range(3):
-                single_date = Date(date).adddays(k)
-                ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
-                user_count = self.get_retention_count(date, single_date)
-                view_count = sum(1 for _ in ads_view_count_results)
-                average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
-                cells.append("{0:.2f}".format(average_view_count))
-            for k in range(2):
+            for k in range(6):
                 single_date = Date(date).adddays(k + 1)
-                user_count = self.get_retention_count(date, single_date)
-                cells.append("{0:.2f}%".format(100*float(user_count)/float(first_user_count)))
+                if Date(single_date).between(self.end_date) <= 0:
+                    cells.append("N/A")
+                else:
+                    user_count = self.get_retention_count(date, single_date)
+                    cells.append("{0:.2f}%".format(100*float(user_count)/float(first_user_count)))
+            total_ad_count = 0
+            for k in range(7):
+                single_date = Date(date).adddays(k)
+                if Date(single_date).between(self.end_date) <= 0:
+                    cells.append("N/A")
+                else:
+                    ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
+                    user_count = self.get_retention_count(date, single_date)
+                    view_count = sum(1 for _ in ads_view_count_results)
+                    average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
+                    cells.append("{0:.2f}".format(average_view_count))
+                    total_ad_count += average_view_count
+            cells.append("{0:.2f}".format(total_ad_count))
             htmlcode.rows.append(cells)
         return htmlcode
 
