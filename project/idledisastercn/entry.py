@@ -23,7 +23,7 @@ from retentionadscountreport import generate_retention_ads_count_report
 class Entry(BaseEntry):
     def __init__(self, option, *parameter):
         super(Entry, self).__init__(option, *parameter)
-        self.detail_email.extend(['eli@peakxgames.com', 'kinder@peakxgames.com', 'near@peakxgames.com', 'nero@peakxgames.com', 'bear@peakxgames.com'])
+        self.detail_email.extend(['bear@peakxgames.com'])
 
     def generate_report(self):
         package_name = __name__.split('.')[-2]
@@ -37,8 +37,8 @@ class Entry(BaseEntry):
         print 'idlesheep do_generate_report'
         report_filepaths = []
         # 开启代理
-        if self.option & ReportFlag.mail:
-            report_filepaths.extend(generate_mail_report(self.query_config, self.start_date))
+        # if self.option & ReportFlag.mail:
+        #     report_filepaths.extend(generate_mail_report(self.query_config, self.start_date))
         if self.option & ReportFlag.lost_level:
             report_filepaths.extend(generate_lostplant_report(self.query_config, self.start_date))
         if self.option & ReportFlag.retention_level:
