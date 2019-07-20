@@ -39,6 +39,8 @@ class Report(BaseReport):
                     for k in range(len(head_lines4)):
                         append_line(report_lines, k, head_lines4[k].format(d + 3))
                 file.close()
+            for single_date in self.extra_date:
+                self.generate_lostplant_report_at_date(report_lines, single_date)
             lately_date = max(Date(self.end_date).adddays(-14), self.start_date)
             for single_date in Date(lately_date).rangeto(self.end_date, True):
                 self.generate_lostplant_report_at_date(report_lines, single_date)
@@ -48,7 +50,7 @@ class Report(BaseReport):
         return [self.output_filepath]
 
     def get_plane_max_level(self):
-        return 4;
+        return 4
 
     def generate_lostplant_report_at_date(self, report_lines, date):
         print("generate_lostplant_report_at_date ", date)
@@ -56,7 +58,7 @@ class Report(BaseReport):
         with open(self.etc_filepath) as file:
             firstopen_usercount = self.get_firstopen_count(date)
             if firstopen_usercount == 0:
-                return;
+                return
 
             line_string = ""
             line_string += "{0},".format(Date(date).formatmd())

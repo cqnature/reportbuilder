@@ -31,6 +31,8 @@ class Report(BaseReport):
                 head_lines1 = [x.strip() for x in lines[0:1]]
                 report_lines.extend(head_lines1)
                 file.close()
+            for single_date in self.extra_date:
+                self.generate_stage_report_at_date(report_lines, single_date)
             for single_date in Date(self.start_date).rangeto(self.end_date, True):
                 self.generate_stage_report_at_date(report_lines, single_date)
             reportstring = '\n'.join(report_lines)
@@ -43,7 +45,7 @@ class Report(BaseReport):
         with open(self.etc_filepath) as file:
             firstopen_usercount = self.get_firstopen_count(date)
             if firstopen_usercount == 0:
-                return;
+                return
 
             lines = file.readlines()
             head_line = [x.strip() for x in lines[1:2]][0]

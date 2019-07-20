@@ -45,28 +45,32 @@ class Report(BaseReport):
     def do_generate(self):
         print 'do generate report'
         report_filepaths = []
-
+        for single_date in self.extra_date:
+            self.generate_lostbehaviour_report_at(single_date, report_filepaths)
         for single_date in Date(self.start_date).rangeto(self.end_date, True):
-            if Date(single_date).between(self.end_date) <= lost_day:
-                continue
-            filepath = self.append_output_filename('_date_' + single_date)
-            report_filepaths.append(filepath)
-            with open(filepath, mode='w+') as out:
-                report_lines = []
-                with open(self.etc_filepath) as file:
-                    lines = file.readlines()
-                    head_lines1 = [x.strip() for x in lines[0:2]]
-                    report_lines.extend(head_lines1)
-                    file.close()
-                for rebirth in range(0, area_id):
-                    for level in range(1, max_level + 1):
-                        if rebirth == 1 and level == 1:
-                            continue
-                        self.generate_lostbehaviour_report_at_date(report_lines, single_date, rebirth, level)
-                reportstring = '\n'.join(report_lines)
-                out.write(reportstring)
-                out.close()
+            self.generate_lostbehaviour_report_at(single_date, report_filepaths)
         return report_filepaths
+
+    def generate_lostbehaviour_report_at(self, single_date, report_filepaths):
+        if Date(single_date).between(self.end_date) <= lost_day:
+            return
+        filepath = self.append_output_filename('_date_' + single_date)
+        report_filepaths.append(filepath)
+        with open(filepath, mode='w+') as out:
+            report_lines = []
+            with open(self.etc_filepath) as file:
+                lines = file.readlines()
+                head_lines1 = [x.strip() for x in lines[0:2]]
+                report_lines.extend(head_lines1)
+                file.close()
+            for rebirth in range(0, area_id):
+                for level in range(1, max_level + 1):
+                    if rebirth == 1 and level == 1:
+                        continue
+                    self.generate_lostbehaviour_report_at_date(report_lines, single_date, rebirth, level)
+            reportstring = '\n'.join(report_lines)
+            out.write(reportstring)
+            out.close()
 
     def generate_lostbehaviour_report_at_date(self, report_lines, date, rebirth, level):
         print("generate_lostbehaviour_report_at_date ", date)
@@ -74,7 +78,7 @@ class Report(BaseReport):
             # 新增用户数
             firstopen_usercount = get_firstopen_usercount(self.querysql, date)
             if firstopen_usercount == 0:
-                return;
+                return
 
             cur_date = Date(date)
             behaviour_results = None
