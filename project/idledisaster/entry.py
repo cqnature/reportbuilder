@@ -55,8 +55,8 @@ class Entry(BaseEntry):
         #     report_filepaths.extend(generate_total_ads_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.iap_behaviour:
         #     report_filepaths.extend(generate_iap_behaviour_report(self.query_config, self.start_date))
-        if self.option & ReportFlag.lost_behaviour:
-            report_filepaths.extend(generate_lostbehaviour_report(self.query_config, self.start_date))
+        # if self.option & ReportFlag.lost_behaviour:
+        #     report_filepaths.extend(generate_lostbehaviour_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_behaviour:
         #     report_filepaths.extend(generate_retentionbehaviour_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.day_stage:
