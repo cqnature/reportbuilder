@@ -56,3 +56,4 @@ FROM
     A.user_pseudo_id = B.user_pseudo_id
     AND A.event_timestamp = B.event_timestamp
     AND A.af_event_id = {5}
+GROUP BY B.level
