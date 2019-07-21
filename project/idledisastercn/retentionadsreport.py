@@ -60,7 +60,7 @@ class Report(BaseReport):
             user_count = firstopen_usercount
             for row in area_view_count_results:
                 if row.max_area == area_id:
-                    line_string += "{0},{1},".format(100*float(row.ads_user_count)/float(user_count), float(row.ads_view_count)/float(user_count))
+                    line_string += "{0:.2f}%,{1:.2f},".format(100*float(row.ads_user_count)/float(user_count), float(row.ads_view_count)/float(user_count))
 
             head_line = [x.strip() for x in lines[2:3]][0]
             head_lines = head_line.split(',')
