@@ -8,6 +8,8 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
+lost_day = 1
+
 def generate_retention_ads_count_report(query_config, date):
     return Report(query_config, date).generate()
 
@@ -53,7 +55,9 @@ class Report(BaseReport):
             line_string += "{0},".format(firstopen_usercount)
             ads_usercount_results = self.get_result("ads_usercount_of_retention_users.sql", date, date)
             ads_usercount = sum(1 for _ in ads_usercount_results)
+            line_string += "{0},".format(ads_usercount)
 
+            lines = file.readlines()
             head_line = [x.strip() for x in lines[1:2]][0]
             head_lines = head_line.split(',')[3:]
             for head in head_lines:
@@ -65,6 +69,6 @@ class Report(BaseReport):
                     data = ads_count_results[k]
                     if data[0] >= min_count and data[0] <= max_count:
                         level_user_count += data[1]
-                line_string += "{0:.2f},".format(level_user_count)
+                line_string += "{0},".format(level_user_count)
             append_line(report_lines, len(report_lines), line_string)
             file.close()
