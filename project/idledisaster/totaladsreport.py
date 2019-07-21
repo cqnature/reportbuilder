@@ -76,7 +76,7 @@ class Report(BaseReport):
                 for row in ads_view_count_results:
                     progress_data = progress_data_map[row.max_area]
                     progress_data[1] = 100*float(row.ads_user_count)/float(user_count)
-                    progress_data[2] = float(row.ads_view_count)/float(row.ads_user_count)
+                    progress_data[2] = float(row.ads_view_count)/float(user_count)
                 for k in ads_base_datas:
                     line_string += "{0:.2f}%,{1:.2f},".format(k[1], k[2])
         append_line(report_lines, len(report_lines), line_string)

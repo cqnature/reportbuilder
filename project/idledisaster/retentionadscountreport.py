@@ -15,15 +15,26 @@ class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
         self.etc_filename = 'ads_count_of_retention_users.csv'
-        self.output_filename = 'retention_ads_count_report.csv'
+        country_string = "CN" if self.query_config.geo_country == 'China' else "US"
+        platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
+        self.output_filename = "{0}-{1}-Day{2}-Ad-Range-{2}.csv".format(country_string, platform_string, lost_day, self.end_date)
 
     def do_generate(self):
         print 'do generate report'
         with open(self.output_filepath, mode='w+') as out:
             report_lines = []
-            for single_date in Date(self.start_date).rangeto(self.end_date, True):
+            with open(self.etc_filepath) as file:
+                lines = file.readlines()
+                head_lines1 = [x.strip() for x in lines[0:1]]
+                for k in range(len(head_lines1)):
+                    append_line(report_lines, k, head_lines1[k])
+                file.close()
+            for single_date in self.extra_date:
                 self.generate_retention_ads_count_report_at_date(report_lines, single_date)
-            reportstring = ''.join(report_lines)
+            lately_date = max(Date(self.end_date).adddays(-14), self.start_date)
+            for single_date in Date(lately_date).rangeto(self.end_date, True):
+                self.generate_retention_ads_count_report_at_date(report_lines, single_date)
+            reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
         return [self.output_filepath]
@@ -31,27 +42,29 @@ class Report(BaseReport):
     def generate_retention_ads_count_report_at_date(self, report_lines, date):
         print("generate_retention_ads_count_report_at_date ", date)
         with open(self.etc_filepath) as file:
-            lines = file.readlines()
-            retention_user_count = self.get_retention_count(date, date)
+            firstopen_usercount = self.get_firstopen_count(date)
+            if firstopen_usercount == 0:
+                return
             ads_count_results = self.get_result("ads_count_of_retention_users.sql", date, date)
             if len(ads_count_results) == 0:
                 return
-            lines[0] = lines[0].format(Date(date).formatmd())
-            lines[1] = lines[1].format(retention_user_count)
-            linesegments = lines[3].split('|', 2)
-            zero_user_count = retention_user_count - sum(t[1] for t in ads_count_results)
-            lines[3] = linesegments[2].format(zero_user_count, float(zero_user_count)/float(retention_user_count) * 100)
-            for i in range(4, len(lines)):
-                line = lines[i]
-                linesegments = line.split('|', 2)
-                start_count = int(linesegments[0])
-                end_count = sys.maxint if linesegments[1] == '' else int(linesegments[1])
-                formatstring = linesegments[2]
-                total_user_count = 0
+            line_string = ""
+            line_string += "{0},".format(Date(date).formatmd())
+            line_string += "{0},".format(firstopen_usercount)
+            ads_usercount_results = self.get_result("ads_usercount_of_retention_users.sql", date, date)
+            ads_usercount = sum(1 for _ in ads_usercount_results)
+
+            head_line = [x.strip() for x in lines[1:2]][0]
+            head_lines = head_line.split(',')[3:]
+            for head in head_lines:
+                headsegments = head.split('|')
+                min_count = int(headsegments[0])
+                max_count = sys.maxint if len(headsegments) == 1 else int(headsegments[1])
+                level_user_count = 0
                 for k in range(len(ads_count_results)):
-                    ads_count_result = ads_count_results[k]
-                    if ads_count_result.view_count >= start_count and ads_count_result.view_count <= end_count:
-                        total_user_count += ads_count_result.user_count
-                lines[i] = formatstring.format(total_user_count, float(total_user_count)/float(retention_user_count) * 100)
-            report_lines.extend(lines)
+                    data = ads_count_results[k]
+                    if data[0] >= min_count and data[0] <= max_count:
+                        level_user_count += data[1]
+                line_string += "{0:.2f},".format(level_user_count)
+            append_line(report_lines, len(report_lines), line_string)
             file.close()
