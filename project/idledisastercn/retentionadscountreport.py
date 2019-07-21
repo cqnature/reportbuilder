@@ -8,8 +8,6 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
-lost_day = 1
-
 def generate_retention_ads_count_report(query_config, date):
     return Report(query_config, date).generate()
 
@@ -19,7 +17,7 @@ class Report(BaseReport):
         self.etc_filename = 'ads_count_of_retention_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Day{2}-Ad-Range-{2}.csv".format(country_string, platform_string, lost_day, self.end_date)
+        self.output_filename = "{0}-{1}-Day1-Ad-Range-{2}.csv".format(country_string, platform_string, self.end_date)
 
     def do_generate(self):
         print 'do generate report'
