@@ -1,6 +1,6 @@
 SELECT
   max_level,
-  COUNT(user_pseudo_id) as user_count
+  COUNT(DISTINCT user_pseudo_id) as user_count
 FROM (
   SELECT
       user_pseudo_id,

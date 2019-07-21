@@ -1,7 +1,7 @@
 SELECT
   rebirth,
   level,
-  COUNT(user_pseudo_id) AS user_count
+  COUNT(DISTINCT user_pseudo_id) AS user_count
 FROM (
   SELECT
     C.user_pseudo_id,
