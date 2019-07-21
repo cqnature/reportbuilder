@@ -37,8 +37,8 @@ class Entry(BaseEntry):
         print 'idlesheep do_generate_report'
         report_filepaths = []
         # 开启代理
-        if self.option & ReportFlag.mail:
-            report_filepaths.extend(generate_mail_report(self.query_config, self.start_date))
+        # if self.option & ReportFlag.mail:
+        #     report_filepaths.extend(generate_mail_report(self.query_config, self.start_date))
         if self.option & ReportFlag.lost_level:
             report_filepaths.extend(generate_lostplant_report(self.query_config, self.start_date))
         if self.option & ReportFlag.retention_level:
@@ -47,12 +47,12 @@ class Entry(BaseEntry):
             report_filepaths.extend(generate_stage_report(self.query_config, self.start_date))
         if self.option & ReportFlag.retention_stage:
             report_filepaths.extend(generate_retention_stage_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.new_ads:
-        #     report_filepaths.extend(generate_new_ads_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.retention_ads:
-        #     report_filepaths.extend(generate_retention_ads_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.total_ads:
-        #     report_filepaths.extend(generate_total_ads_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.new_ads:
+            report_filepaths.extend(generate_new_ads_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.retention_ads:
+            report_filepaths.extend(generate_retention_ads_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.total_ads:
+            report_filepaths.extend(generate_total_ads_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.iap_behaviour:
         #     report_filepaths.extend(generate_iap_behaviour_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.lost_behaviour:
@@ -65,6 +65,6 @@ class Entry(BaseEntry):
         #     report_filepaths.extend(generate_button_behaviour_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.lost_ads:
         #     report_filepaths.extend(generate_lost_ads_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.retention_ads_count:
-        #     report_filepaths.extend(generate_retention_ads_count_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.retention_ads_count:
+            report_filepaths.extend(generate_retention_ads_count_report(self.query_config, self.start_date))
         return report_filepaths

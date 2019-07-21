@@ -63,7 +63,6 @@ class Report(BaseReport):
                 retention_base_datas = []
                 for row in retention_day_results:
                     retention_base_data = [row.rebirth, row.level, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
-                    print 'retention_base_data, rebirth:', row.rebirth, ' row.level:', row.level, ' row.user_count:', row.user_count
                     retention_base_datas.append(retention_base_data)
                 first_retention_usercount = current_retention_usercount - sum(t[2] for t in retention_base_datas)
                 retention_base_datas.insert(0, [0, 1, first_retention_usercount, 100*float(first_retention_usercount)/float(firstopen_usercount)])
