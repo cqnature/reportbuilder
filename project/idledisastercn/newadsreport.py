@@ -17,7 +17,7 @@ class Report(BaseReport):
         self.etc_filename = 'ads_view_of_new_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Day1-Ad-Range-{2}.csv".format(country_string, platform_string, self.end_date)
+        self.output_filename = "{0}-{1}-Day1-Ad-Scene-{2}.csv".format(country_string, platform_string, self.end_date)
 
     def do_generate(self):
         print 'do generate report'
@@ -45,10 +45,10 @@ class Report(BaseReport):
             firstopen_usercount = self.get_firstopen_count(date)
             if firstopen_usercount == 0:
                 return
-            ads_view_count_results = self.get_result("new_ads_view_count.sql", date, retention_date)
+            ads_view_count_results = self.get_result("new_ads_view_count.sql", date, date)
             if len(ads_view_count_results) == 0:
-                break
-            ads_view_user_results = self.get_result("new_ads_view_users.sql", date, retention_date)
+                return
+            ads_view_user_results = self.get_result("new_ads_view_users.sql", date, date)
 
             line_string = ""
             line_string += "{0},".format(Date(date).formatmd())
@@ -74,6 +74,6 @@ class Report(BaseReport):
                         ad_view_user_count = ads_view_user_result.ad_view_user_count
                         daily_ad_view_user_percent = ads_view_user_result.daily_ad_view_user_percent
                         break
-                line_string += "{0.2f}%,{1.2f},".format(daily_ad_view_user_percent * 100, daily_average_ad_view_count)
+                line_string += "{0:.2f}%,{1:.2f},".format(daily_ad_view_user_percent * 100, daily_average_ad_view_count)
             append_line(report_lines, len(report_lines), line_string)
             file.close()
