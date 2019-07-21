@@ -32,17 +32,16 @@ class Report(BaseReport):
                 report_lines.extend(head_lines1)
                 file.close()
             for single_date in self.extra_date:
-                self.generate_stage_report_at_date(report_lines, single_date)
+                self.generate_retention_stage_report_at_date(report_lines, single_date)
             for single_date in Date(self.start_date).rangeto(self.end_date, True):
-                self.generate_stage_report_at_date(report_lines, single_date)
+                self.generate_retention_stage_report_at_date(report_lines, single_date)
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
         return [self.output_filepath]
 
-    def generate_retention_stage_report_at_date(self, date):
+    def generate_retention_stage_report_at_date(self, report_lines, date):
         print("generate_retention_stage_report_at_date ", date)
-        report_lines = []
         with open(self.etc_filepath) as file:
             firstopen_usercount = self.get_firstopen_count(date)
             if firstopen_usercount == 0:
@@ -73,8 +72,8 @@ class Report(BaseReport):
                     min_level = int(headsegments[0])
                     max_level = sys.maxint if len(headsegments) == 1 else int(headsegments[1])
                     level_user_percent = 0
-                    for k in range(len(lost_base_datas)):
-                        data = lost_base_datas[k]
+                    for k in range(len(retention_base_datas)):
+                        data = retention_base_datas[k]
                         if data[0] == area_id - 1 and data[1] >= min_level and data[1] <= max_level:
                             level_user_percent += data[3]
                     line_string += "{0:.2f}%,".format(level_user_percent)
