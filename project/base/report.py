@@ -79,6 +79,11 @@ class BaseReport(object):
     def get_firstopen_count(self, date):
         return get_firstopen_usercount(self.querysql, date)
 
+    def get_firstopen_version(self, date):
+        firstopen_results = self.querysql.get_result("firstopen_app_version.sql", date)
+        app_versions = [x[0] for x in firstopen_results]
+        return '|'.join(app_versions)
+
     def get_lost_count(self, start_date, end_date):
         return get_lost_usercount(self.querysql, start_date, end_date)
 
