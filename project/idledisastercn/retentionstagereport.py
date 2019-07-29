@@ -8,7 +8,7 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
-lost_day = 1
+lost_day = 0
 area_id = 1
 
 def generate_retention_stage_report(query_config, date):
@@ -20,7 +20,7 @@ class Report(BaseReport):
         self.etc_filename = 'stage_progress_of_retention_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Day{2}-RetentionUser-Area{3}-Level-{4}.csv".format(country_string, platform_string, lost_day, area_id, self.end_date)
+        self.output_filename = "{0}-{1}-Day{2}-RetentionUser-Area{3}-Level-{4}.csv".format(country_string, platform_string, lost_day + 1, area_id, self.end_date)
 
     def do_generate(self):
         print 'do generate report'

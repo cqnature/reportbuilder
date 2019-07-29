@@ -8,7 +8,7 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
-lost_day = 1
+lost_day = 0
 area_id = 1
 
 def generate_retention_stage_report(query_config, date):
@@ -20,7 +20,7 @@ class Report(BaseReport):
         self.etc_filename = 'stage_progress_of_retention_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Day{2}-RetentionUser-Area{3}-Level-{4}.csv".format(country_string, platform_string, lost_day, area_id, self.end_date)
+        self.output_filename = "{0}-{1}-Day{2}-RetentionUser-Area{3}-Level-{4}.csv".format(country_string, platform_string, lost_day + 1, area_id, self.end_date)
 
     def do_generate(self):
         print 'do generate report'
@@ -47,7 +47,6 @@ class Report(BaseReport):
             if firstopen_usercount == 0:
                 return;
 
-            print 'firstopen_usercount: ', firstopen_usercount
             lines = file.readlines()
             head_line = [x.strip() for x in lines[1:2]][0]
             line_string = ""
@@ -59,7 +58,7 @@ class Report(BaseReport):
                 current_retention_usercount = self.get_retention_count(date, single_date)
                 # 流失分布查询
                 retention_day_results = self.get_result("stage_progress_of_retention_users.sql", date, single_date)
-                print 'current_retention_usercount: ', current_retention_usercount
+
                 retention_base_datas = []
                 for row in retention_day_results:
                     retention_base_data = [row.rebirth, row.level, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
