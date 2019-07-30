@@ -8,6 +8,8 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
+lost_day = 1
+
 def generate_new_ads_report(query_config, date):
     return Report(query_config, date).generate()
 
@@ -17,7 +19,7 @@ class Report(BaseReport):
         self.etc_filename = 'ads_view_of_new_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Day1-Ad-Scene-{2}.csv".format(country_string, platform_string, self.end_date)
+        self.output_filename = "{0}-{1}-Day{2}-Ad-Scene-{3}.csv".format(country_string, platform_string, lost_day + 1, self.end_date)
 
     def do_generate(self):
         print 'do generate report'
@@ -45,10 +47,11 @@ class Report(BaseReport):
             firstopen_usercount = self.get_firstopen_count(date)
             if firstopen_usercount == 0:
                 return
-            ads_view_count_results = self.get_result("new_ads_view_count.sql", date, date)
+            single_date = Date(date).adddays(lost_day)
+            ads_view_count_results = self.get_result("new_ads_view_count.sql", date, single_date)
             if len(ads_view_count_results) == 0:
                 return
-            ads_view_user_results = self.get_result("new_ads_view_users.sql", date, date)
+            ads_view_user_results = self.get_result("new_ads_view_users.sql", date, single_date)
 
             line_string = ""
             line_string += "{0},".format(Date(date).formatmd())
