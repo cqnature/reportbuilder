@@ -8,7 +8,7 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
-lost_day = 1
+lost_day = 2
 area_id = 1
 
 def generate_stage_report(query_config, date):
@@ -52,22 +52,21 @@ class Report(BaseReport):
             line_string = ""
             line_string += "{0},".format(Date(date).formatmd())
             line_string += "{0},".format(firstopen_usercount)
-            lost_base_datas = []
-            lost_base_usercount = 0
             # 留存率查询
             single_date = Date(date).adddays(lost_day)
             if Date(single_date).between(self.end_date) > 0:
-                current_lost_usercount = self.get_lost_count(date, single_date)
-                line_string += "{0:.2f}%,".format(100*float(firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
                 # 流失分布查询
-                lost_day_results = self.get_result("stage_progress_of_lost_users.sql", date, single_date)
-                for row in lost_day_results:
+                lost_base_datas = []
+                base_date = Date(date).adddays(lost_day - 1)
+                lost_base_usercount = self.get_lost_count(date, base_date)
+                lost_base_results = self.get_result("stage_progress_of_lost_users.sql", date, base_date)
+                for row in lost_base_results:
                     lost_base_data = [row.rebirth, row.level, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                     lost_base_datas.append(lost_base_data)
-                first_lost_usercount = current_lost_usercount - sum(t[2] for t in lost_base_datas)
+                first_lost_usercount = lost_base_usercount - sum(t[2] for t in lost_base_datas)
                 lost_base_datas.insert(0, [0, 1, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
-                lost_base_usercount = current_lost_usercount
 
+                lost_base_levels = []
                 head_lines = head_line.split(',')[3:]
                 for head in head_lines:
                     headsegments = head.split('|')
@@ -78,7 +77,38 @@ class Report(BaseReport):
                         data = lost_base_datas[k]
                         if data[0] == area_id - 1 and data[1] >= min_level and data[1] <= max_level:
                             level_user_percent += data[3]
-                    line_string += "{0:.2f}%,".format(level_user_percent)
+                    lost_base_levels.append(level_user_percent)
+
+                current_lost_usercount = self.get_lost_count(date, single_date)
+                line_string += "{0:.2f}%,".format(100*float(firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
+
+                lost_day_datas = []
+                lost_day_usercount = 0
+                lost_day_results = self.get_result("stage_progress_of_lost_users.sql", date, single_date)
+                for row in lost_day_results:
+                    lost_day_data = [row.rebirth, row.level, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
+                    lost_day_datas.append(lost_day_data)
+                first_lost_usercount = current_lost_usercount - sum(t[2] for t in lost_day_datas)
+                lost_day_datas.insert(0, [0, 1, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
+
+                lost_day_levels = []
+                head_lines = head_line.split(',')[3:]
+                for head in head_lines:
+                    headsegments = head.split('|')
+                    min_level = int(headsegments[0])
+                    max_level = sys.maxint if len(headsegments) == 1 else int(headsegments[1])
+                    level_user_percent = 0
+                    for k in range(len(lost_day_datas)):
+                        data = lost_day_datas[k]
+                        if data[0] == area_id - 1 and data[1] >= min_level and data[1] <= max_level:
+                            level_user_percent += data[3]
+                    lost_day_levels.append(level_user_percent)
+
+                for k in range(len(lost_day_levels)):
+                    lost_base_level = lost_base_levels[k]
+                    lost_day_level = lost_day_levels[k]
+                    line_string += "{0:.2f}%,".format(lost_day_level - lost_base_level)
+
             # 数据拼接
             append_line(report_lines, len(report_lines), line_string)
             file.close()
