@@ -8,8 +8,8 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
-lost_day = 3
-area_id = 1
+lost_day = 2
+area_id = 2
 
 def generate_stage_report(query_config, date):
     return Report(query_config, date).generate()
