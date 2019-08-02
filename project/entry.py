@@ -19,6 +19,7 @@ def generate_report_us(option, *parameter):
     # IdleSheepCnEntry(option, *parameter).generate_report()
     # IdleSheepJrttEntry(option, *parameter).generate_report()
     # IdleDisasterCnEntry(option, *parameter).generate_report()
+    print "do nothing"
 
 def generate_report_cn(option, *parameter):
     # MergeFoodEntry(option, *parameter).generate_report()
