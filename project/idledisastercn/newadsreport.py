@@ -8,7 +8,7 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
-lost_day = 1
+lost_day = 0
 
 def generate_new_ads_report(query_config, date):
     return Report(query_config, date).generate()
