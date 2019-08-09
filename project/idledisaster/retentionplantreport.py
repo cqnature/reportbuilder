@@ -44,7 +44,7 @@ class Report(BaseReport):
         return [self.output_filepath]
 
     def get_plane_max_level(self):
-        return 4;
+        return 5;
 
     def generate_retentionplant_report_at_date(self, report_lines, date):
         print("generate_retentionplant_report_at_date ", date)
