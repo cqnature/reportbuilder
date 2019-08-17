@@ -8,7 +8,7 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
-add_scene_count = 12
+add_scene_count = 13
 
 def generate_lost_ads_report(query_config, date):
     return Report(query_config, date).generate()
