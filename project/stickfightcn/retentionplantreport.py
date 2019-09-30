@@ -17,7 +17,7 @@ class Report(BaseReport):
         self.etc_filename = 'plant_progress_of_retention_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-RetentionUser-Area-{2}.csv".format(country_string, platform_string, self.end_date)
+        self.output_filename = "{0}-{1}-RetentionUser-Chapter-{2}.csv".format(country_string, platform_string, self.end_date)
 
     def do_generate(self):
         print 'do generate report'
@@ -62,15 +62,15 @@ class Report(BaseReport):
             signup_base_datas = []
             progress_data_map = {}
             for k in range(0, chapter_id):
-                signup_base_data = [k, 0, 0]
+                signup_base_data = [k + 1, 0, 0]
                 signup_base_datas.append(signup_base_data)
-                progress_data_map[k] = signup_base_data
+                progress_data_map[k + 1] = signup_base_data
             for row in signup_day_progress_results:
                 progress_data = progress_data_map[row.chapter_id]
                 progress_data[1] = row.user_count
                 progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
                 total_level_user_count += row.user_count
-            first_progress_data = progress_data_map[0]
+            first_progress_data = progress_data_map[1]
             first_progress_data[1] = first_progress_data[1] + firstopen_usercount - total_level_user_count
             first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
             for k in range(len(signup_base_datas)):
@@ -88,9 +88,9 @@ class Report(BaseReport):
                     current_retention_datas = []
                     progress_data_map = {}
                     for k in range(0, chapter_id):
-                        data = [k, 0, 0]
+                        data = [k + 1, 0, 0]
                         current_retention_datas.append(data)
-                        progress_data_map[k] = data
+                        progress_data_map[k + 1] = data
                     for row in retention_day_results:
                         progress_data = progress_data_map[row.chapter_id]
                         progress_data[1] = row.user_count

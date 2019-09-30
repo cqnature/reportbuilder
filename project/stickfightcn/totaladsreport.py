@@ -17,7 +17,7 @@ class Report(BaseReport):
         self.etc_filename = 'total_ads_view_of_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Ad-Area-{2}.csv".format(country_string, platform_string, self.end_date)
+        self.output_filename = "{0}-{1}-Ad-Stage-{2}.csv".format(country_string, platform_string, self.end_date)
 
 
     def do_generate(self):

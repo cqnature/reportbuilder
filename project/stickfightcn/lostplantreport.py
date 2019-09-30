@@ -67,15 +67,15 @@ class Report(BaseReport):
             signup_base_datas = []
             progress_data_map = {}
             for k in range(0, chapter_id):
-                signup_base_data = [k, 0, 0]
+                signup_base_data = [k + 1, 0, 0]
                 signup_base_datas.append(signup_base_data)
-                progress_data_map[k] = signup_base_data
+                progress_data_map[k + 1] = signup_base_data
             for row in signup_day_progress_results:
                 progress_data = progress_data_map[row.chapter_id]
                 progress_data[1] = row.user_count
                 progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
                 total_level_user_count += row.user_count
-            first_progress_data = progress_data_map[0]
+            first_progress_data = progress_data_map[1]
             first_progress_data[1] = first_progress_data[1] + firstopen_usercount - total_level_user_count
             first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
             line_string += "{0},".format(firstopen_usercount)
@@ -97,14 +97,14 @@ class Report(BaseReport):
                     if currentDayIndex == 1:
                         progress_data_map = {}
                         for k in range(0, chapter_id):
-                            lost_base_data = [k, 0, 0]
+                            lost_base_data = [k + 1, 0, 0]
                             lost_base_datas.append(lost_base_data)
-                            progress_data_map[k] = lost_base_data
+                            progress_data_map[k + 1] = lost_base_data
                         for row in lost_day_results:
                             progress_data = progress_data_map[row.chapter_id]
                             progress_data[1] = row.user_count
                             progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
-                        first_progress_data = progress_data_map[0]
+                        first_progress_data = progress_data_map[1]
                         first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in lost_base_datas)
                         first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
                         lost_base_usercount = current_lost_usercount
@@ -116,14 +116,14 @@ class Report(BaseReport):
                         current_lost_datas = []
                         progress_data_map = {}
                         for k in range(0, chapter_id):
-                            current_lost_data = [k, 0, 0]
+                            current_lost_data = [k + 1, 0, 0]
                             current_lost_datas.append(current_lost_data)
-                            progress_data_map[k] = current_lost_data
+                            progress_data_map[k + 1] = current_lost_data
                         for row in lost_day_results:
                             progress_data = progress_data_map[row.chapter_id]
                             progress_data[1] = row.user_count
                             progress_data[2] = 100*float(row.user_count)/float(firstopen_usercount)
-                        first_progress_data = progress_data_map[0]
+                        first_progress_data = progress_data_map[1]
                         first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in current_lost_datas)
                         first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
                         lost_base_usercount = current_lost_usercount

@@ -64,7 +64,15 @@ class Report(BaseReport):
                     retention_base_data = [row.chapter_id, row.stage_id, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                     retention_base_datas.append(retention_base_data)
                 first_retention_usercount = current_retention_usercount - sum(t[2] for t in retention_base_datas)
-                retention_base_datas.insert(0, [0, 1, first_retention_usercount, 100*float(first_retention_usercount)/float(firstopen_usercount)])
+                first_stage_found = False
+                for item in retention_base_datas:
+                    if item[0] == chapter_id and item[1] == 0:
+                        first_stage_found = True
+                        item[2] = item[2] + first_retention_usercount
+                        item[3] = 100*float(item[3])/float(firstopen_usercount)
+                        break
+                if not first_stage_found:
+                    retention_base_datas.insert(0, [1, 0, first_retention_usercount, 100*float(first_retention_usercount)/float(firstopen_usercount)])
 
                 head_lines = head_line.split(',')[2:]
                 for head in head_lines:
@@ -74,7 +82,7 @@ class Report(BaseReport):
                     level_user_percent = 0
                     for k in range(len(retention_base_datas)):
                         data = retention_base_datas[k]
-                        if data[0] == chapter_id - 1 and data[1] >= min_level and data[1] <= max_level:
+                        if data[0] == chapter_id and data[1] >= min_level and data[1] <= max_level:
                             level_user_percent += data[3]
                     line_string += "{0:.2f}%,".format(level_user_percent)
             # 数据拼接

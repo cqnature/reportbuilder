@@ -66,7 +66,15 @@ class Report(BaseReport):
                         lost_base_data = [row.chapter_id, row.stage_id, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                         lost_base_datas.append(lost_base_data)
                     first_lost_usercount = current_lost_usercount - sum(t[2] for t in lost_base_datas)
-                    lost_base_datas.insert(0, [0, 1, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
+                    first_stage_found = False
+                    for item in lost_base_datas:
+                        if item[0] == chapter_id and item[1] == 0:
+                            first_stage_found = True
+                            item[2] = item[2] + first_lost_usercount
+                            item[3] = 100*float(item[3])/float(firstopen_usercount)
+                            break
+                    if not first_stage_found:
+                        lost_base_datas.insert(0, [1, 0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
                     lost_base_usercount = current_lost_usercount
 
                     head_lines = head_line.split(',')[3:]
@@ -77,7 +85,7 @@ class Report(BaseReport):
                         level_user_percent = 0
                         for k in range(len(lost_base_datas)):
                             data = lost_base_datas[k]
-                            if data[0] == chapter_id - 1 and data[1] >= min_level and data[1] <= max_level:
+                            if data[0] == chapter_id and data[1] >= min_level and data[1] <= max_level:
                                 level_user_percent += data[3]
                         line_string += "{0:.2f}%,".format(level_user_percent)
 
@@ -93,8 +101,17 @@ class Report(BaseReport):
                     for row in lost_base_results:
                         lost_base_data = [row.chapter_id, row.stage_id, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                         lost_base_datas.append(lost_base_data)
+
                     first_lost_usercount = lost_base_usercount - sum(t[2] for t in lost_base_datas)
-                    lost_base_datas.insert(0, [0, 1, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
+                    first_stage_found = False
+                    for item in lost_base_datas:
+                        if item[0] == chapter_id and item[1] == 0:
+                            first_stage_found = True
+                            item[2] = item[2] + first_lost_usercount
+                            item[3] = 100*float(item[3])/float(firstopen_usercount)
+                            break
+                    if not first_stage_found:
+                        lost_base_datas.insert(0, [1, 0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
 
                     lost_base_levels = []
                     head_lines = head_line.split(',')[3:]
@@ -105,7 +122,7 @@ class Report(BaseReport):
                         level_user_percent = 0
                         for k in range(len(lost_base_datas)):
                             data = lost_base_datas[k]
-                            if data[0] == chapter_id - 1 and data[1] >= min_level and data[1] <= max_level:
+                            if data[0] == chapter_id and data[1] >= min_level and data[1] <= max_level:
                                 level_user_percent += data[3]
                         lost_base_levels.append(level_user_percent)
 
@@ -118,8 +135,17 @@ class Report(BaseReport):
                     for row in lost_day_results:
                         lost_day_data = [row.chapter_id, row.stage_id, row.user_count, 100*float(row.user_count)/float(firstopen_usercount)]
                         lost_day_datas.append(lost_day_data)
+
                     first_lost_usercount = current_lost_usercount - sum(t[2] for t in lost_day_datas)
-                    lost_day_datas.insert(0, [0, 1, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
+                    first_stage_found = False
+                    for item in lost_day_datas:
+                        if item[0] == chapter_id and item[1] == 0:
+                            first_stage_found = True
+                            item[2] = item[2] + first_lost_usercount
+                            item[3] = 100*float(item[3])/float(firstopen_usercount)
+                            break
+                    if not first_stage_found:
+                        lost_base_datas.insert(0, [1, 0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
 
                     lost_day_levels = []
                     head_lines = head_line.split(',')[3:]
@@ -130,7 +156,7 @@ class Report(BaseReport):
                         level_user_percent = 0
                         for k in range(len(lost_day_datas)):
                             data = lost_day_datas[k]
-                            if data[0] == chapter_id - 1 and data[1] >= min_level and data[1] <= max_level:
+                            if data[0] == chapter_id and data[1] >= min_level and data[1] <= max_level:
                                 level_user_percent += data[3]
                         lost_day_levels.append(level_user_percent)
 
