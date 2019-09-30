@@ -71,6 +71,8 @@ class Report(BaseReport):
         if daily_user_count == 0:
             return
         first_user_count = self.get_firstopen_count(date)
+        if first_user_count == 0:
+            return
         cells = []
         cells.append(Date(date).formatmd())
         cells.append(str(daily_user_count))
