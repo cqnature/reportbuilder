@@ -1,18 +1,18 @@
 SELECT
-    af_event_id as max_area,
+    af_chapter_id as max_area,
     COUNT(event_timestamp) as ads_view_count,
     COUNT(DISTINCT user_pseudo_id) as ads_user_count
 FROM (
     SELECT
       user_pseudo_id,
       event_timestamp,
-      event_params.value.int_value AS af_event_id
+      event_params.value.int_value AS af_chapter_id
     FROM
       `{0}.events_*` AS T,
       T.event_params
     WHERE
       event_name = 'af_ad_view'
-      AND event_params.key = 'af_event_id'
+      AND event_params.key = 'af_chapter_id'
       AND geo.country = '{2}' /* 修改为指定国家 */
       AND platform = '{1}'
       AND _TABLE_SUFFIX BETWEEN '{4}'
@@ -40,4 +40,4 @@ FROM (
         AND platform = '{1}'
         AND _TABLE_SUFFIX BETWEEN '{4}'
         AND '{4}' )
-) GROUP BY af_event_id
+) GROUP BY af_chapter_id
