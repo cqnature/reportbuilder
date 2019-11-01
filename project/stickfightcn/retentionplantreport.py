@@ -77,7 +77,7 @@ class Report(BaseReport):
                 data = signup_base_datas[k]
                 line_string += "{0:.2f}%,".format(data[2])
 
-            for single_date in Date(date).rangeto(Date(date).adddays(6)):
+            for single_date in Date(date).rangeto(Date(date).adddays(14)):
                 if Date(single_date).between(self.end_date) <= 0:
                     line_string += ",,,,"
                 else:
