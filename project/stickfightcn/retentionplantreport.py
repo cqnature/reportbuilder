@@ -29,7 +29,7 @@ class Report(BaseReport):
                 for k in range(len(head_lines1)):
                     append_line(report_lines, k, head_lines1[k])
                 head_lines2 = [x.strip() for x in lines[2:4]]
-                for d in range(7):
+                for d in range(15):
                     append_line(report_lines, 0, head_lines2[0].format(d + 1))
                     append_line(report_lines, 1, head_lines2[1])
                 file.close()
