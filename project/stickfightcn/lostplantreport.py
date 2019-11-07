@@ -35,13 +35,13 @@ class Report(BaseReport):
                 for k in range(len(head_lines3)):
                     append_line(report_lines, k, head_lines3[k])
                 head_lines4 = [x.strip() for x in lines[6:8]]
-                for d in range(13):
+                for d in range(38):
                     for k in range(len(head_lines4)):
                         append_line(report_lines, k, head_lines4[k].format(d + 3))
                 file.close()
             for single_date in self.extra_date:
                 self.generate_lostplant_report_at_date(report_lines, single_date)
-            lately_date = max(Date(self.end_date).adddays(-14), self.start_date)
+            lately_date = max(Date(self.end_date).adddays(-29), self.start_date)
             for single_date in Date(lately_date).rangeto(self.end_date, True):
                 self.generate_lostplant_report_at_date(report_lines, single_date)
             reportstring = '\n'.join(report_lines)
@@ -86,7 +86,7 @@ class Report(BaseReport):
             currentDayIndex = 1
             lost_base_datas = []
             lost_base_usercount = 0
-            for single_date in Date(date).rangeto(Date(date).adddays(14)):
+            for single_date in Date(date).rangeto(Date(date).adddays(39)):
                 if Date(single_date).between(self.end_date) <= 0:
                     line_string += ",,,,,"
                 else:

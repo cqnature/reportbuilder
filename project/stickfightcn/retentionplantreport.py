@@ -29,13 +29,13 @@ class Report(BaseReport):
                 for k in range(len(head_lines1)):
                     append_line(report_lines, k, head_lines1[k])
                 head_lines2 = [x.strip() for x in lines[2:4]]
-                for d in range(15):
+                for d in range(40):
                     append_line(report_lines, 0, head_lines2[0].format(d + 1))
                     append_line(report_lines, 1, head_lines2[1])
                 file.close()
             for single_date in self.extra_date:
                 self.generate_retentionplant_report_at_date(report_lines, single_date)
-            lately_date = max(Date(self.end_date).adddays(-14), self.start_date)
+            lately_date = max(Date(self.end_date).adddays(-29), self.start_date)
             for single_date in Date(lately_date).rangeto(self.end_date, True):
                 self.generate_retentionplant_report_at_date(report_lines, single_date)
             reportstring = '\n'.join(report_lines)
@@ -77,7 +77,7 @@ class Report(BaseReport):
                 data = signup_base_datas[k]
                 line_string += "{0:.2f}%,".format(data[2])
 
-            for single_date in Date(date).rangeto(Date(date).adddays(14)):
+            for single_date in Date(date).rangeto(Date(date).adddays(39)):
                 if Date(single_date).between(self.end_date) <= 0:
                     line_string += ",,,,"
                 else:
