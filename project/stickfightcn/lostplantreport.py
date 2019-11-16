@@ -138,7 +138,7 @@ class Report(BaseReport):
                             date_string += "{0:.2f}%,".format(data[2] - base_data[2])
                         lost_base_datas = current_lost_datas
 
-                var diffDay = Date(single_date).between(date)
+                diffDay = Date(single_date).between(date)
                 print "diffDay", diffDay
                 line_string += date_string
                 # 增加天数索引
