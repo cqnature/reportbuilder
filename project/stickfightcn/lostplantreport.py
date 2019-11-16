@@ -8,6 +8,8 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
+extra_retation_date = [18, 21, 24, 27, 30]
+
 def generate_lostplant_report(query_config, date):
     return Report(query_config, date).generate()
 
@@ -38,7 +40,7 @@ class Report(BaseReport):
                 for d in range(13):
                     for k in range(len(head_lines4)):
                         append_line(report_lines, k, head_lines4[k].format(d + 3))
-                for d in [18, 21, 24, 27, 30]:
+                for d in extra_retation_date:
                     for k in range(len(head_lines4)):
                         append_line(report_lines, k, head_lines4[k].format(d))
                 file.close()
@@ -138,9 +140,10 @@ class Report(BaseReport):
                             date_string += "{0:.2f}%,".format(data[2] - base_data[2])
                         lost_base_datas = current_lost_datas
 
-                diffDay = Date(single_date).between(date)
-                print "diffDay", diffDay
-                line_string += date_string
+                diffDay = Date(date).between(single_date)
+                if diffDay < 15 or (diffDay + 1) in [extra_retation_date]
+                    print "diffDay", diffDay
+                    line_string += date_string
                 # 增加天数索引
                 currentDayIndex += 1
             # 数据拼接
