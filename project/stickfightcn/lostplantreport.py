@@ -35,9 +35,12 @@ class Report(BaseReport):
                 for k in range(len(head_lines3)):
                     append_line(report_lines, k, head_lines3[k])
                 head_lines4 = [x.strip() for x in lines[6:8]]
-                for d in range(38):
+                for d in range(13):
                     for k in range(len(head_lines4)):
                         append_line(report_lines, k, head_lines4[k].format(d + 3))
+                for d in [18, 21, 24, 27, 30]:
+                    for k in range(len(head_lines4)):
+                        append_line(report_lines, k, head_lines4[k].format(d))
                 file.close()
             for single_date in self.extra_date:
                 self.generate_lostplant_report_at_date(report_lines, single_date)
@@ -87,8 +90,9 @@ class Report(BaseReport):
             lost_base_datas = []
             lost_base_usercount = 0
             for single_date in Date(date).rangeto(Date(date).adddays(39)):
+                var date_string = ""
                 if Date(single_date).between(self.end_date) <= 0:
-                    line_string += ",,,,,"
+                    date_string += ",,,,,"
                 else:
                     # 留存率查询
                     current_lost_usercount = self.get_lost_count(date, single_date)
@@ -108,10 +112,10 @@ class Report(BaseReport):
                         first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in lost_base_datas)
                         first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
                         lost_base_usercount = current_lost_usercount
-                        line_string += "{0:.2f}%,".format(100*float(firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
+                        date_string += "{0:.2f}%,".format(100*float(firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
                         for k in range(len(lost_base_datas)):
                             data = lost_base_datas[k]
-                            line_string += "{0:.2f}%,".format(data[2])
+                            date_string += "{0:.2f}%,".format(data[2])
                     else:
                         current_lost_datas = []
                         progress_data_map = {}
@@ -127,12 +131,16 @@ class Report(BaseReport):
                         first_progress_data[1] = first_progress_data[1] + current_lost_usercount - sum(t[1] for t in current_lost_datas)
                         first_progress_data[2] = 100*float(first_progress_data[1])/float(firstopen_usercount)
                         lost_base_usercount = current_lost_usercount
-                        line_string += "{0:.2f}%,".format(100*float(firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
+                        date_string += "{0:.2f}%,".format(100*float(firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
                         for k in range(len(current_lost_datas)):
                             data = current_lost_datas[k]
                             base_data = lost_base_datas[k]
-                            line_string += "{0:.2f}%,".format(data[2] - base_data[2])
+                            date_string
+                             += "{0:.2f}%,".format(data[2] - base_data[2])
                         lost_base_datas = current_lost_datas
+
+                var diffDay = Date(single_date).between(date)
+                print "diffDay", diffDay
                 # 增加天数索引
                 currentDayIndex += 1
             # 数据拼接
