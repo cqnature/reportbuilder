@@ -135,8 +135,7 @@ class Report(BaseReport):
                         for k in range(len(current_lost_datas)):
                             data = current_lost_datas[k]
                             base_data = lost_base_datas[k]
-                            date_string
-                             += "{0:.2f}%,".format(data[2] - base_data[2])
+                            date_string += "{0:.2f}%,".format(data[2] - base_data[2])
                         lost_base_datas = current_lost_datas
 
                 var diffDay = Date(single_date).between(date)
