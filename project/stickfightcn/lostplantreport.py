@@ -141,7 +141,7 @@ class Report(BaseReport):
                         lost_base_datas = current_lost_datas
 
                 diffDay = Date(date).between(single_date)
-                if diffDay < 15 or (diffDay + 1) in extra_retation_date:
+                if diffDay <= 15 or diffDay in extra_retation_date:
                     print "diffDay", diffDay
                     line_string += date_string
                 # 增加天数索引
