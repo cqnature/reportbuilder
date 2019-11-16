@@ -90,7 +90,7 @@ class Report(BaseReport):
             lost_base_datas = []
             lost_base_usercount = 0
             for single_date in Date(date).rangeto(Date(date).adddays(39)):
-                var date_string = ""
+                date_string = ""
                 if Date(single_date).between(self.end_date) <= 0:
                     date_string += ",,,,,"
                 else:
@@ -141,6 +141,7 @@ class Report(BaseReport):
 
                 var diffDay = Date(single_date).between(date)
                 print "diffDay", diffDay
+                line_string += date_string
                 # 增加天数索引
                 currentDayIndex += 1
             # 数据拼接
