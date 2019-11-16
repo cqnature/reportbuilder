@@ -8,6 +8,8 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
+extra_retation_date = [18, 21, 24, 27, 30]
+
 def generate_retentionplant_report(query_config, date):
     return Report(query_config, date).generate()
 
@@ -29,8 +31,11 @@ class Report(BaseReport):
                 for k in range(len(head_lines1)):
                     append_line(report_lines, k, head_lines1[k])
                 head_lines2 = [x.strip() for x in lines[2:4]]
-                for d in range(40):
+                for d in range(15):
                     append_line(report_lines, 0, head_lines2[0].format(d + 1))
+                    append_line(report_lines, 1, head_lines2[1])
+                for d in extra_retation_date:
+                    append_line(report_lines, 0, head_lines2[0].format(d))
                     append_line(report_lines, 1, head_lines2[1])
                 file.close()
             for single_date in self.extra_date:
@@ -78,8 +83,9 @@ class Report(BaseReport):
                 line_string += "{0:.2f}%,".format(data[2])
 
             for single_date in Date(date).rangeto(Date(date).adddays(39)):
+                date_string = ""
                 if Date(single_date).between(self.end_date) <= 0:
-                    line_string += ",,,,"
+                    date_string += ",,,,"
                 else:
                     # 留存率查询
                     current_retention_usercount = self.get_retention_count(date, single_date)
@@ -99,7 +105,11 @@ class Report(BaseReport):
                     current_retention_datas[0][2] = 100*float(current_retention_datas[0][1])/float(firstopen_usercount)
                     for k in range(len(current_retention_datas)):
                         data = current_retention_datas[k]
-                        line_string += "{0:.2f}%,".format(data[2])
+                        date_string += "{0:.2f}%,".format(data[2])
+
+                diffDay = Date(date).between(single_date)
+                if diffDay <= 15 or diffDay in extra_retation_date:
+                    line_string += date_string
             # 数据拼接
             append_line(report_lines, len(report_lines), line_string)
             file.close()

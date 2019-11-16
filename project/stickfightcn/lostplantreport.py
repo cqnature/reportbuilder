@@ -142,7 +142,6 @@ class Report(BaseReport):
 
                 diffDay = Date(date).between(single_date)
                 if diffDay <= 15 or diffDay in extra_retation_date:
-                    print "diffDay", diffDay
                     line_string += date_string
                 # 增加天数索引
                 currentDayIndex += 1
