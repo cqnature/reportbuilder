@@ -31,4 +31,4 @@ def generate_report_cn(option, *parameter):
     # IdleSheepCnEntry(option, *parameter).generate_report()
     # IdleSheepJrttEntry(option, *parameter).generate_report()
     # IdleDisasterEntry(option, *parameter).generate_report()
-    StickFightCnEntry(option, *parameter).generate_report()
+    # StickFightCnEntry(option, *parameter).generate_report()
