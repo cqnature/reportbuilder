@@ -33,7 +33,7 @@ class Report(BaseReport):
                 file.close()
             for single_date in self.extra_date:
                 self.generate_new_ads_report_at_date(report_lines, single_date)
-            lately_date = max(Date(self.end_date).adddays(-14), self.start_date)
+            lately_date = max(Date(self.end_date).adddays(-21), self.start_date)
             for single_date in Date(lately_date).rangeto(self.end_date, True):
                 self.generate_new_ads_report_at_date(report_lines, single_date)
             reportstring = '\n'.join(report_lines)
