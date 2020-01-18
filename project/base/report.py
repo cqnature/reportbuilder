@@ -26,7 +26,7 @@ class BaseReport(object):
         self.queryads = QueryAds(self.query_config)
         self.queryadscene = QueryAdScene(self.query_config)
         self.start_date = date.date_string
-        self.end_date = "20191211"#date.enddate(self.query_config.geo_country)
+        self.end_date = date.enddate(self.query_config.geo_country)
         self.extra_date = []
         if self.query_config.extra_date != "":
             self.extra_date = self.query_config.extra_date.split("|")
