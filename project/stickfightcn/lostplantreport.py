@@ -9,6 +9,9 @@ from ..base.query import *
 from ..base.report import *
 
 extra_retation_date = [18, 21, 24, 27, 30]
+max_lately_date = 15
+max_chapter_id = 15
+lost_day = 1
 
 def generate_lostplant_report(query_config, date):
     return Report(query_config, date).generate()
@@ -46,7 +49,7 @@ class Report(BaseReport):
                 file.close()
             for single_date in self.extra_date:
                 self.generate_lostplant_report_at_date(report_lines, single_date)
-            lately_date = max(Date(self.end_date).adddays(-6), self.start_date)
+            lately_date = max(Date(self.end_date).adddays(1 - max_lately_date), self.start_date)
             for single_date in Date(lately_date).rangeto(self.end_date, True):
                 self.generate_lostplant_report_at_date(report_lines, single_date)
             reportstring = '\n'.join(report_lines)
@@ -55,7 +58,7 @@ class Report(BaseReport):
         return [self.output_filepath]
 
     def get_plane_chapter_id(self):
-        return 15
+        return max_chapter_id
 
     def generate_lostplant_report_at_date(self, report_lines, date):
         print("generate_lostplant_report_at_date ", date)
@@ -91,7 +94,7 @@ class Report(BaseReport):
             currentDayIndex = 1
             lost_base_datas = []
             lost_base_usercount = 0
-            for single_date in Date(date).rangeto(Date(date).adddays(1)):
+            for single_date in Date(date).rangeto(Date(date).adddays(lost_day)):
                 date_string = ""
                 if Date(single_date).between(self.end_date) <= 0:
                     date_string += ",,,,,"

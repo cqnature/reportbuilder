@@ -165,6 +165,6 @@ class Report(BaseReport):
                         lost_day_level = lost_day_levels[k]
                         line_string += "{0:.2f}%,".format(lost_day_level - lost_base_level)
 
-            # 数据拼接
+            # 数据拼接 
             append_line(report_lines, len(report_lines), line_string)
             file.close()
