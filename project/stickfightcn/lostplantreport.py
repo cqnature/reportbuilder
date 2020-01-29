@@ -36,9 +36,9 @@ class Report(BaseReport):
                 head_lines2 = [x.strip() for x in lines[2:4]]
                 for k in range(len(head_lines2)):
                     append_line(report_lines, k, head_lines2[k])
-                # head_lines3 = [x.strip() for x in lines[4:6]]
-                # for k in range(len(head_lines3)):
-                #     append_line(report_lines, k, head_lines3[k])
+                head_lines3 = [x.strip() for x in lines[4:6]]
+                for k in range(len(head_lines3)):
+                    append_line(report_lines, k, head_lines3[k])
                 # head_lines4 = [x.strip() for x in lines[6:8]]
                 # for d in range(13):
                 #     for k in range(len(head_lines4)):
