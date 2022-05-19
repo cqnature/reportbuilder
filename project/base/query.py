@@ -5,8 +5,8 @@ import os
 import json
 import requests
 import time
-from configs import *
-from date import *
+from project.base.configs import *
+from project.base.date import *
 from google.cloud import bigquery
 from io import open as ioopen
 

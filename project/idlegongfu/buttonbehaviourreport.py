@@ -3,13 +3,15 @@
 
 import os
 import json
-from ..base.date import *
-from ..base.helper import *
-from ..base.query import *
-from ..base.report import *
+from project.base.date import *
+from project.base.helper import *
+from project.base.query import *
+from project.base.report import *
+
 
 def generate_button_behaviour_report(query_config, date):
     return Report(query_config, date).generate()
+
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -22,7 +24,8 @@ class Report(BaseReport):
         with open(self.output_filepath, mode='w+') as out:
             report_lines = []
             for single_date in Date(self.start_date).rangeto(self.end_date, True):
-                self.generate_button_behaviour_report_at_date(report_lines, single_date)
+                self.generate_button_behaviour_report_at_date(
+                    report_lines, single_date)
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
@@ -37,10 +40,14 @@ class Report(BaseReport):
                 return
             lines[0] = lines[0].format(date)
             report_lines.extend([x.strip() for x in lines])
-            show_button_of_signup_results = self.get_result("show_button_of_signup_users.sql", date)
+            show_button_of_signup_results = self.get_result(
+                "show_button_of_signup_users.sql", date)
             show_count = sum(1 for _ in show_button_of_signup_results)
-            click_button_of_signup_results = self.get_result("click_button_of_signup_users.sql", date)
+            click_button_of_signup_results = self.get_result(
+                "click_button_of_signup_users.sql", date)
             click_count = sum(1 for _ in click_button_of_signup_results)
-            average_rate = 0 if show_count == 0 else float(click_count)/float(show_count) * 100
-            append_line(report_lines, len(report_lines), "{0},{1},{2},{3:.2f}%,".format(first_user_count, show_count, click_count, average_rate))
+            average_rate = 0 if show_count == 0 else float(
+                click_count)/float(show_count) * 100
+            append_line(report_lines, len(report_lines), "{0},{1},{2},{3:.2f}%,".format(
+                first_user_count, show_count, click_count, average_rate))
             file.close()

@@ -3,10 +3,10 @@
 
 import os
 import json
-from ..base.date import *
-from ..base.helper import *
-from ..base.query import *
-from ..base.report import *
+from project.base.date import *
+from project.base.helper import *
+from project.base.query import *
+from project.base.report import *
 
 add_scene_count = 8
 

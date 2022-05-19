@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-import os
 import pytz
-from datetime import timedelta, date, datetime
+from datetime import timedelta, datetime
 
 
 class Date:

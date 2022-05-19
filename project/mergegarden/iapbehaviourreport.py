@@ -3,10 +3,10 @@
 
 import os
 import json
-from ..base.date import *
-from ..base.helper import *
-from ..base.query import *
-from ..base.report import *
+from project.base.date import *
+from project.base.helper import *
+from project.base.query import *
+from project.base.report import *
 
 
 def event_timestamp(e):
@@ -58,7 +58,7 @@ class Report(BaseReport):
             iap_purchase_users = {}
             for k in range(len(iap_purchase_results)):
                 iap_purchase_result = iap_purchase_results[k]
-                if not iap_purchase_users.has_key(iap_purchase_result.user_pseudo_id):
+                if not iap_purchase_result.user_pseudo_id in iap_purchase_users:
                     iap_purchase_users[iap_purchase_result.user_pseudo_id] = 1
             iap_purchase_datas = {}
             max_result_count = 0

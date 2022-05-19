@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from date import *
-from mail import *
-from configs import *
+from project.base.date import *
+from project.base.mail import *
+from project.base.configs import *
 
 
 class BaseEntry(object):

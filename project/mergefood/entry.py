@@ -3,9 +3,9 @@
 
 import os
 import json
-from ..base.configs import *
-from ..base.date import *
-from ..base.entry import *
+from project.base.configs import *
+from project.base.date import *
+from project.base.entry import *
 from mailreport import generate_mail_report
 from lostplantreport import generate_lostplant_report
 # from retentionplantreport import generate_retentionplant_report

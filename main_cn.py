@@ -3,7 +3,6 @@
 
 from project.entry import generate_report_cn
 from project.base.configs import ReportFlag
-import os
 import json
 
 if __name__ == '__main__':

@@ -3,22 +3,22 @@
 
 import os
 import json
-from ..base.configs import *
-from ..base.date import *
-from ..base.entry import *
-from mailreport import generate_mail_report
-from lostplantreport import generate_lostplant_report
-from retentionplantreport import generate_retentionplant_report
-from retentionadsreport import generate_retention_ads_report
-from newadsreport import generate_new_ads_report
-from totaladsreport import generate_total_ads_report
-from stagereport import generate_stage_report
-from retentionstagereport import generate_retention_stage_report
-from daystagereport import generate_day_stage_report
-from buttonbehaviourreport import generate_button_behaviour_report
-from lostbehaviourreport import generate_lostbehaviour_report
-from lostadsreport import generate_lost_ads_report
-from retentionadscountreport import generate_retention_ads_count_report
+from project.base.configs import *
+from project.base.date import *
+from project.base.entry import *
+from project.idlegongfu.mailreport import generate_mail_report
+from project.idlegongfu.lostplantreport import generate_lostplant_report
+from project.idlegongfu.retentionplantreport import generate_retentionplant_report
+from project.idlegongfu.retentionadsreport import generate_retention_ads_report
+from project.idlegongfu.newadsreport import generate_new_ads_report
+from project.idlegongfu.totaladsreport import generate_total_ads_report
+from project.idlegongfu.stagereport import generate_stage_report
+from project.idlegongfu.retentionstagereport import generate_retention_stage_report
+from project.idlegongfu.daystagereport import generate_day_stage_report
+from project.idlegongfu.buttonbehaviourreport import generate_button_behaviour_report
+from project.idlegongfu.lostbehaviourreport import generate_lostbehaviour_report
+from project.idlegongfu.lostadsreport import generate_lost_ads_report
+from project.idlegongfu.retentionadscountreport import generate_retention_ads_count_report
 
 
 class Entry(BaseEntry):

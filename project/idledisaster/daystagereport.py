@@ -3,10 +3,10 @@
 
 import os
 import json
-from ..base.date import *
-from ..base.helper import *
-from ..base.query import *
-from ..base.report import *
+from project.base.date import *
+from project.base.helper import *
+from project.base.query import *
+from project.base.report import *
 
 
 def generate_day_stage_report(query_config, date):
@@ -55,7 +55,7 @@ class Report(BaseReport):
                 for n in range(1, max_level + 1):
                     signup_base_data = [k, n, 0, 0]
                     signup_base_datas.append(signup_base_data)
-                    if not stage_config_maps.has_key(k):
+                    if not k in stage_config_maps:
                         stage_config_maps[k] = {}
                     stage_config_maps[k][n] = signup_base_data
             for row in signup_day_progress_results:
@@ -102,7 +102,7 @@ class Report(BaseReport):
                         for n in range(1, max_level + 1):
                             lost_base_data = [k, n, 0, 0]
                             lost_base_datas.append(lost_base_data)
-                            if not stage_config_maps.has_key(k):
+                            if not k in stage_config_maps:
                                 stage_config_maps[k] = {}
                             stage_config_maps[k][n] = lost_base_data
                     for row in lost_day_results:
@@ -145,7 +145,7 @@ class Report(BaseReport):
                         for n in range(1, max_level + 1):
                             current_lost_data = [k, n, 0, 0]
                             current_lost_datas.append(current_lost_data)
-                            if not stage_config_maps.has_key(k):
+                            if not k in stage_config_maps:
                                 stage_config_maps[k] = {}
                             stage_config_maps[k][n] = current_lost_data
                     for row in lost_day_results:

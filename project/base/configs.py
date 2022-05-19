@@ -3,7 +3,7 @@
 
 import os
 import json
-from date import *
+from project.base.date import *
 
 
 class ReportFlag:
@@ -47,7 +47,7 @@ class ProjectConfig:
         self.admob_app_id = admob_app_id
 
     def set_env_from_config(self, config, key):
-        if config.has_key(key):
+        if key in config:
             os.environ[key] = config[key]
 
     def enable_proxy(self):

@@ -4,12 +4,13 @@
 import os
 import json
 import csv
-from ..lib.HTML import *
-from ..base.date import *
-from ..base.mail import send_mail
-from ..base.helper import *
-from ..base.query import *
-from ..base.report import *
+from project.lib.HTML import *
+from project.base.date import *
+from project.base.mail import send_mail
+from project.base.helper import *
+from project.base.query import *
+from project.base.report import *
+from yattag import Doc
 
 
 def sortbydate(e):

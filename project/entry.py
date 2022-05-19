@@ -1,16 +1,19 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from mergefood.entry import Entry as MergeFoodEntry
-from mergegarden.entry import Entry as MergeGardenEntry
-from idlesheep.entry import Entry as IdleSheepEntry
-from mergegardenjrtt.entry import Entry as MergeGardenJrttEntry
-from idlesheepjrtt.entry import Entry as IdleSheepJrttEntry
-from idlesheepcn.entry import Entry as IdleSheepCnEntry
-from idledisaster.entry import Entry as IdleDisasterEntry
-from idledisastercn.entry import Entry as IdleDisasterCnEntry
-from stickfightcn.entry import Entry as StickFightCnEntry
-from idlegongfu.entry import Entry as IdleGongfuEntry
+from project.idlegongfu.entry import Entry as IdleGongfuEntry
+import sys
+print(sys.modules)
+
+# from project.mergefood.entry import Entry as MergeFoodEntry
+# from project.mergegarden.entry import Entry as MergeGardenEntry
+# from project.idlesheep.entry import Entry as IdleSheepEntry
+# from project.mergegardenjrtt.entry import Entry as MergeGardenJrttEntry
+# from project.idlesheepjrtt.entry import Entry as IdleSheepJrttEntry
+# from project.idlesheepcn.entry import Entry as IdleSheepCnEntry
+# from project.idledisaster.entry import Entry as IdleDisasterEntry
+# from project.idledisastercn.entry import Entry as IdleDisasterCnEntry
+# from project.stickfightcn.entry import Entry as StickFightCnEntry
 
 
 def generate_report_us(option, *parameter):
