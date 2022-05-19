@@ -25,8 +25,6 @@ class BaseReport(object):
         self.project_config = self.query_config.project_config
         self.querysql = QuerySql(self.query_config)
         self.queryreport = QueryReport(self.query_config)
-        self.queryads = QueryAds(self.query_config)
-        self.queryadscene = QueryAdScene(self.query_config)
         self.start_date = date.date_string
         self.end_date = date.enddate(self.query_config.geo_country)
         self.extra_date = []
@@ -60,9 +58,9 @@ class BaseReport(object):
             try:
                 os.makedirs(path)
             except OSError:
-                print "Creation of the directory %s failed" % path
+                print("Creation of the directory %s failed" % path)
             else:
-                print "Successfully created the directory %s" % path
+                print("Successfully created the directory %s" % path)
         return path
 
     def do_generate(self):

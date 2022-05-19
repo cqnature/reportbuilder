@@ -10,7 +10,6 @@ from ..base.mail import send_mail
 from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
-from yattag import Doc
 
 
 def sortbydate(e):
@@ -58,7 +57,8 @@ class Report(BaseReport):
         return doc.getvalue()
 
     def generate_mail_roi_report(self):
-        print 'generate_mail_roi_report from: ', self.start_date, " to: ", self.end_date
+        print('generate_mail_roi_report from: ',
+              self.start_date, " to: ", self.end_date)
         htmlcode = Table()
         header_row = ['日期', '花费($)', 'cpi($)', '安装', '自然量', 'DAU', '总收入($)', '总APRDAU($', 'ROI', '广告收入($)',
                       '广告ARPDAU($)', 'eCPM($)', '展示次数', '留存人均广告次数', '安装人均广告次数', 'IAP的ARPDAU($)', 'IAP收入($)']
@@ -148,7 +148,8 @@ class Report(BaseReport):
         return (datas[3], datas[4])
 
     def generate_mail_lately_report(self):
-        print 'generate_mail_lately_report from: ', self.start_date, " to: ", self.end_date
+        print('generate_mail_lately_report from: ',
+              self.start_date, " to: ", self.end_date)
         htmlcode = Table()
         header_row = ['日期', '新注册用户', '首日广告观看次数',
                       '次日广告观看次数', '三日广告观看次数', '次留', '三留']
@@ -182,7 +183,8 @@ class Report(BaseReport):
         return htmlcode
 
     def generate_mail_ads_report(self):
-        print 'generate_mail_ads_report from: ', self.start_date, " to: ", self.end_date
+        print('generate_mail_ads_report from: ',
+              self.start_date, " to: ", self.end_date)
         htmlcode = Table()
         cells = []
         cells.append(TableCell("日期", header=True,
@@ -239,7 +241,8 @@ class Report(BaseReport):
         return htmlcode
 
     def generate_mail_retention_report(self):
-        print 'generate_mail_retention_report from: ', self.start_date, " to: ", self.end_date
+        print('generate_mail_retention_report from: ',
+              self.start_date, " to: ", self.end_date)
         htmlcode = Table()
         cells = []
         cells.append(TableCell("日期", header=True, bgcolor='grey'))

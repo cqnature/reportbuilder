@@ -10,7 +10,6 @@ from ..base.mail import send_mail
 from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
-from yattag import Doc
 
 
 def sortbydate(e):
@@ -45,7 +44,8 @@ class Report(BaseReport):
         return doc.getvalue()
 
     def generate_mail_lately_report(self):
-        print 'generate_mail_lately_report from: ', self.start_date, " to: ", self.end_date
+        print('generate_mail_lately_report from: ',
+              self.start_date, " to: ", self.end_date)
         htmlcode = Table()
         cells = []
         cells.append(TableCell("日期", header=True,
