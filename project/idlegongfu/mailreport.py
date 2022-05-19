@@ -12,11 +12,14 @@ from ..base.query import *
 from ..base.report import *
 from yattag import Doc
 
+
 def sortbydate(e):
     return e['start']
 
+
 def generate_mail_report(query_config, date):
     return Report(query_config, date).generate()
+
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -25,7 +28,7 @@ class Report(BaseReport):
         self.partner_email = []
 
     def do_generate(self):
-        print 'do generate report'
+        print('do generate report')
         mail_content = self.generate_mail_report()
         send_mail(self.subject, mail_content)
         if self.query_config.send_partner_email:
@@ -45,19 +48,27 @@ class Report(BaseReport):
         print 'generate_mail_lately_report from: ', self.start_date, " to: ", self.end_date
         htmlcode = Table()
         cells = []
-        cells.append(TableCell("日期", header=True, bgcolor='grey', attribs={"rowspan":2}))
-        cells.append(TableCell("DAU", header=True, bgcolor='grey', attribs={"rowspan":2}))
-        cells.append(TableCell("新增", header=True, bgcolor='grey', attribs={"rowspan":2}))
-        cells.append(TableCell("留存", header=True, bgcolor='grey', attribs={"colspan":6}))
-        cells.append(TableCell("广告次数", header=True, bgcolor='grey', attribs={"colspan":7}))
-        cells.append(TableCell("7日总广告次数", header=True, bgcolor='grey', attribs={"rowspan":2}))
+        cells.append(TableCell("日期", header=True,
+                     bgcolor='grey', attribs={"rowspan": 2}))
+        cells.append(TableCell("DAU", header=True,
+                     bgcolor='grey', attribs={"rowspan": 2}))
+        cells.append(TableCell("新增", header=True,
+                     bgcolor='grey', attribs={"rowspan": 2}))
+        cells.append(TableCell("留存", header=True,
+                     bgcolor='grey', attribs={"colspan": 6}))
+        cells.append(TableCell("广告次数", header=True,
+                     bgcolor='grey', attribs={"colspan": 7}))
+        cells.append(TableCell("7日总广告次数", header=True,
+                     bgcolor='grey', attribs={"rowspan": 2}))
         htmlcode.rows.append(cells)
         cells = []
         cells.append(TableCell("次留", bgcolor='grey'))
         for k in range(5):
-            cells.append(TableCell("{0}留".format(k + 3), header=True, bgcolor='grey'))
+            cells.append(TableCell("{0}留".format(
+                k + 3), header=True, bgcolor='grey'))
         for k in range(7):
-            cells.append(TableCell("D{0}".format(k + 1), header=True, bgcolor='grey'))
+            cells.append(TableCell("D{0}".format(
+                k + 1), header=True, bgcolor='grey'))
         htmlcode.rows.append(cells)
         for date in self.extra_date:
             self.generate_mail_lately_htmlcode(date, htmlcode)
@@ -83,17 +94,20 @@ class Report(BaseReport):
                 cells.append("N/A")
             else:
                 user_count = self.get_retention_count(date, single_date)
-                cells.append("{0:.2f}%".format(100*float(user_count)/float(first_user_count)))
+                cells.append("{0:.2f}%".format(
+                    100*float(user_count)/float(first_user_count)))
         total_ad_count = 0
         for k in range(7):
             single_date = Date(date).adddays(k)
             if Date(single_date).between(self.end_date) <= 0:
                 cells.append("N/A")
             else:
-                ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
+                ads_view_count_results = self.get_result(
+                    "ads_view_of_retention_users.sql", date, single_date)
                 user_count = self.get_retention_count(date, single_date)
                 view_count = sum(1 for _ in ads_view_count_results)
-                average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
+                average_view_count = 0 if user_count == 0 else float(
+                    view_count)/float(user_count)
                 cells.append("{0:.2f}".format(average_view_count))
                 total_ad_count += average_view_count
         cells.append("{0:.2f}".format(total_ad_count))

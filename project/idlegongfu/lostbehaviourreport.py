@@ -13,17 +13,20 @@ lost_day = 1
 area_id = 1
 max_level = 30
 
+
 def add_map_key_count(map, key):
     if key == None:
         key = 0
     map[key] = map.get(key, 0) + 1
 
+
 def print_map(map):
     total_count_of_two = 0
-    for key,value in map.iteritems():
+    for key, value in map.iteritems():
         if key > 2:
             total_count_of_two += value
     return "{0},{1},{2},{3},".format(map.get(0, 0), map.get(1, 0), map.get(2, 0), total_count_of_two)
+
 
 def print_detail_map(map):
     output_string = ''
@@ -31,8 +34,10 @@ def print_detail_map(map):
         output_string += "{0},".format(map.get(k, 0))
     return output_string
 
+
 def generate_lostbehaviour_report(query_config, date):
     return Report(query_config, date).generate()
+
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -40,15 +45,18 @@ class Report(BaseReport):
         self.etc_filename = 'behaviour_of_lost_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Day{2}-LostUser-Area{3}-Behaviour-{4}.csv".format(country_string, platform_string, lost_day, area_id, self.end_date)
+        self.output_filename = "{0}-{1}-Day{2}-LostUser-Area{3}-Behaviour-{4}.csv".format(
+            country_string, platform_string, lost_day, area_id, self.end_date)
 
     def do_generate(self):
-        print 'do generate report'
+        print('do generate report')
         report_filepaths = []
         for single_date in self.extra_date:
-            self.generate_lostbehaviour_report_at(single_date, report_filepaths)
+            self.generate_lostbehaviour_report_at(
+                single_date, report_filepaths)
         for single_date in Date(self.start_date).rangeto(self.end_date, True):
-            self.generate_lostbehaviour_report_at(single_date, report_filepaths)
+            self.generate_lostbehaviour_report_at(
+                single_date, report_filepaths)
         return report_filepaths
 
     def generate_lostbehaviour_report_at(self, single_date, report_filepaths):
@@ -67,7 +75,8 @@ class Report(BaseReport):
                 for level in range(1, max_level + 1):
                     if rebirth == 1 and level == 1:
                         continue
-                    self.generate_lostbehaviour_report_at_date(report_lines, single_date, rebirth, level)
+                    self.generate_lostbehaviour_report_at_date(
+                        report_lines, single_date, rebirth, level)
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
@@ -83,9 +92,11 @@ class Report(BaseReport):
             cur_date = Date(date)
             behaviour_results = None
             if rebirth == 0 and level == 1:
-                behaviour_results = self.querysql.get_result("behaviour_of_lost_users_0.sql", date, cur_date.adddays(lost_day), cur_date.adddays(lost_day - 1))
+                behaviour_results = self.querysql.get_result(
+                    "behaviour_of_lost_users_0.sql", date, cur_date.adddays(lost_day), cur_date.adddays(lost_day - 1))
             else:
-                behaviour_results = self.querysql.get_result("behaviour_of_lost_users.sql", date, cur_date.adddays(lost_day), cur_date.adddays(lost_day - 1), rebirth, level)
+                behaviour_results = self.querysql.get_result("behaviour_of_lost_users.sql", date, cur_date.adddays(
+                    lost_day), cur_date.adddays(lost_day - 1), rebirth, level)
             dataset_map = []
             key_count = 7
             key_offset = 3
@@ -95,7 +106,8 @@ class Report(BaseReport):
             for k in range(len(behaviour_results)):
                 behaviour_result = behaviour_results[k]
                 for t in range(key_count):
-                    add_map_key_count(dataset_map[t], behaviour_result[t + key_offset])
+                    add_map_key_count(
+                        dataset_map[t], behaviour_result[t + key_offset])
 
             line_string = "{0},".format(level)
             for k in range(detail_count_index):

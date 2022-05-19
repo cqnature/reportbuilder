@@ -7,9 +7,11 @@ from query import *
 from helper import *
 from enum import Enum
 
+
 class ReportMode(Enum):
     file = 1
     mail = 2
+
 
 class BaseReport(object):
     def __init__(self, query_config, date):
@@ -39,17 +41,21 @@ class BaseReport(object):
             path = self.create_output_folder()
             self.output_filepath = os.path.join(path, self.output_filename)
         else:
-            self.subject = "{0}项目{1}平台{2}数据总报表".format(self.project_config.project_name, self.query_config.platform, self.end_date)
-        self.etc_filepath = os.path.join(self.project_config.etc_path, self.etc_filename)
+            self.subject = "{0}项目{1}平台{2}数据总报表".format(
+                self.project_config.project_name, self.query_config.platform, self.end_date)
+        self.etc_filepath = os.path.join(
+            self.project_config.etc_path, self.etc_filename)
         return self.do_generate()
 
     def create_output_folder(self):
         project_name = self.query_config.project_config.project_name
         platform = self.query_config.platform
         geo_country = self.query_config.geo_country
-        folders = (self.output_folder, project_name, platform, geo_country, self.start_date, self.end_date)
+        folders = (self.output_folder, project_name, platform,
+                   geo_country, self.start_date, self.end_date)
         path = '.'
-        for x in folders: path = os.path.join(path, x)
+        for x in folders:
+            path = os.path.join(path, x)
         if not os.path.exists(path):
             try:
                 os.makedirs(path)
@@ -60,7 +66,7 @@ class BaseReport(object):
         return path
 
     def do_generate(self):
-        print 'do generate report'
+        print('do generate report')
         return []
 
     def get_daily_report(self, *parameter):
@@ -80,7 +86,8 @@ class BaseReport(object):
         return get_firstopen_usercount(self.querysql, date)
 
     def get_firstopen_version(self, date):
-        firstopen_results = self.querysql.get_result("firstopen_app_version.sql", date)
+        firstopen_results = self.querysql.get_result(
+            "firstopen_app_version.sql", date)
         app_versions = [x[0] for x in firstopen_results]
         return '|'.join(app_versions)
 

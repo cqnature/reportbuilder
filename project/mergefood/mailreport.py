@@ -11,11 +11,14 @@ from ..base.query import *
 from ..base.report import *
 from yattag import Doc
 
+
 def sortbydate(e):
     return e['start']
 
+
 def generate_mail_report(query_config, date):
     return Report(query_config, date).generate()
+
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -23,7 +26,7 @@ class Report(BaseReport):
         self.mode = ReportMode.mail
 
     def do_generate(self):
-        print 'do generate report'
+        print('do generate report')
         send_mail(self.subject, self.generate_mail_report())
         return []
 
@@ -47,7 +50,8 @@ class Report(BaseReport):
     def generate_mail_lately_report(self):
         print 'generate_mail_lately_report from: ', self.start_date, " to: ", self.end_date
         htmlcode = Table()
-        header_row = ['日期', '新注册用户', '首日广告观看次数', '次日广告观看次数', '三日广告观看次数', '次留', '三留']
+        header_row = ['日期', '新注册用户', '首日广告观看次数',
+                      '次日广告观看次数', '三日广告观看次数', '次留', '三留']
         cells = []
         for k in range(len(header_row)):
             cells.append(TableCell(header_row[k], header=True, bgcolor='grey'))
@@ -62,15 +66,18 @@ class Report(BaseReport):
             cells.append(str(first_user_count))
             for k in range(3):
                 single_date = Date(date).adddays(k)
-                ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
+                ads_view_count_results = self.get_result(
+                    "ads_view_of_retention_users.sql", date, single_date)
                 user_count = self.get_retention_count(date, single_date)
                 view_count = sum(1 for _ in ads_view_count_results)
-                average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
+                average_view_count = 0 if user_count == 0 else float(
+                    view_count)/float(user_count)
                 cells.append("{0:.2f}".format(average_view_count))
             for k in range(2):
                 single_date = Date(date).adddays(k + 1)
                 user_count = self.get_retention_count(date, single_date)
-                cells.append("{0:.2f}%".format(100*float(user_count)/float(first_user_count)))
+                cells.append("{0:.2f}%".format(
+                    100*float(user_count)/float(first_user_count)))
             htmlcode.rows.append(cells)
         return htmlcode
 
@@ -78,9 +85,11 @@ class Report(BaseReport):
         print 'generate_mail_ads_report from: ', self.start_date, " to: ", self.end_date
         htmlcode = Table()
         cells = []
-        cells.append(TableCell("日期", header=True, bgcolor='grey', attribs={"rowspan":2}))
+        cells.append(TableCell("日期", header=True,
+                     bgcolor='grey', attribs={"rowspan": 2}))
         for k in range(8):
-            cells.append(TableCell("D{0}".format(k), header=True, bgcolor='grey', attribs={"colspan":3}))
+            cells.append(TableCell("D{0}".format(
+                k), header=True, bgcolor='grey', attribs={"colspan": 3}))
         htmlcode.rows.append(cells)
         cells = []
         cells.append(TableCell("注册人数".format(k), bgcolor='grey'))
@@ -101,14 +110,17 @@ class Report(BaseReport):
                     cells.append("0")
                     cells.append("0.00")
                 else:
-                    ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
+                    ads_view_count_results = self.get_result(
+                        "ads_view_of_retention_users.sql", date, single_date)
                     user_count = 0
                     if date == single_date:
                         user_count = self.get_firstopen_count(single_date)
                     else:
-                        user_count = self.get_retention_count(date, single_date)
+                        user_count = self.get_retention_count(
+                            date, single_date)
                     view_count = sum(1 for _ in ads_view_count_results)
-                    average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
+                    average_view_count = 0 if user_count == 0 else float(
+                        view_count)/float(user_count)
                     cells.append(str(user_count))
                     cells.append(str(view_count))
                     cells.append("{0:.2f}".format(average_view_count))
@@ -122,7 +134,8 @@ class Report(BaseReport):
         cells.append(TableCell("日期", header=True, bgcolor='grey'))
         cells.append(TableCell("用户数", header=True, bgcolor='grey'))
         for k in range(8):
-            cells.append(TableCell("D{0}留存".format(k), header=True, bgcolor='grey'))
+            cells.append(TableCell("D{0}留存".format(
+                k), header=True, bgcolor='grey'))
         htmlcode.rows.append(cells)
         for date in Date(self.start_date).rangeto(self.end_date, True):
             first_user_count = self.get_firstopen_count(date)
@@ -137,6 +150,7 @@ class Report(BaseReport):
                     cells.append("0%")
                 else:
                     user_count = self.get_retention_count(date, single_date)
-                    cells.append("{0:.2f}%".format(100*float(user_count)/float(first_user_count)))
+                    cells.append("{0:.2f}%".format(
+                        100*float(user_count)/float(first_user_count)))
             htmlcode.rows.append(cells)
         return htmlcode

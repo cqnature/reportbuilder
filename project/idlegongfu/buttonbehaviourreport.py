@@ -18,7 +18,7 @@ class Report(BaseReport):
         self.output_filename = 'button_behaviour_report.csv'
 
     def do_generate(self):
-        print 'do generate report'
+        print('do generate report')
         with open(self.output_filepath, mode='w+') as out:
             report_lines = []
             for single_date in Date(self.start_date).rangeto(self.end_date, True):

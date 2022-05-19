@@ -12,20 +12,24 @@ from ..base.query import *
 from ..base.report import *
 from yattag import Doc
 
+
 def sortbydate(e):
     return e['start']
 
+
 def generate_mail_report(query_config, date):
     return Report(query_config, date).generate()
+
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
         self.mode = ReportMode.mail
-        self.partner_email = ["river@aladinfun.com", "carl@aladinfun.com", "yinlong@clicksplay.com", "daniel@clicksplay.com", "liuliang@clicksplay.com"]
+        self.partner_email = ["river@aladinfun.com", "carl@aladinfun.com",
+                              "yinlong@clicksplay.com", "daniel@clicksplay.com", "liuliang@clicksplay.com"]
 
     def do_generate(self):
-        print 'do generate report'
+        print('do generate report')
         mail_content = self.generate_mail_report()
         send_mail(self.subject, mail_content)
         if self.query_config.send_partner_email:
@@ -56,15 +60,18 @@ class Report(BaseReport):
     def generate_mail_roi_report(self):
         print 'generate_mail_roi_report from: ', self.start_date, " to: ", self.end_date
         htmlcode = Table()
-        header_row = ['日期', '花费($)', 'cpi($)', '安装', '自然量', 'DAU', '总收入($)', '总APRDAU($', 'ROI', '广告收入($)', '广告ARPDAU($)', 'eCPM($)', '展示次数', '留存人均广告次数', '安装人均广告次数', 'IAP的ARPDAU($)', 'IAP收入($)']
+        header_row = ['日期', '花费($)', 'cpi($)', '安装', '自然量', 'DAU', '总收入($)', '总APRDAU($', 'ROI', '广告收入($)',
+                      '广告ARPDAU($)', 'eCPM($)', '展示次数', '留存人均广告次数', '安装人均广告次数', 'IAP的ARPDAU($)', 'IAP收入($)']
         cells = []
         for k in range(len(header_row)):
             cells.append(TableCell(header_row[k], header=True, bgcolor='grey'))
         htmlcode.rows.append(cells)
         for date in Date(self.start_date).rangeto(self.end_date, True):
-            iap_revenue_result = self.get_result('in_app_purchase_revenue.sql', date, date)
+            iap_revenue_result = self.get_result(
+                'in_app_purchase_revenue.sql', date, date)
             iap_revenue_data = iap_revenue_result[0].total_revenue
-            iap_revenue = float((0 if iap_revenue_data == None else iap_revenue_data))
+            iap_revenue = float(
+                (0 if iap_revenue_data == None else iap_revenue_data))
             daily_user_count = self.get_daily_count(date)
             first_open_count = self.get_firstopen_count(date)
             appsflyer_data = self.get_appsflyer_detail(date)
@@ -78,23 +85,31 @@ class Report(BaseReport):
             cells = []
             cells.append(Date(date).formatmd())
             cells.append(str(total_cost))
-            cells.append("{0:.2f}".format((0 if appsflyer_data[1] == 0 else appsflyer_data[0]/float(appsflyer_data[1]))))
+            cells.append("{0:.2f}".format(
+                (0 if appsflyer_data[1] == 0 else appsflyer_data[0]/float(appsflyer_data[1]))))
             cells.append(str(appsflyer_data[1]))
             cells.append(str(appsflyer_data[2]))
             cells.append(str(daily_user_count))
             cells.append(str(total_revenue))
-            cells.append(TableCell("{0:.3f}".format((0 if daily_user_count == 0 else total_revenue/float(daily_user_count))), bgcolor='lightpink'))
-            cells.append(TableCell(("N/A" if total_cost == 0 else "{0:.1f}%".format(100*total_revenue/total_cost)), bgcolor='lightpink'))
+            cells.append(TableCell("{0:.3f}".format(
+                (0 if daily_user_count == 0 else total_revenue/float(daily_user_count))), bgcolor='lightpink'))
+            cells.append(TableCell(("N/A" if total_cost == 0 else "{0:.1f}%".format(
+                100*total_revenue/total_cost)), bgcolor='lightpink'))
             cells.append("{0:.2f}".format(ad_revenue))
-            cells.append("{0:.3f}".format((0 if daily_user_count == 0 else ad_revenue/float(daily_user_count))))
+            cells.append("{0:.3f}".format(
+                (0 if daily_user_count == 0 else ad_revenue/float(daily_user_count))))
             if ad_imp > 0:
-                cells.append("{0:.2f}".format(ad_revenue/(float(ad_imp)/1000.0)))
+                cells.append("{0:.2f}".format(
+                    ad_revenue/(float(ad_imp)/1000.0)))
             else:
-                cells.append("0.00");
+                cells.append("0.00")
             cells.append(str(ad_imp))
-            cells.append(TableCell("{0:.2f}".format((0 if daily_user_count == 0 else float(ad_imp)/float(daily_user_count))), bgcolor='lightpink'))
-            cells.append(TableCell("{0:.2f}".format((0 if first_open_count == 0 else float(ad_imp)/float(first_open_count))), bgcolor='lightpink'))
-            cells.append("{0:.3f}".format((0 if daily_user_count == 0 else iap_revenue/float(daily_user_count))))
+            cells.append(TableCell("{0:.2f}".format((0 if daily_user_count == 0 else float(
+                ad_imp)/float(daily_user_count))), bgcolor='lightpink'))
+            cells.append(TableCell("{0:.2f}".format((0 if first_open_count == 0 else float(
+                ad_imp)/float(first_open_count))), bgcolor='lightpink'))
+            cells.append("{0:.3f}".format(
+                (0 if daily_user_count == 0 else iap_revenue/float(daily_user_count))))
             cells.append("{0:.2f}".format(iap_revenue))
             htmlcode.rows.append(cells)
         return htmlcode
@@ -112,16 +127,20 @@ class Report(BaseReport):
                 continue
             fields = x.split(',')
             if fields[2] == 'Organic':
-                organic_install_count += (0 if fields[7] == 'N/A' else int(fields[7]))
+                organic_install_count += (0 if fields[7]
+                                          == 'N/A' else int(fields[7]))
             else:
                 cost += (0 if fields[12] == 'N/A' else float(fields[12]))
-                non_organic_install_count += (0 if fields[7] == 'N/A' else int(fields[7]))
+                non_organic_install_count += (
+                    0 if fields[7] == 'N/A' else int(fields[7]))
         return (cost, non_organic_install_count, organic_install_count)
 
     def get_audiencenetwork_detail(self, date):
         datas = self.queryads.get_result(date, date)
-        fb_ad_network_imp = next((int(x['value']) for x in datas if x['metric'] == 'fb_ad_network_imp'), 0)
-        fb_ad_network_revenue = next((float(x['value']) for x in datas if x['metric'] == 'fb_ad_network_revenue'), 0.0)
+        fb_ad_network_imp = next(
+            (int(x['value']) for x in datas if x['metric'] == 'fb_ad_network_imp'), 0)
+        fb_ad_network_revenue = next(
+            (float(x['value']) for x in datas if x['metric'] == 'fb_ad_network_revenue'), 0.0)
         return (fb_ad_network_imp, fb_ad_network_revenue)
 
     def get_admob_detail(self, date):
@@ -131,7 +150,8 @@ class Report(BaseReport):
     def generate_mail_lately_report(self):
         print 'generate_mail_lately_report from: ', self.start_date, " to: ", self.end_date
         htmlcode = Table()
-        header_row = ['日期', '新注册用户', '首日广告观看次数', '次日广告观看次数', '三日广告观看次数', '次留', '三留']
+        header_row = ['日期', '新注册用户', '首日广告观看次数',
+                      '次日广告观看次数', '三日广告观看次数', '次留', '三留']
         cells = []
         for k in range(len(header_row)):
             cells.append(TableCell(header_row[k], header=True, bgcolor='grey'))
@@ -146,15 +166,18 @@ class Report(BaseReport):
             cells.append(str(first_user_count))
             for k in range(3):
                 single_date = Date(date).adddays(k)
-                ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
+                ads_view_count_results = self.get_result(
+                    "ads_view_of_retention_users.sql", date, single_date)
                 user_count = self.get_retention_count(date, single_date)
                 view_count = sum(1 for _ in ads_view_count_results)
-                average_view_count = 0 if user_count == 0 else float(view_count)/float(user_count)
+                average_view_count = 0 if user_count == 0 else float(
+                    view_count)/float(user_count)
                 cells.append("{0:.2f}".format(average_view_count))
             for k in range(2):
                 single_date = Date(date).adddays(k + 1)
                 user_count = self.get_retention_count(date, single_date)
-                cells.append("{0:.2f}%".format(100*float(user_count)/float(first_user_count)))
+                cells.append("{0:.2f}%".format(
+                    100*float(user_count)/float(first_user_count)))
             htmlcode.rows.append(cells)
         return htmlcode
 
@@ -162,9 +185,11 @@ class Report(BaseReport):
         print 'generate_mail_ads_report from: ', self.start_date, " to: ", self.end_date
         htmlcode = Table()
         cells = []
-        cells.append(TableCell("日期", header=True, bgcolor='grey', attribs={"rowspan":2}))
+        cells.append(TableCell("日期", header=True,
+                     bgcolor='grey', attribs={"rowspan": 2}))
         for k in range(8):
-            cells.append(TableCell("D{0}".format(k), header=True, bgcolor='grey', attribs={"colspan":4}))
+            cells.append(TableCell("D{0}".format(
+                k), header=True, bgcolor='grey', attribs={"colspan": 4}))
         htmlcode.rows.append(cells)
         cells = []
         cells.append(TableCell("注册人数".format(k), bgcolor='grey'))
@@ -188,19 +213,24 @@ class Report(BaseReport):
                     cells.append("0.00")
                     cells.append("0.00")
                 else:
-                    ads_view_count_results = self.get_result("ads_view_of_retention_users.sql", date, single_date)
+                    ads_view_count_results = self.get_result(
+                        "ads_view_of_retention_users.sql", date, single_date)
                     first_user_count = self.get_firstopen_count(date)
-                    retention_user_count = self.get_retention_count(date, single_date)
+                    retention_user_count = self.get_retention_count(
+                        date, single_date)
                     view_count = sum(1 for _ in ads_view_count_results)
                     user_count = 0
                     average_view_count = 0
                     if date == single_date:
                         user_count = first_user_count
-                        average_view_count = 0 if first_user_count == 0 else float(view_count)/float(first_user_count)
+                        average_view_count = 0 if first_user_count == 0 else float(
+                            view_count)/float(first_user_count)
                     else:
                         user_count = retention_user_count
-                        average_view_count = 0 if retention_user_count == 0 else float(view_count)/float(retention_user_count)
-                    install_average_view_count = 0 if first_user_count == 0 else float(view_count)/float(first_user_count)
+                        average_view_count = 0 if retention_user_count == 0 else float(
+                            view_count)/float(retention_user_count)
+                    install_average_view_count = 0 if first_user_count == 0 else float(
+                        view_count)/float(first_user_count)
                     cells.append(str(user_count))
                     cells.append(str(view_count))
                     cells.append("{0:.2f}".format(average_view_count))
@@ -216,7 +246,8 @@ class Report(BaseReport):
         cells.append(TableCell("DAU", header=True, bgcolor='grey'))
         cells.append(TableCell("新用户数", header=True, bgcolor='grey'))
         for k in range(8):
-            cells.append(TableCell("D{0}留存".format(k), header=True, bgcolor='grey'))
+            cells.append(TableCell("D{0}留存".format(
+                k), header=True, bgcolor='grey'))
         htmlcode.rows.append(cells)
         for date in Date(self.start_date).rangeto(self.end_date, True):
             first_user_count = self.get_firstopen_count(date)
@@ -233,6 +264,7 @@ class Report(BaseReport):
                     cells.append("0%")
                 else:
                     user_count = self.get_retention_count(date, single_date)
-                    cells.append("{0:.2f}%".format(100*float(user_count)/float(first_user_count)))
+                    cells.append("{0:.2f}%".format(
+                        100*float(user_count)/float(first_user_count)))
             htmlcode.rows.append(cells)
         return htmlcode

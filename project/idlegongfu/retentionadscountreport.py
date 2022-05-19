@@ -8,8 +8,10 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
+
 def generate_retention_ads_count_report(query_config, date):
     return Report(query_config, date).generate()
+
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -17,10 +19,11 @@ class Report(BaseReport):
         self.etc_filename = 'ads_count_of_retention_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Day1-Ad-Range-{2}.csv".format(country_string, platform_string, self.end_date)
+        self.output_filename = "{0}-{1}-Day1-Ad-Range-{2}.csv".format(
+            country_string, platform_string, self.end_date)
 
     def do_generate(self):
-        print 'do generate report'
+        print('do generate report')
         with open(self.output_filepath, mode='w+') as out:
             report_lines = []
             with open(self.etc_filepath) as file:
@@ -30,10 +33,13 @@ class Report(BaseReport):
                     append_line(report_lines, k, head_lines1[k])
                 file.close()
             for single_date in self.extra_date:
-                self.generate_retention_ads_count_report_at_date(report_lines, single_date)
-            lately_date = max(Date(self.end_date).adddays(-14), self.start_date)
+                self.generate_retention_ads_count_report_at_date(
+                    report_lines, single_date)
+            lately_date = max(
+                Date(self.end_date).adddays(-14), self.start_date)
             for single_date in Date(lately_date).rangeto(self.end_date, True):
-                self.generate_retention_ads_count_report_at_date(report_lines, single_date)
+                self.generate_retention_ads_count_report_at_date(
+                    report_lines, single_date)
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
@@ -45,13 +51,15 @@ class Report(BaseReport):
             firstopen_usercount = self.get_firstopen_count(date)
             if firstopen_usercount == 0:
                 return
-            ads_count_results = self.get_result("ads_count_of_retention_users.sql", date, date)
+            ads_count_results = self.get_result(
+                "ads_count_of_retention_users.sql", date, date)
             if len(ads_count_results) == 0:
                 return
             line_string = ""
             line_string += "{0},".format(Date(date).formatmd())
             line_string += "{0},".format(firstopen_usercount)
-            ads_usercount_results = self.get_result("ads_usercount_of_retention_users.sql", date, date)
+            ads_usercount_results = self.get_result(
+                "ads_usercount_of_retention_users.sql", date, date)
             ads_usercount = sum(1 for _ in ads_usercount_results)
             line_string += "{0},".format(ads_usercount)
 
@@ -61,7 +69,8 @@ class Report(BaseReport):
             for head in head_lines:
                 headsegments = head.split('|')
                 min_count = int(headsegments[0])
-                max_count = sys.maxint if len(headsegments) == 1 else int(headsegments[1])
+                max_count = sys.maxint if len(
+                    headsegments) == 1 else int(headsegments[1])
                 level_user_count = 0
                 for k in range(len(ads_count_results)):
                     data = ads_count_results[k]

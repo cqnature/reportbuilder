@@ -8,8 +8,10 @@ from ..base.helper import *
 from ..base.query import *
 from ..base.report import *
 
+
 def generate_total_ads_report(query_config, date):
     return Report(query_config, date).generate()
+
 
 class Report(BaseReport):
     def __init__(self, query_config, date):
@@ -17,11 +19,11 @@ class Report(BaseReport):
         self.etc_filename = 'total_ads_view_of_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Ad-Stage-{2}.csv".format(country_string, platform_string, self.end_date)
-
+        self.output_filename = "{0}-{1}-Ad-Stage-{2}.csv".format(
+            country_string, platform_string, self.end_date)
 
     def do_generate(self):
-        print 'do generate report'
+        print('do generate report')
         with open(self.output_filepath, mode='w+') as out:
             report_lines = []
             with open(self.etc_filepath) as file:
@@ -32,13 +34,17 @@ class Report(BaseReport):
                 head_lines2 = [x.strip() for x in lines[3:6]]
                 for d in range(7):
                     for k in range(len(head_lines2)):
-                        append_line(report_lines, k, head_lines2[k].format(d + 1))
+                        append_line(report_lines, k,
+                                    head_lines2[k].format(d + 1))
                 file.close()
             for single_date in self.extra_date:
-                self.generate_total_ads_report_at_date(report_lines, single_date)
-            lately_date = max(Date(self.end_date).adddays(-14), self.start_date)
+                self.generate_total_ads_report_at_date(
+                    report_lines, single_date)
+            lately_date = max(
+                Date(self.end_date).adddays(-14), self.start_date)
             for single_date in Date(lately_date).rangeto(self.end_date, True):
-                self.generate_total_ads_report_at_date(report_lines, single_date)
+                self.generate_total_ads_report_at_date(
+                    report_lines, single_date)
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
             out.close()
@@ -61,7 +67,8 @@ class Report(BaseReport):
             if Date(single_date).between(self.end_date) <= 0:
                 line_string += ",,,,,"
             else:
-                ads_view_count_results = self.get_result("area_ads_view_of_retention_users.sql", date, single_date)
+                ads_view_count_results = self.get_result(
+                    "area_ads_view_of_retention_users.sql", date, single_date)
                 user_count = 0
                 if date == single_date:
                     user_count = self.get_firstopen_count(single_date)
@@ -75,8 +82,10 @@ class Report(BaseReport):
                     progress_data_map[k] = data
                 for row in ads_view_count_results:
                     progress_data = progress_data_map[row.max_area]
-                    progress_data[1] = 100*float(row.ads_user_count)/float(user_count)
-                    progress_data[2] = float(row.ads_view_count)/float(user_count)
+                    progress_data[1] = 100 * \
+                        float(row.ads_user_count)/float(user_count)
+                    progress_data[2] = float(
+                        row.ads_view_count)/float(user_count)
                 for k in ads_base_datas:
                     line_string += "{0:.2f}%,{1:.2f},".format(k[1], k[2])
         append_line(report_lines, len(report_lines), line_string)
