@@ -5,6 +5,7 @@ import os
 import json
 from date import *
 
+
 class ReportFlag:
     mail = 1
     lost_level = 1 << 1
@@ -29,6 +30,7 @@ class ReportFlag:
         for x in flags:
             self.option = self.option | x
 
+
 class ProjectConfig:
     def __init__(self, project_name, table_prefix, appsflyer_api_token, app_id, fb_app_id, fb_access_token, admob_app_id):
         self.project_name = project_name
@@ -36,7 +38,8 @@ class ProjectConfig:
         self.project_path = os.path.join('./project', self.project_name)
         self.sql_path = os.path.join('./sql', self.project_name)
         self.etc_path = os.path.join('./etc', self.project_name)
-        self.credentials_path = os.path.join('./credentials', self.project_name)
+        self.credentials_path = os.path.join(
+            './credentials', self.project_name)
         self.appsflyer_api_token = appsflyer_api_token
         self.app_id = app_id
         self.fb_app_id = fb_app_id
@@ -56,7 +59,9 @@ class ProjectConfig:
             file.close()
 
     def enable_credential(self):
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(self.credentials_path, 'credentials.json')
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(
+            self.credentials_path, 'credentials.json')
+
 
 class QueryConfig:
     def __init__(self, project_config, platform, geo_country, contain_roi, send_partner_email, extra_date):
@@ -82,6 +87,6 @@ class QueryConfig:
             exit(1)
         try:
             date.validate()
-        except ValueError, Argument:
-            print(Argument)
+        except ValueError as err:
+            print(err)
             exit(1)

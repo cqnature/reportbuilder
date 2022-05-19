@@ -10,6 +10,8 @@ from idlesheepcn.entry import Entry as IdleSheepCnEntry
 from idledisaster.entry import Entry as IdleDisasterEntry
 from idledisastercn.entry import Entry as IdleDisasterCnEntry
 from stickfightcn.entry import Entry as StickFightCnEntry
+from idlegongfu.entry import Entry as IdleGongfuEntry
+
 
 def generate_report_us(option, *parameter):
     # MergeFoodEntry(option, *parameter).generate_report()
@@ -20,7 +22,8 @@ def generate_report_us(option, *parameter):
     # IdleSheepCnEntry(option, *parameter).generate_report()
     # IdleSheepJrttEntry(option, *parameter).generate_report()
     # IdleDisasterCnEntry(option, *parameter).generate_report()
-    print "do nothing"
+    print("do nothing")
+
 
 def generate_report_cn(option, *parameter):
     # MergeFoodEntry(option, *parameter).generate_report()
@@ -31,4 +34,4 @@ def generate_report_cn(option, *parameter):
     # IdleSheepCnEntry(option, *parameter).generate_report()
     # IdleSheepJrttEntry(option, *parameter).generate_report()
     # IdleDisasterEntry(option, *parameter).generate_report()
-    StickFightCnEntry(option, *parameter).generate_report()
+    IdleGongfuEntry(option, *parameter).generate_report()
