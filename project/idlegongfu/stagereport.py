@@ -18,7 +18,7 @@ def generate_stage_report(query_config, date):
 class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
-        self.etc_filename = 'stage_progress_of_users.csv'
+        self.etc_filename = '流失用户关卡推进.csv'
         country_string = self.query_config.geo_country
         platform_string = self.query_config.platform
         self.output_filename = "{0}-{1}-Day{2}-LostUser-Stage-{3}.csv".format(
@@ -66,13 +66,13 @@ class Report(BaseReport):
                     lost_base_usercount = 0
                     # 流失分布查询
                     lost_day_results = self.get_result(
-                        "stage_progress_of_lost_users.sql", date, single_date)
+                        "流失用户关卡推进.sql", date, single_date)
                     for row in lost_day_results:
                         lost_base_data = [row.max_stage, row.user_count,
                                           100*float(row.user_count)/float(firstopen_usercount)]
                         lost_base_datas.append(lost_base_data)
                     first_lost_usercount = current_lost_usercount - \
-                        sum(t[2] for t in lost_base_datas)
+                        sum(t[1] for t in lost_base_datas)
                     first_stage_found = False
                     for item in lost_base_datas:
                         if item[0] == 0:
@@ -83,7 +83,7 @@ class Report(BaseReport):
                             break
                     if not first_stage_found:
                         lost_base_datas.insert(
-                            0, [1, 0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
+                            0, [0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
                     lost_base_usercount = current_lost_usercount
 
                     head_lines = head_line.split(',')[3:]
@@ -108,14 +108,14 @@ class Report(BaseReport):
                     base_date = Date(date).adddays(lost_day - 1)
                     lost_base_usercount = self.get_lost_count(date, base_date)
                     lost_base_results = self.get_result(
-                        "stage_progress_of_lost_users.sql", date, base_date)
+                        "流失用户关卡推进.sql", date, base_date)
                     for row in lost_base_results:
-                        lost_base_data = [row.chapter_id, row.stage_id, row.user_count,
+                        lost_base_data = [row.max_stage, row.user_count,
                                           100*float(row.user_count)/float(firstopen_usercount)]
                         lost_base_datas.append(lost_base_data)
 
                     first_lost_usercount = lost_base_usercount - \
-                        sum(t[2] for t in lost_base_datas)
+                        sum(t[1] for t in lost_base_datas)
                     first_stage_found = False
                     for item in lost_base_datas:
                         if item[0] == 0:
@@ -126,7 +126,7 @@ class Report(BaseReport):
                             break
                     if not first_stage_found:
                         lost_base_datas.insert(
-                            0, [1, 0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
+                            0, [0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
 
                     lost_base_levels = []
                     head_lines = head_line.split(',')[3:]
@@ -148,16 +148,15 @@ class Report(BaseReport):
                         firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
 
                     lost_day_datas = []
-                    lost_day_usercount = 0
                     lost_day_results = self.get_result(
-                        "stage_progress_of_lost_users.sql", date, single_date)
+                        "流失用户关卡推进.sql", date, single_date)
                     for row in lost_day_results:
                         lost_day_data = [row.max_stage, row.user_count,
                                          100*float(row.user_count)/float(firstopen_usercount)]
                         lost_day_datas.append(lost_day_data)
 
                     first_lost_usercount = current_lost_usercount - \
-                        sum(t[2] for t in lost_day_datas)
+                        sum(t[1] for t in lost_day_datas)
                     first_stage_found = False
                     for item in lost_day_datas:
                         if item[0] == 0:
@@ -168,7 +167,7 @@ class Report(BaseReport):
                             break
                     if not first_stage_found:
                         lost_base_datas.insert(
-                            0, [1, 0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
+                            0, [0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
 
                     lost_day_levels = []
                     head_lines = head_line.split(',')[3:]

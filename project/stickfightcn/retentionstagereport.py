@@ -19,7 +19,7 @@ def generate_retention_stage_report(query_config, date):
 class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
-        self.etc_filename = '首日留存用户关卡推进.csv'
+        self.etc_filename = '留存用户关卡推进.csv'
         country_string = self.query_config.geo_country
         platform_string = self.query_config.platform
         self.output_filename = "{0}-{1}-Day{2}-RetentionUser-Chapter{3}-Stage-{4}.csv".format(
@@ -64,7 +64,7 @@ class Report(BaseReport):
                     date, single_date)
                 # 流失分布查询
                 retention_day_results = self.get_result(
-                    "首日留存用户关卡推进.sql", date, single_date)
+                    "留存用户关卡推进.sql", date, single_date)
 
                 retention_base_datas = []
                 for row in retention_day_results:

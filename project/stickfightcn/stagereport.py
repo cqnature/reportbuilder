@@ -67,7 +67,7 @@ class Report(BaseReport):
                     lost_base_usercount = 0
                     # 流失分布查询
                     lost_day_results = self.get_result(
-                        "stage_progress_of_lost_users.sql", date, single_date)
+                        "流失用户关卡推进.sql", date, single_date)
                     for row in lost_day_results:
                         lost_base_data = [row.chapter_id, row.stage_id, row.user_count,
                                           100*float(row.user_count)/float(firstopen_usercount)]
@@ -109,7 +109,7 @@ class Report(BaseReport):
                     base_date = Date(date).adddays(lost_day - 1)
                     lost_base_usercount = self.get_lost_count(date, base_date)
                     lost_base_results = self.get_result(
-                        "stage_progress_of_lost_users.sql", date, base_date)
+                        "流失用户关卡推进.sql", date, base_date)
                     for row in lost_base_results:
                         lost_base_data = [row.chapter_id, row.stage_id, row.user_count,
                                           100*float(row.user_count)/float(firstopen_usercount)]
@@ -151,7 +151,7 @@ class Report(BaseReport):
                     lost_day_datas = []
                     lost_day_usercount = 0
                     lost_day_results = self.get_result(
-                        "stage_progress_of_lost_users.sql", date, single_date)
+                        "流失用户关卡推进.sql", date, single_date)
                     for row in lost_day_results:
                         lost_day_data = [row.chapter_id, row.stage_id, row.user_count,
                                          100*float(row.user_count)/float(firstopen_usercount)]

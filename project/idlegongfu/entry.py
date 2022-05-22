@@ -46,12 +46,12 @@ class Entry(BaseEntry):
         #         self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_level:
         #     report_filepaths.extend(generate_retentionplant_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.lost_stage:
-        #     report_filepaths.extend(generate_stage_report(
-        #         self.query_config, self.start_date))
-        if self.option & ReportFlag.retention_stage:
-            report_filepaths.extend(generate_retention_stage_report(
+        if self.option & ReportFlag.lost_stage:
+            report_filepaths.extend(generate_stage_report(
                 self.query_config, self.start_date))
+        # if self.option & ReportFlag.retention_stage:
+        #     report_filepaths.extend(generate_retention_stage_report(
+        #         self.query_config, self.start_date))
         # if self.option & ReportFlag.new_ads:
         #     report_filepaths.extend(generate_new_ads_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_ads:

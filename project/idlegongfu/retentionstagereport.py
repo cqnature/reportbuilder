@@ -19,10 +19,10 @@ def generate_retention_stage_report(query_config, date):
 class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
-        self.etc_filename = '首日留存用户关卡推进.csv'
+        self.etc_filename = '留存用户关卡推进.csv'
         country_string = self.query_config.geo_country
         platform_string = self.query_config.platform
-        self.output_filename = "{0}-{1}-{2}日留存用户关卡推进-{3}.csv".format(
+        self.output_filename = "{0}-{1}-Day{2}-RetentionUser-Stage-{3}.csv".format(
             country_string, platform_string, lost_day + 1, self.end_date)
 
     def do_generate(self):
@@ -64,7 +64,7 @@ class Report(BaseReport):
                     date, single_date)
                 # 流失分布查询
                 retention_day_results = self.get_result(
-                    "首日留存用户关卡推进.sql", date, single_date)
+                    "留存用户关卡推进.sql", date, single_date)
 
                 retention_base_datas = []
                 for row in retention_day_results:
@@ -72,7 +72,7 @@ class Report(BaseReport):
                         row.user_count)/float(firstopen_usercount)]
                     retention_base_datas.append(retention_base_data)
                 first_retention_usercount = current_retention_usercount - \
-                    sum(t[2] for t in retention_base_datas)
+                    sum(t[1] for t in retention_base_datas)
                 first_stage_found = False
                 for item in retention_base_datas:
                     if item[0] == 0:
@@ -81,7 +81,7 @@ class Report(BaseReport):
                         item[2] = 100*float(item[2])/float(firstopen_usercount)
                         break
                 if not first_stage_found:
-                    retention_base_datas.insert(0, [1, 0, first_retention_usercount, 100*float(
+                    retention_base_datas.insert(0, [0, first_retention_usercount, 100*float(
                         first_retention_usercount)/float(firstopen_usercount)])
 
                 head_lines = head_line.split(',')[2:]

@@ -93,7 +93,7 @@ class Report(BaseReport):
                 current_lost_usercount = self.get_lost_count(date, single_date)
                 # 流失分布查询
                 lost_day_results = self.get_result(
-                    "stage_progress_of_lost_users.sql", date, single_date)
+                    "流失用户关卡推进.sql", date, single_date)
                 if currentDayIndex == 1:
                     lost_day_progress_lines.extend(
                         [x.strip() for x in lines[4:10]])
