@@ -20,8 +20,8 @@ class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
         self.etc_filename = 'stage_progress_of_users.csv'
-        country_string = "CN" if self.query_config.geo_country == 'China' else "US"
-        platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
+        country_string = self.query_config.geo_country
+        platform_string = self.query_config.platform
         self.output_filename = "{0}-{1}-Day{2}-LostUser-Chapter{3}-Stage-{4}.csv".format(
             country_string, platform_string, lost_day + 1, chapter_id, self.end_date)
 

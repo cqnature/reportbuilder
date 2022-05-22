@@ -19,8 +19,8 @@ class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
         self.etc_filename = 'ads_view_of_retention_users.csv'
-        country_string = "CN" if self.query_config.geo_country == 'China' else "US"
-        platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
+        country_string = self.query_config.geo_country
+        platform_string = self.query_config.platform
         self.output_filename = "{0}-{1}-Day1-Ad-Chapter{2}-Stage-{3}.csv".format(
             country_string, platform_string, chapter_id + 1, self.end_date)
 
