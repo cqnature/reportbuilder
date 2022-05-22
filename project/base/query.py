@@ -103,6 +103,7 @@ class QuerySql(BaseQuery):
         with open(filepath) as file:
             content = file.read()
             sql = content.format(*parameter)
+            print("query sql: ", sql)
             query_job = client.query(sql)
             results = query_job.result()  # Waits for job to complete.
             file.close()

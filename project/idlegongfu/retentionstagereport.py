@@ -3,13 +3,13 @@
 
 import os
 import json
+import sys
 from project.base.date import *
 from project.base.helper import *
 from project.base.query import *
 from project.base.report import *
 
 lost_day = 0
-chapter_id = 1
 
 
 def generate_retention_stage_report(query_config, date):
@@ -19,11 +19,11 @@ def generate_retention_stage_report(query_config, date):
 class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
-        self.etc_filename = 'stage_progress_of_retention_users.csv'
+        self.etc_filename = '首日留存用户关卡推进.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Day{2}-RetentionUser-Chapter{3}-Stage-{4}.csv".format(
-            country_string, platform_string, lost_day + 1, chapter_id, self.end_date)
+        self.output_filename = "{0}-{1}-{2}日留存用户关卡推进-{3}.csv".format(
+            country_string, platform_string, lost_day + 1, self.end_date)
 
     def do_generate(self):
         print('do generate report')
@@ -64,21 +64,21 @@ class Report(BaseReport):
                     date, single_date)
                 # 流失分布查询
                 retention_day_results = self.get_result(
-                    "stage_progress_of_retention_users.sql", date, single_date)
+                    "首日留存用户关卡推进.sql", date, single_date)
 
                 retention_base_datas = []
                 for row in retention_day_results:
-                    retention_base_data = [row.chapter_id, row.stage_id, row.user_count, 100*float(
+                    retention_base_data = [row.max_stage, row.user_count, 100*float(
                         row.user_count)/float(firstopen_usercount)]
                     retention_base_datas.append(retention_base_data)
                 first_retention_usercount = current_retention_usercount - \
                     sum(t[2] for t in retention_base_datas)
                 first_stage_found = False
                 for item in retention_base_datas:
-                    if item[0] == chapter_id and item[1] == 0:
+                    if item[0] == 0:
                         first_stage_found = True
-                        item[2] = item[2] + first_retention_usercount
-                        item[3] = 100*float(item[3])/float(firstopen_usercount)
+                        item[1] = item[1] + first_retention_usercount
+                        item[2] = 100*float(item[2])/float(firstopen_usercount)
                         break
                 if not first_stage_found:
                     retention_base_datas.insert(0, [1, 0, first_retention_usercount, 100*float(
@@ -88,13 +88,13 @@ class Report(BaseReport):
                 for head in head_lines:
                     headsegments = head.split('|')
                     min_level = int(headsegments[0])
-                    max_level = sys.maxint if len(
+                    max_level = sys.maxsize if len(
                         headsegments) == 1 else int(headsegments[1])
                     level_user_percent = 0
                     for k in range(len(retention_base_datas)):
                         data = retention_base_datas[k]
-                        if data[0] == chapter_id and data[1] >= min_level and data[1] <= max_level:
-                            level_user_percent += data[3]
+                        if data[0] >= min_level and data[0] <= max_level:
+                            level_user_percent += data[2]
                     line_string += "{0:.2f}%,".format(level_user_percent)
             # 数据拼接
             append_line(report_lines, len(report_lines), line_string)
