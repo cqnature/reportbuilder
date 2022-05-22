@@ -45,7 +45,8 @@ class Report(BaseReport):
         return doc.getvalue()
 
     def generate_mail_lately_report(self):
-        print 'generate_mail_lately_report from: ', self.start_date, " to: ", self.end_date
+        print('generate_mail_lately_report from: ',
+              self.start_date, " to: ", self.end_date)
         htmlcode = Table()
         cells = []
         cells.append(TableCell("日期", header=True,

@@ -46,9 +46,9 @@ class Entry(BaseEntry):
         #         self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_level:
         #     report_filepaths.extend(generate_retentionplant_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.lost_stage:
-        #     report_filepaths.extend(generate_stage_report(
-        #         self.query_config, self.start_date))
+        if self.option & ReportFlag.lost_stage:
+            report_filepaths.extend(generate_stage_report(
+                self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_stage:
         #     report_filepaths.extend(generate_retention_stage_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.new_ads:
@@ -63,8 +63,9 @@ class Entry(BaseEntry):
         #     report_filepaths.extend(generate_lostbehaviour_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_behaviour:
         #     report_filepaths.extend(generate_retentionbehaviour_report(self.query_config, self.start_date))
-        # if self.option & ReportFlag.day_stage:
-        #     report_filepaths.extend(generate_day_stage_report(self.query_config, self.start_date))
+        if self.option & ReportFlag.day_stage:
+            report_filepaths.extend(generate_day_stage_report(
+                self.query_config, self.start_date))
         # if self.option & ReportFlag.button_behaviour:
         #     report_filepaths.extend(generate_button_behaviour_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.lost_ads:
