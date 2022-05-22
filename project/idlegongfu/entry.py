@@ -38,9 +38,9 @@ class Entry(BaseEntry):
         print('idlegongfu do_generate_report')
         report_filepaths = []
         # 开启代理
-        # if self.option & ReportFlag.mail:
-        #     report_filepaths.extend(generate_mail_report(
-        #         self.query_config, self.start_date))
+        if self.option & ReportFlag.mail:
+            report_filepaths.extend(generate_mail_report(
+                self.query_config, self.start_date))
         # if self.option & ReportFlag.lost_level:
         #     report_filepaths.extend(generate_lostplant_report(
         #         self.query_config, self.start_date))
@@ -49,9 +49,9 @@ class Entry(BaseEntry):
         if self.option & ReportFlag.lost_stage:
             report_filepaths.extend(generate_stage_report(
                 self.query_config, self.start_date))
-        # if self.option & ReportFlag.retention_stage:
-        #     report_filepaths.extend(generate_retention_stage_report(
-        #         self.query_config, self.start_date))
+        if self.option & ReportFlag.retention_stage:
+            report_filepaths.extend(generate_retention_stage_report(
+                self.query_config, self.start_date))
         # if self.option & ReportFlag.new_ads:
         #     report_filepaths.extend(generate_new_ads_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_ads:
