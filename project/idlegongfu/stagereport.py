@@ -2,15 +2,13 @@
 # coding=utf-8
 # 关卡推进
 
-import os
-import json
+import sys
 from project.base.date import *
 from project.base.helper import *
 from project.base.query import *
 from project.base.report import *
 
 lost_day = 1
-chapter_id = 1
 
 
 def generate_stage_report(query_config, date):
@@ -23,8 +21,8 @@ class Report(BaseReport):
         self.etc_filename = 'stage_progress_of_users.csv'
         country_string = "CN" if self.query_config.geo_country == 'China' else "US"
         platform_string = "AND" if self.query_config.platform == 'ANDROID' else "iOS"
-        self.output_filename = "{0}-{1}-Day{2}-LostUser-Chapter{3}-Stage-{4}.csv".format(
-            country_string, platform_string, lost_day + 1, chapter_id, self.end_date)
+        self.output_filename = "{0}-{1}-Day{2}-LostUser-Stage-{3}.csv".format(
+            country_string, platform_string, lost_day + 1, self.end_date)
 
     def do_generate(self):
         print('do generate report')
@@ -70,17 +68,17 @@ class Report(BaseReport):
                     lost_day_results = self.get_result(
                         "stage_progress_of_lost_users.sql", date, single_date)
                     for row in lost_day_results:
-                        lost_base_data = [row.chapter_id, row.stage_id, row.user_count,
+                        lost_base_data = [row.max_stage, row.user_count,
                                           100*float(row.user_count)/float(firstopen_usercount)]
                         lost_base_datas.append(lost_base_data)
                     first_lost_usercount = current_lost_usercount - \
                         sum(t[2] for t in lost_base_datas)
                     first_stage_found = False
                     for item in lost_base_datas:
-                        if item[0] == chapter_id and item[1] == 0:
+                        if item[0] == 0:
                             first_stage_found = True
-                            item[2] = item[2] + first_lost_usercount
-                            item[3] = 100*float(item[3]) / \
+                            item[1] = item[1] + first_lost_usercount
+                            item[2] = 100*float(item[2]) / \
                                 float(firstopen_usercount)
                             break
                     if not first_stage_found:
@@ -92,13 +90,13 @@ class Report(BaseReport):
                     for head in head_lines:
                         headsegments = head.split('|')
                         min_level = int(headsegments[0])
-                        max_level = sys.maxint if len(
+                        max_level = sys.maxsize if len(
                             headsegments) == 1 else int(headsegments[1])
                         level_user_percent = 0
                         for k in range(len(lost_base_datas)):
                             data = lost_base_datas[k]
-                            if data[0] == chapter_id and data[1] >= min_level and data[1] <= max_level:
-                                level_user_percent += data[3]
+                            if data[0] >= min_level and data[0] <= max_level:
+                                level_user_percent += data[2]
                         line_string += "{0:.2f}%,".format(level_user_percent)
 
             else:
@@ -120,10 +118,10 @@ class Report(BaseReport):
                         sum(t[2] for t in lost_base_datas)
                     first_stage_found = False
                     for item in lost_base_datas:
-                        if item[0] == chapter_id and item[1] == 0:
+                        if item[0] == 0:
                             first_stage_found = True
-                            item[2] = item[2] + first_lost_usercount
-                            item[3] = 100*float(item[3]) / \
+                            item[1] = item[1] + first_lost_usercount
+                            item[2] = 100*float(item[2]) / \
                                 float(firstopen_usercount)
                             break
                     if not first_stage_found:
@@ -135,13 +133,13 @@ class Report(BaseReport):
                     for head in head_lines:
                         headsegments = head.split('|')
                         min_level = int(headsegments[0])
-                        max_level = sys.maxint if len(
+                        max_level = sys.maxsize if len(
                             headsegments) == 1 else int(headsegments[1])
                         level_user_percent = 0
                         for k in range(len(lost_base_datas)):
                             data = lost_base_datas[k]
-                            if data[0] == chapter_id and data[1] >= min_level and data[1] <= max_level:
-                                level_user_percent += data[3]
+                            if data[0] >= min_level and data[0] <= max_level:
+                                level_user_percent += data[2]
                         lost_base_levels.append(level_user_percent)
 
                     current_lost_usercount = self.get_lost_count(
@@ -154,7 +152,7 @@ class Report(BaseReport):
                     lost_day_results = self.get_result(
                         "stage_progress_of_lost_users.sql", date, single_date)
                     for row in lost_day_results:
-                        lost_day_data = [row.chapter_id, row.stage_id, row.user_count,
+                        lost_day_data = [row.max_stage, row.user_count,
                                          100*float(row.user_count)/float(firstopen_usercount)]
                         lost_day_datas.append(lost_day_data)
 
@@ -162,10 +160,10 @@ class Report(BaseReport):
                         sum(t[2] for t in lost_day_datas)
                     first_stage_found = False
                     for item in lost_day_datas:
-                        if item[0] == chapter_id and item[1] == 0:
+                        if item[0] == 0:
                             first_stage_found = True
-                            item[2] = item[2] + first_lost_usercount
-                            item[3] = 100*float(item[3]) / \
+                            item[1] = item[1] + first_lost_usercount
+                            item[2] = 100*float(item[2]) / \
                                 float(firstopen_usercount)
                             break
                     if not first_stage_found:
@@ -177,13 +175,13 @@ class Report(BaseReport):
                     for head in head_lines:
                         headsegments = head.split('|')
                         min_level = int(headsegments[0])
-                        max_level = sys.maxint if len(
+                        max_level = sys.maxsize if len(
                             headsegments) == 1 else int(headsegments[1])
                         level_user_percent = 0
                         for k in range(len(lost_day_datas)):
                             data = lost_day_datas[k]
-                            if data[0] == chapter_id and data[1] >= min_level and data[1] <= max_level:
-                                level_user_percent += data[3]
+                            if data[0] >= min_level and data[0] <= max_level:
+                                level_user_percent += data[2]
                         lost_day_levels.append(level_user_percent)
 
                     for k in range(len(lost_day_levels)):
