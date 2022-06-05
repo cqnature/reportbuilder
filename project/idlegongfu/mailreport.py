@@ -105,10 +105,9 @@ class Report(BaseReport):
             else:
                 ads_view_count_results = self.get_result(
                     "留存用户广告次数.sql", date, single_date)
-                user_count = self.get_retention_count(date, single_date)
                 view_count = sum(1 for _ in ads_view_count_results)
-                average_view_count = 0 if user_count == 0 else float(
-                    view_count)/float(user_count)
+                average_view_count = 0 if first_user_count == 0 else float(
+                    view_count)/float(first_user_count)
                 cells.append("{0:.2f}".format(average_view_count))
                 total_ad_count += average_view_count
         cells.append("{0:.2f}".format(total_ad_count))
