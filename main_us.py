@@ -14,7 +14,7 @@ if __name__ == '__main__':
         ReportFlag.lost_stage,
         ReportFlag.retention_stage,
         ReportFlag.new_ads,
-        ReportFlag.retention_ads,
+        ReportFlag.dau_ads,
         ReportFlag.total_ads,
         ReportFlag.iap_behaviour,
         ReportFlag.lost_behaviour,

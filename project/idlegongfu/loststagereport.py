@@ -11,7 +11,7 @@ from project.base.report import *
 lost_day = 1
 
 
-def generate_stage_report(query_config, date):
+def generate_lost_stage_report(query_config, date):
     return Report(query_config, date).generate()
 
 

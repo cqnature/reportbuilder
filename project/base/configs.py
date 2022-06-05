@@ -13,7 +13,7 @@ class ReportFlag:
     lost_stage = 1 << 3
     retention_stage = 1 << 4
     new_ads = 1 << 5
-    retention_ads = 1 << 6
+    dau_ads = 1 << 6
     total_ads = 1 << 7
     iap_behaviour = 1 << 8
     lost_behaviour = 1 << 9
@@ -24,6 +24,8 @@ class ReportFlag:
     retention_event = 1 << 14
     lost_ads = 1 << 15
     retention_ads_count = 1 << 16
+    lost_reset = 1 << 17
+    retention_reset = 1 << 18
 
     def __init__(self, flags):
         self.option = 0
