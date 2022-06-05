@@ -68,7 +68,7 @@ class Report(BaseReport):
                 line_string += ",,,,,"
             else:
                 ads_view_count_results = self.get_result(
-                    "area_ads_view_of_retention_users.sql", date, single_date)
+                    "area_留存用户广告次数.sql", date, single_date)
                 user_count = 0
                 if date == single_date:
                     user_count = self.get_firstopen_count(single_date)

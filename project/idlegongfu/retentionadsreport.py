@@ -54,11 +54,11 @@ class Report(BaseReport):
             if firstopen_usercount == 0:
                 return
             level_view_count_results = self.get_result(
-                "level_ads_view_of_retention_users.sql", date, date, chapter_id)
+                "level_留存用户广告次数.sql", date, date, chapter_id)
             if len(level_view_count_results) == 0:
                 return
             area_view_count_results = self.get_result(
-                "area_ads_view_of_retention_users.sql", date, date)
+                "area_留存用户广告次数.sql", date, date)
 
             lines = file.readlines()
             line_string = ""

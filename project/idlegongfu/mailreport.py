@@ -57,7 +57,7 @@ class Report(BaseReport):
                      bgcolor='grey', attribs={"rowspan": 2}))
         cells.append(TableCell("留存", header=True,
                      bgcolor='grey', attribs={"colspan": 6}))
-        cells.append(TableCell("广告次数", header=True,
+        cells.append(TableCell("人均广告次数", header=True,
                      bgcolor='grey', attribs={"colspan": 7}))
         cells.append(TableCell("7日总广告次数", header=True,
                      bgcolor='grey', attribs={"rowspan": 2}))
@@ -104,7 +104,7 @@ class Report(BaseReport):
                 cells.append("N/A")
             else:
                 ads_view_count_results = self.get_result(
-                    "ads_view_of_retention_users.sql", date, single_date)
+                    "留存用户广告次数.sql", date, single_date)
                 user_count = self.get_retention_count(date, single_date)
                 view_count = sum(1 for _ in ads_view_count_results)
                 average_view_count = 0 if user_count == 0 else float(
