@@ -24,8 +24,7 @@ from project.idlegongfu.retentionadscountreport import generate_retention_ads_co
 class Entry(BaseEntry):
     def __init__(self, option, *parameter):
         super(Entry, self).__init__(option, *parameter)
-        self.detail_email.extend(['nero@peakxgames.com', 'bear@peakxgames.com', 'eli@peakxgames.com',
-                                  'near@peakxgames.com', 'young@peakxgames.com', 'xiaobai@peakxgames.com'])
+        self.detail_email.extend(['bear@peakxgames.com'])
 
     def generate_report(self):
         package_name = __name__.split('.')[-2]
@@ -39,20 +38,20 @@ class Entry(BaseEntry):
         print('idlegongfu do_generate_report')
         report_filepaths = []
         # 开启代理
-        if self.option & ReportFlag.mail:
-            report_filepaths.extend(generate_mail_report(
-                self.query_config, self.start_date))
+        # if self.option & ReportFlag.mail:
+        #     report_filepaths.extend(generate_mail_report(
+        #         self.query_config, self.start_date))
         # if self.option & ReportFlag.lost_level:
         #     report_filepaths.extend(generate_lostplant_report(
         #         self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_level:
         #     report_filepaths.extend(generate_retentionplant_report(self.query_config, self.start_date))
-        if self.option & ReportFlag.lost_stage:
-            report_filepaths.extend(generate_stage_report(
-                self.query_config, self.start_date))
-        if self.option & ReportFlag.retention_stage:
-            report_filepaths.extend(generate_retention_stage_report(
-                self.query_config, self.start_date))
+        # if self.option & ReportFlag.lost_stage:
+        #     report_filepaths.extend(generate_stage_report(
+        #         self.query_config, self.start_date))
+        # if self.option & ReportFlag.retention_stage:
+        #     report_filepaths.extend(generate_retention_stage_report(
+        #         self.query_config, self.start_date))
         # if self.option & ReportFlag.new_ads:
         #     report_filepaths.extend(generate_new_ads_report(self.query_config, self.start_date))
         # if self.option & ReportFlag.retention_ads:

@@ -18,7 +18,7 @@ def generate_new_ads_report(query_config, date):
 class Report(BaseReport):
     def __init__(self, query_config, date):
         super(Report, self).__init__(query_config, date)
-        self.etc_filename = 'ads_view_of_new_users.csv'
+        self.etc_filename = '新增用户广告次数.csv'
         country_string = self.query_config.geo_country
         platform_string = self.query_config.platform
         self.output_filename = "{0}-{1}-Day{2}-Ad-Scene-{3}.csv".format(
@@ -53,11 +53,11 @@ class Report(BaseReport):
                 return
             single_date = Date(date).adddays(lost_day)
             ads_view_count_results = self.get_result(
-                "new_ads_view_count.sql", date, single_date)
+                "新增用户观看广告次数.sql", date, single_date)
             if len(ads_view_count_results) == 0:
                 return
             ads_view_user_results = self.get_result(
-                "new_ads_view_users.sql", date, single_date)
+                "新增用户观看广告用户.sql", date, single_date)
 
             line_string = ""
             line_string += "{0},".format(Date(date).formatmd())
