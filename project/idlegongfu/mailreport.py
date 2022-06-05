@@ -61,6 +61,8 @@ class Report(BaseReport):
                      bgcolor='grey', attribs={"colspan": 7}))
         cells.append(TableCell("7日总广告次数", header=True,
                      bgcolor='grey', attribs={"rowspan": 2}))
+        cells.append(TableCell("内购收入(台币)", header=True,
+                               bgcolor='grey', attribs={"rowspan": 2}))
         htmlcode.rows.append(cells)
         cells = []
         cells.append(TableCell("次留", bgcolor='grey'))
@@ -111,4 +113,8 @@ class Report(BaseReport):
                 cells.append("{0:.2f}".format(average_view_count))
                 total_ad_count += average_view_count
         cells.append("{0:.2f}".format(total_ad_count))
+
+        iap_revenue = self.get_iap_revenue(date, date)
+        cells.append("{0:.2f}".format(iap_revenue))
+
         htmlcode.rows.append(cells)

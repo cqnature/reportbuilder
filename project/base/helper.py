@@ -51,3 +51,10 @@ def get_daily_usercount(querysql, date):
     daily_results = querysql.get_result("daily_user_id.sql", date)
     daily_usercount = sum(1 for _ in daily_results)
     return daily_usercount
+
+
+def get_iap_revenue_bysql(querysql, date):
+    iap_revenue = querysql.get_result(
+        "内购总收入.sql", date)
+    total_revenue = iap_revenue[0].total_revenue
+    return total_revenue
