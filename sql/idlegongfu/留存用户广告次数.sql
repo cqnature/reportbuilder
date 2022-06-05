@@ -7,7 +7,7 @@ FROM
   T.event_params
 WHERE
   event_name = 'ad_show'
-  AND event_params.key = 'max_stage'
+  AND event_params.key = 'af_max_stage'
   AND geo.country = '{2}' /* 修改为指定国家 */
   AND platform = '{1}'
   AND _TABLE_SUFFIX BETWEEN '{4}'
