@@ -98,5 +98,5 @@ class BaseReport(object):
     def get_daily_count(self, date):
         return get_daily_usercount(self.querysql, date)
 
-    def get_iap_revenue(self, date):
-        return get_iap_revenue_bysql(self.querysql, date)
+    def get_iap_revenue(self, date, end_date):
+        return get_iap_revenue_bysql(self.querysql, date, end_date)

@@ -1,5 +1,5 @@
 SELECT
-  sum(event_params.value.int_value)/1000000 as total_revenue
+  ifnull(sum(event_params.value.int_value)/1000000, 0) as total_revenue
 FROM
   `{0}.events_*` AS T,
   T.event_params

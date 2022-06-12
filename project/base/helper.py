@@ -27,34 +27,34 @@ def append_line_list(report_line_list, append_text):
     return result
 
 
-def get_firstopen_usercount(querysql, date):
+def get_firstopen_usercount(querysql: QuerySql, date):
     firstopen_results = querysql.get_result("firstopen_user_id.sql", date)
     firstopen_usercount = sum(1 for _ in firstopen_results)
     return firstopen_usercount
 
 
-def get_lost_usercount(querysql, start_date, end_date):
+def get_lost_usercount(querysql: QuerySql, start_date, end_date):
     lost_user_ids = querysql.get_result(
         "lost_user_id.sql", start_date, end_date)
     current_lost_usercount = sum(1 for _ in lost_user_ids)
     return current_lost_usercount
 
 
-def get_retention_usercount(querysql, start_date, end_date):
+def get_retention_usercount(querysql: QuerySql, start_date, end_date):
     retention_user_ids = querysql.get_result(
         "retention_user_id.sql", start_date, end_date)
     current_retention_usercount = sum(1 for _ in retention_user_ids)
     return current_retention_usercount
 
 
-def get_daily_usercount(querysql, date):
+def get_daily_usercount(querysql: QuerySql, date):
     daily_results = querysql.get_result("daily_user_id.sql", date)
     daily_usercount = sum(1 for _ in daily_results)
     return daily_usercount
 
 
-def get_iap_revenue_bysql(querysql, date):
+def get_iap_revenue_bysql(querysql: QuerySql, date, end_date):
     iap_revenue = querysql.get_result(
-        "内购总收入.sql", date)
+        "内购总收入.sql", date, end_date)
     total_revenue = iap_revenue[0].total_revenue
     return total_revenue

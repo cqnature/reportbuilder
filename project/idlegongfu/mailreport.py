@@ -114,7 +114,7 @@ class Report(BaseReport):
                 total_ad_count += average_view_count
         cells.append("{0:.2f}".format(total_ad_count))
 
-        iap_revenue = self.get_iap_revenue(date, date)
+        iap_revenue = self.get_iap_revenue(date, self.end_date)
         cells.append("{0:.2f}".format(iap_revenue))
 
         htmlcode.rows.append(cells)

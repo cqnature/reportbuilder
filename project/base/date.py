@@ -11,7 +11,7 @@ class Date:
 
     def enddate(self, country='United States'):
         timezone = 'America/Los_Angeles'
-        if country == 'China':
+        if country == 'China' or country == "Taiwan":
             timezone = 'Asia/Shanghai'
         tz = pytz.timezone(timezone)
         end_date = datetime.now(tz) + timedelta(days=-1)
