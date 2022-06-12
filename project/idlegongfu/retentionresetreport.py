@@ -62,6 +62,8 @@ class Report(BaseReport):
             if Date(single_date).between(self.end_date) > 0:
                 current_retention_usercount = self.get_retention_count(
                     date, single_date)
+                line_string += "{0:.2f}%,".format(
+                    100*float(current_retention_usercount)/float(firstopen_usercount))
                 # 留存分布查询
                 retention_day_results = self.get_result(
                     "留存用户领悟次数.sql", date, single_date)
