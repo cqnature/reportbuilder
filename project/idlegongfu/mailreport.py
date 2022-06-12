@@ -94,7 +94,7 @@ class Report(BaseReport):
         for k in range(6):
             single_date = Date(date).adddays(k + 1)
             if Date(single_date).between(self.end_date) <= 0:
-                cells.append("——")
+                cells.append("—")
             else:
                 user_count = self.get_retention_count(date, single_date)
                 cells.append("{0:.2f}%".format(
@@ -103,7 +103,7 @@ class Report(BaseReport):
         for k in range(7):
             single_date = Date(date).adddays(k)
             if Date(single_date).between(self.end_date) <= 0:
-                cells.append("——")
+                cells.append("—")
             else:
                 ads_view_count_results = self.get_result(
                     "留存用户广告次数.sql", date, single_date)
