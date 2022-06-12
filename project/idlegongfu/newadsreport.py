@@ -66,8 +66,7 @@ class Report(BaseReport):
             total_avg_ads_count = 0
             for k in range(len(ads_view_count_results)):
                 ads_view_count_result = ads_view_count_results[k]
-                if ads_view_count_result.ad_position == ads_scene:
-                    total_avg_ads_count += ads_view_count_result.daily_average_ad_view_count
+                total_avg_ads_count += ads_view_count_result.daily_average_ad_view_count
 
             line_string += "{0},".format(total_avg_ads_count)
 
