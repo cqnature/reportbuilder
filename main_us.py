@@ -24,7 +24,9 @@ if __name__ == '__main__':
         ReportFlag.button_behaviour,
         ReportFlag.retention_event,
         ReportFlag.lost_ads,
-        ReportFlag.retention_ads_count
+        ReportFlag.retention_ads_count,
+        ReportFlag.lost_reset,
+        ReportFlag.retention_reset,
     ]
     option = ReportFlag(flags).option
 

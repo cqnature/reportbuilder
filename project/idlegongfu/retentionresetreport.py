@@ -84,7 +84,7 @@ class Report(BaseReport):
                     retention_base_datas.insert(0, [0, first_retention_usercount, 100*float(
                         first_retention_usercount)/float(firstopen_usercount)])
 
-                head_lines = head_line.split(',')[2:]
+                head_lines = head_line.split(',')[3:]
                 for head in head_lines:
                     headsegments = head.split('|')
                     min_level = int(headsegments[0])

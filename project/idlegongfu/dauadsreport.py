@@ -65,7 +65,7 @@ class Report(BaseReport):
                 ads_view_count_result = ads_view_count_results[k]
                 total_avg_ads_count += ads_view_count_result.daily_average_ad_view_count
 
-            line_string += "{0},".format(total_avg_ads_count)
+            line_string += "{0:.2f},".format(total_avg_ads_count)
 
             lines = [x.strip() for x in file.readlines()]
             headlines = lines[2].split('|')
