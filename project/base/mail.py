@@ -19,7 +19,8 @@ username = 'cqnature@gmail.com'
 password = 'fsajhtsznoqplupj'
 # 收件人邮箱
 toaddrs = ['nero@peakxgames.com', 'bear@peakxgames.com', 'eli@peakxgames.com',
-           'near@peakxgames.com', 'young@peakxgames.com', 'xiaobai@peakxgames.com']
+           'near@peakxgames.com', 'young@peakxgames.com', 'xiaobai@peakxgames.com',
+           'walter@peakxgames.com', 'stone@peakxgames.com', 'terry@peakxgames.com']
 # toaddrs = ['bear@peakxgames.com']
 
 
