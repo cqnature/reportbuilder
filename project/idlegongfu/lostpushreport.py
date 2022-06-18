@@ -14,7 +14,7 @@ max_chapter_id = 15
 lost_day = 1
 
 
-def generate_lostplant_report(query_config, date):
+def generate_lost_push_report(query_config, date):
     return Report(query_config, date).generate()
 
 
@@ -51,12 +51,12 @@ class Report(BaseReport):
                 #         append_line(report_lines, k, head_lines4[k].format(d))
                 file.close()
             for single_date in self.extra_date:
-                self.generate_lostplant_report_at_date(
+                self.generate_lost_push_report_at_date(
                     report_lines, single_date)
             lately_date = max(Date(self.end_date).adddays(
                 1 - max_lately_date), self.start_date)
             for single_date in Date(lately_date).rangeto(self.end_date, True):
-                self.generate_lostplant_report_at_date(
+                self.generate_lost_push_report_at_date(
                     report_lines, single_date)
             reportstring = '\n'.join(report_lines)
             out.write(reportstring)
@@ -66,8 +66,8 @@ class Report(BaseReport):
     def get_plane_chapter_id(self):
         return max_chapter_id
 
-    def generate_lostplant_report_at_date(self, report_lines, date):
-        print("generate_lostplant_report_at_date ", date)
+    def generate_lost_push_report_at_date(self, report_lines, date):
+        print("generate_lost_push_report_at_date ", date)
         chapter_id = self.get_plane_chapter_id()
         with open(self.etc_filepath) as file:
             firstopen_usercount = self.get_firstopen_count(date)

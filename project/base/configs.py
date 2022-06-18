@@ -8,8 +8,8 @@ from project.base.date import *
 
 class ReportFlag:
     mail = 1
-    lost_level = 1 << 1
-    retention_level = 1 << 2
+    lost_push = 1 << 1
+    retention_push = 1 << 2
     lost_stage = 1 << 3
     retention_stage = 1 << 4
     new_ads = 1 << 5

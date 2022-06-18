@@ -9,8 +9,10 @@ from project.base.entry import *
 from project.idlegongfu.mailreport import generate_mail_report
 from project.idlegongfu.lostresetreport import generate_lost_reset_report
 from project.idlegongfu.loststagereport import generate_lost_stage_report
+from project.idlegongfu.lostpushreport import generate_lost_push_report
 from project.idlegongfu.retentionresetreport import generate_retention_reset_report
 from project.idlegongfu.retentionstagereport import generate_retention_stage_report
+from project.idlegongfu.retentionpushreport import generate_retention_push_report
 from project.idlegongfu.newadsreport import generate_new_ads_report
 from project.idlegongfu.dauadsreport import generate_dau_ads_report
 
@@ -36,6 +38,12 @@ class Entry(BaseEntry):
         # 开启代理
         if self.option & ReportFlag.mail:
             report_filepaths.extend(generate_mail_report(
+                self.query_config, self.start_date))
+        if self.option & ReportFlag.lost_push:
+            report_filepaths.extend(generate_lost_push_report(
+                self.query_config, self.start_date))
+        if self.option & ReportFlag.retention_push:
+            report_filepaths.extend(generate_retention_push_report(
                 self.query_config, self.start_date))
         if self.option & ReportFlag.lost_stage:
             report_filepaths.extend(generate_lost_stage_report(
