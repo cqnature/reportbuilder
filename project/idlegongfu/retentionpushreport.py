@@ -105,12 +105,13 @@ class Report(BaseReport):
                         retention_base_datas.insert(0, [0, first_retention_usercount, 100*float(
                             first_retention_usercount)/float(firstopen_usercount)])
 
-                    line_index = max(day, 6)
+                    line_index = min(day, 6)
                     startline = 4 + 3 * line_index
                     endline = 5 + 3 * line_index
                     head_line = [x.strip()
                                  for x in lines[startline:endline]][0]
-                    head_lines = head_line.split(',')[2:]
+
+                    head_lines = head_line.split(',')
                     for head in head_lines:
                         headsegments = head.split('|')
                         min_level = int(headsegments[0])
@@ -122,7 +123,6 @@ class Report(BaseReport):
                             if data[0] >= min_level and data[0] <= max_level:
                                 level_user_percent += data[2]
                         line_string += "{0:.2f}%,".format(level_user_percent)
-
             # 数据拼接
             append_line(report_lines, len(report_lines), line_string)
             file.close()
