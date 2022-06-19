@@ -103,7 +103,7 @@ class Report(BaseReport):
                         if item[0] == 0:
                             first_stage_found = True
                             item[1] = item[1] + first_lost_usercount
-                            item[2] = 100*float(item[2]) / \
+                            item[2] = 100*float(item[1]) / \
                                 float(firstopen_usercount)
                             break
                     if not first_stage_found:

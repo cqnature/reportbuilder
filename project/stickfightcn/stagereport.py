@@ -79,7 +79,7 @@ class Report(BaseReport):
                         if item[0] == chapter_id and item[1] == 0:
                             first_stage_found = True
                             item[2] = item[2] + first_lost_usercount
-                            item[3] = 100*float(item[3]) / \
+                            item[3] = 100*float(item[2]) / \
                                 float(firstopen_usercount)
                             break
                     if not first_stage_found:
@@ -122,7 +122,7 @@ class Report(BaseReport):
                         if item[0] == chapter_id and item[1] == 0:
                             first_stage_found = True
                             item[2] = item[2] + first_lost_usercount
-                            item[3] = 100*float(item[3]) / \
+                            item[3] = 100*float(item[2]) / \
                                 float(firstopen_usercount)
                             break
                     if not first_stage_found:
@@ -164,7 +164,7 @@ class Report(BaseReport):
                         if item[0] == chapter_id and item[1] == 0:
                             first_stage_found = True
                             item[2] = item[2] + first_lost_usercount
-                            item[3] = 100*float(item[3]) / \
+                            item[3] = 100*float(item[2]) / \
                                 float(firstopen_usercount)
                             break
                     if not first_stage_found:

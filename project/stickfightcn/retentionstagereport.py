@@ -78,7 +78,7 @@ class Report(BaseReport):
                     if item[0] == chapter_id and item[1] == 0:
                         first_stage_found = True
                         item[2] = item[2] + first_retention_usercount
-                        item[3] = 100*float(item[3])/float(firstopen_usercount)
+                        item[3] = 100*float(item[2])/float(firstopen_usercount)
                         break
                 if not first_stage_found:
                     retention_base_datas.insert(0, [1, 0, first_retention_usercount, 100*float(
