@@ -21,10 +21,10 @@ from project.idlegongfu.iapbehaviourreport import generate_iap_behaviour_report
 class Entry(BaseEntry):
     def __init__(self, option, *parameter):
         super(Entry, self).__init__(option, *parameter)
-        self.detail_email.extend(['bear@peakxgames.com'])
-        # self.detail_email.extend(['nero@peakxgames.com', 'bear@peakxgames.com', 'eli@peakxgames.com',
-        #                           'near@peakxgames.com', 'young@peakxgames.com', 'xiaobai@peakxgames.com',
-        #                           'walter@peakxgames.com', 'stone@peakxgames.com', 'terry@peakxgames.com'])
+        # self.detail_email.extend(['bear@peakxgames.com'])
+        self.detail_email.extend(['nero@peakxgames.com', 'bear@peakxgames.com', 'eli@peakxgames.com',
+                                  'near@peakxgames.com', 'young@peakxgames.com', 'xiaobai@peakxgames.com',
+                                  'walter@peakxgames.com', 'stone@peakxgames.com', 'terry@peakxgames.com'])
 
     def generate_report(self):
         package_name = __name__.split('.')[-2]
