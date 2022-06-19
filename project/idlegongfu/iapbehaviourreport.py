@@ -63,7 +63,12 @@ class Report(BaseReport):
             for row in iap_users:
                 user_pseudo_id = row.user_pseudo_id
 
+                user_register_info = self.get_result(
+                    "内购玩家注册信息.sql", date, user_pseudo_id)
+                register_ver = user_register_info[0].app_version
+                register_date = user_register_info[0].event_date
                 line_string = ""
+                line_string += "{0},".format(register_ver)
                 line_string += "{0},".format(Date(date).formatmd())
                 line_string += "{0},".format(firstopen_usercount)
 
