@@ -1,5 +1,5 @@
 SELECT
-  ifnull(user_id, ''),
+  ifnull(user_id, '') as user_id,
   event_date,
   event_timestamp,
   app_info.version as app_version,
