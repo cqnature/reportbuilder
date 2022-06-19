@@ -47,7 +47,7 @@ class Report(BaseReport):
                 head_lines3 = [x.strip() for x in lines[17:19]]
                 for d in extra_lost_day:
                     append_line(report_lines, 0, head_lines3[0].format(d))
-                    append_line(report_lines, 1, head_lines3[1].format[d])
+                    append_line(report_lines, 1, head_lines3[1].format(d))
                 file.close()
             for single_date in self.extra_date:
                 self.generate_lost_push_report_at_date(
