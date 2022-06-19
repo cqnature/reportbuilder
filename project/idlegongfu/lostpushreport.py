@@ -47,7 +47,7 @@ class Report(BaseReport):
                 head_lines3 = [x.strip() for x in lines[17:19]]
                 for d in extra_lost_day:
                     append_line(report_lines, 0, head_lines3[0].format(d))
-                    append_line(report_lines, 1, head_lines3[1])
+                    append_line(report_lines, 1, head_lines3[1].format[d])
                 file.close()
             for single_date in self.extra_date:
                 self.generate_lost_push_report_at_date(
@@ -84,8 +84,8 @@ class Report(BaseReport):
                         date, single_date)
 
                     # 留存率
-                    # line_string += "{0:.2f}%,".format(100*float(
-                    #     firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
+                    line_string += "{0:.2f}%,".format(100*float(
+                        firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
 
                     # 流失分布查询
                     lost_day_results = self.get_result(

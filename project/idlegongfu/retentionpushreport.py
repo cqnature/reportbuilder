@@ -47,7 +47,7 @@ class Report(BaseReport):
                 head_lines3 = [x.strip() for x in lines[20:22]]
                 for d in extra_retention_day:
                     append_line(report_lines, 0, head_lines3[0].format(d))
-                    append_line(report_lines, 1, head_lines3[1])
+                    append_line(report_lines, 1, head_lines3[1].format(d))
                 file.close()
             for single_date in self.extra_date:
                 self.generate_retention_push_report_at_date(
@@ -85,6 +85,11 @@ class Report(BaseReport):
                     # 留存分布查询
                     retention_day_results = self.get_result(
                         "留存用户关卡推进.sql", date, single_date)
+
+                    # 留存率
+                    if day > 0:
+                        line_string += "{0:.2f}%,".format(
+                            100*float(current_retention_usercount)/float(firstopen_usercount))
 
                     retention_base_datas = []
                     for row in retention_day_results:
