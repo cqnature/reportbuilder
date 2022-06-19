@@ -15,6 +15,7 @@ from project.idlegongfu.retentionstagereport import generate_retention_stage_rep
 from project.idlegongfu.retentionpushreport import generate_retention_push_report
 from project.idlegongfu.newadsreport import generate_new_ads_report
 from project.idlegongfu.dauadsreport import generate_dau_ads_report
+from project.idlegongfu.iapbehaviourreport import generate_iap_behaviour_report
 
 
 class Entry(BaseEntry):
@@ -62,5 +63,8 @@ class Entry(BaseEntry):
                 self.query_config, self.start_date))
         if self.option & ReportFlag.dau_ads:
             report_filepaths.extend(generate_dau_ads_report(
+                self.query_config, self.start_date))
+        if self.option & ReportFlag.iap_behaviour:
+            report_filepaths.extend(generate_iap_behaviour_report(
                 self.query_config, self.start_date))
         return report_filepaths
