@@ -76,57 +76,165 @@ class Report(BaseReport):
             all_lost_day.extend(extra_lost_day)
 
             for k in all_lost_day:
-                # 留存率查询
                 day = k - 1
-                single_date = Date(date).adddays(day)
-                if Date(single_date).between(self.end_date) > 0:
-                    current_lost_usercount = self.get_lost_count(
-                        date, single_date)
+                if day == 1:
+                    # 次日流失
+                    single_date = Date(date).adddays(day)
+                    if Date(single_date).between(self.end_date) > 0:
+                        current_lost_usercount = self.get_lost_count(
+                            date, single_date)
 
-                    # 留存率
-                    line_string += "{0:.2f}%,".format(100*float(
-                        firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
+                        # 留存率
+                        line_string += "{0:.2f}%,".format(100*float(
+                            firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
+                        # 流失率
+                        line_string += "{0:.2f}%,".format(
+                            100*float(current_lost_usercount)/float(firstopen_usercount))
 
-                    # 流失分布查询
-                    lost_day_results = self.get_result(
-                        "流失用户关卡推进.sql", date, single_date)
+                        # 流失分布查询
+                        lost_day_results = self.get_result(
+                            "流失用户关卡推进.sql", date, single_date)
 
-                    lost_base_datas = []
-                    for row in lost_day_results:
-                        lost_base_data = [row.max_stage, row.user_count,
-                                          100*float(row.user_count)/float(firstopen_usercount)]
-                        lost_base_datas.append(lost_base_data)
-                    first_lost_usercount = current_lost_usercount - \
-                        sum(t[1] for t in lost_base_datas)
-                    first_stage_found = False
-                    for item in lost_base_datas:
-                        if item[0] == 0:
-                            first_stage_found = True
-                            item[1] = item[1] + first_lost_usercount
-                            item[2] = 100*float(item[1]) / \
-                                float(firstopen_usercount)
-                            break
-                    if not first_stage_found:
-                        lost_base_datas.insert(
-                            0, [0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
+                        lost_base_datas = []
+                        for row in lost_day_results:
+                            lost_base_data = [row.max_stage, row.user_count,
+                                              100*float(row.user_count)/float(firstopen_usercount)]
+                            lost_base_datas.append(lost_base_data)
+                        first_lost_usercount = current_lost_usercount - \
+                            sum(t[1] for t in lost_base_datas)
+                        first_stage_found = False
+                        for item in lost_base_datas:
+                            if item[0] == 0:
+                                first_stage_found = True
+                                item[1] = item[1] + first_lost_usercount
+                                item[2] = 100*float(item[1]) / \
+                                    float(firstopen_usercount)
+                                break
+                        if not first_stage_found:
+                            lost_base_datas.insert(
+                                0, [0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
 
-                    line_index = min(day, 6)
-                    startline = 1 + 3 * line_index
-                    endline = 2 + 3 * line_index
-                    head_line = [x.strip()
-                                 for x in lines[startline:endline]][0]
-                    head_lines = head_line.split(',')
-                    for head in head_lines:
-                        headsegments = head.split('|')
-                        min_level = int(headsegments[0])
-                        max_level = sys.maxsize if len(
-                            headsegments) == 1 else int(headsegments[1])
-                        level_user_percent = 0
-                        for k in range(len(lost_base_datas)):
-                            data = lost_base_datas[k]
-                            if data[0] >= min_level and data[0] <= max_level:
-                                level_user_percent += data[2]
-                        line_string += "{0:.2f}%,".format(level_user_percent)
+                        line_index = min(day, 6)
+                        startline = 1 + 3 * line_index
+                        endline = 2 + 3 * line_index
+                        head_line = [x.strip()
+                                     for x in lines[startline:endline]][0]
+                        head_lines = head_line.split(',')
+                        for head in head_lines:
+                            headsegments = head.split('|')
+                            min_level = int(headsegments[0])
+                            max_level = sys.maxsize if len(
+                                headsegments) == 1 else int(headsegments[1])
+                            level_user_percent = 0
+                            for k in range(len(lost_base_datas)):
+                                data = lost_base_datas[k]
+                                if data[0] >= min_level and data[0] <= max_level:
+                                    level_user_percent += data[2]
+                            line_string += "{0:.2f}%,".format(
+                                level_user_percent)
+
+                else:
+                    # 3日及之后的流失，用当天流失数据-前一天的流失数据
+                    single_date = Date(date).adddays(day)
+                    if Date(single_date).between(self.end_date) > 0:
+                        # 前一天的流失数据
+                        pre_date = Date(date).adddays(day - 1)
+                        pre_lost_usercount = self.get_lost_count(
+                            date, pre_date)
+                        # 前一天流失分布查询
+                        pre_lost_results = self.get_result(
+                            "流失用户关卡推进.sql", date, pre_date)
+                        pre_lost_datas = []
+                        for row in pre_lost_results:
+                            pre_lost_data = [row.max_stage, row.user_count,
+                                             100*float(row.user_count)/float(firstopen_usercount)]
+                            pre_lost_datas.append(pre_lost_data)
+                        pre_first_lost_usercount = pre_lost_usercount - \
+                            sum(t[1] for t in pre_lost_datas)
+                        pre_first_stage_found = False
+                        for item in pre_lost_datas:
+                            if item[0] == 0:
+                                pre_first_stage_found = True
+                                item[1] = item[1] + pre_first_lost_usercount
+                                item[2] = 100*float(item[1]) / \
+                                    float(firstopen_usercount)
+                                break
+                        if not pre_first_stage_found:
+                            pre_lost_datas.insert(
+                                0, [0, pre_first_lost_usercount, 100*float(pre_first_lost_usercount)/float(firstopen_usercount)])
+
+                        line_index = min(day, 6)
+                        startline = 1 + 3 * line_index
+                        endline = 2 + 3 * line_index
+                        head_line = [x.strip()
+                                     for x in lines[startline:endline]][0]
+                        head_lines = head_line.split(',')
+
+                        pre_lost_precents = []
+                        for head in head_lines:
+                            headsegments = head.split('|')
+                            min_level = int(headsegments[0])
+                            max_level = sys.maxsize if len(
+                                headsegments) == 1 else int(headsegments[1])
+                            lost_user_percent = 0
+                            for k in range(len(pre_lost_datas)):
+                                data = pre_lost_datas[k]
+                                if data[0] >= min_level and data[0] <= max_level:
+                                    lost_user_percent += data[2]
+                            pre_lost_precents.append(lost_user_percent)
+
+                        # 当日流失用户查询
+                        current_lost_usercount = self.get_lost_count(
+                            date, single_date)
+
+                        # 留存率
+                        line_string += "{0:.2f}%,".format(100*float(
+                            firstopen_usercount - current_lost_usercount)/float(firstopen_usercount))
+                        # 当日流失比例
+                        line_string += "{0:.2f}%,".format(100*float(
+                            current_lost_usercount - pre_lost_usercount)/float(firstopen_usercount))
+
+                        # 当日流失分布查询
+                        lost_day_results = self.get_result(
+                            "流失用户关卡推进.sql", date, single_date)
+
+                        lost_base_datas = []
+                        for row in lost_day_results:
+                            lost_base_data = [row.max_stage, row.user_count,
+                                              100*float(row.user_count)/float(firstopen_usercount)]
+                            lost_base_datas.append(lost_base_data)
+                        first_lost_usercount = current_lost_usercount - \
+                            sum(t[1] for t in lost_base_datas)
+                        first_stage_found = False
+                        for item in lost_base_datas:
+                            if item[0] == 0:
+                                first_stage_found = True
+                                item[1] = item[1] + first_lost_usercount
+                                item[2] = 100*float(item[1]) / \
+                                    float(firstopen_usercount)
+                                break
+                        if not first_stage_found:
+                            lost_base_datas.insert(
+                                0, [0, first_lost_usercount, 100*float(first_lost_usercount)/float(firstopen_usercount)])
+
+                        cur_lost_precents = []
+                        for head in head_lines:
+                            headsegments = head.split('|')
+                            min_level = int(headsegments[0])
+                            max_level = sys.maxsize if len(
+                                headsegments) == 1 else int(headsegments[1])
+                            cur_user_percent = 0
+                            for k in range(len(lost_base_datas)):
+                                data = lost_base_datas[k]
+                                if data[0] >= min_level and data[0] <= max_level:
+                                    cur_user_percent += data[2]
+                            cur_lost_precents.append(cur_user_percent)
+
+                        for k in range(len(cur_lost_precents)):
+                            pre_lost_precent = pre_lost_precents[k]
+                            cur_lost_precent = cur_lost_precents[k]
+                            line_string += "{0:.2f}%,".format(
+                                cur_lost_precent - pre_lost_precent)
 
             # 数据拼接
             append_line(report_lines, len(report_lines), line_string)

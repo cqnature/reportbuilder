@@ -1,5 +1,5 @@
 SELECT
-  event_date
+  event_date,
   app_info.version as app_version
 FROM
   `{0}.events_*` AS T,
