@@ -61,8 +61,17 @@ class Report(BaseReport):
                      bgcolor='grey', attribs={"colspan": 7}))
         cells.append(TableCell("7日总广告次数", header=True,
                      bgcolor='grey', attribs={"rowspan": 2}))
+        cells.append(TableCell("付费人数", header=True,
+                               bgcolor='grey', attribs={"rowspan": 2}))
+        cells.append(TableCell("付费次数", header=True,
+                               bgcolor='grey', attribs={"rowspan": 2}))
         cells.append(TableCell("85%内购收入($)", header=True,
                                bgcolor='grey', attribs={"rowspan": 2}))
+        cells.append(TableCell("付费率", header=True,
+                               bgcolor='grey', attribs={"rowspan": 2}))
+        cells.append(TableCell("ARUP($)", header=True,
+                               bgcolor='grey', attribs={"rowspan": 2}))
+
         htmlcode.rows.append(cells)
         cells = []
         cells.append(TableCell("次留", bgcolor='grey'))
@@ -114,7 +123,24 @@ class Report(BaseReport):
                 total_ad_count += average_view_count
         cells.append("{0:.2f}".format(total_ad_count))
 
-        iap_revenue = self.get_iap_revenue(date, self.end_date)
-        cells.append("{0:.2f}".format(iap_revenue * 0.034 * 0.85))
+        # iap_revenue = self.get_iap_revenue(date, self.end_date)
+        # cells.append("{0:.2f}".format(iap_revenue * 0.034 * 0.85))
 
+        iap_summary = self.get_iap_summary(date, self.end_date)
+        # 付费人数
+        cells.append("{0}".format(iap_summary.user_count))
+        # 付费次数
+        cells.append("{0}".format(iap_summary.purchase_count))
+        # 内购收入
+        revenue = iap_summary.total_revenue * 0.034 * 0.85
+        cells.append("{0:.2f}".format(revenue))
+        # 付费率
+        cells.append("{0:.2f}%".format(
+            100 * float(iap_summary.user_count)/float(first_user_count)))
+        # ARUP
+        if iap_summary.user_count == 0:
+            cells.append("0%")
+        else:
+            cells.append("{0:.2f}%".format(
+                100 * float(revenue)/float(iap_summary.user_count)))
         htmlcode.rows.append(cells)

@@ -58,3 +58,10 @@ def get_iap_revenue_bysql(querysql: QuerySql, date, end_date):
         "内购总收入.sql", date, end_date)
     total_revenue = iap_revenue[0].total_revenue
     return total_revenue
+
+
+def get_iap_summary_bysql(querysql: QuerySql, date, end_date):
+    iap_summary_result = querysql.get_result(
+        "内购用户和次数.sql", date, end_date)
+    iap_summary = iap_summary_result[0]
+    return iap_summary

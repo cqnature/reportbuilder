@@ -100,3 +100,6 @@ class BaseReport(object):
 
     def get_iap_revenue(self, date, end_date):
         return get_iap_revenue_bysql(self.querysql, date, end_date)
+
+    def get_iap_summary(self, date, end_date):
+        return get_iap_summary_bysql(self.querysql, date, end_date)
