@@ -141,6 +141,6 @@ class Report(BaseReport):
         if iap_summary.user_count == 0:
             cells.append("0%")
         else:
-            cells.append("{0:.2f}%".format(
-                100 * float(revenue)/float(iap_summary.user_count)))
+            cells.append("{0:.2f}".format(
+                float(revenue)/float(iap_summary.user_count)))
         htmlcode.rows.append(cells)
