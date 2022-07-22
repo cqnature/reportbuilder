@@ -9,6 +9,9 @@ from project.base.helper import *
 from project.base.query import *
 from project.base.report import *
 
+price_map = {'聖火令': 9.99, '150寶石': 1.99, '330寶石': 3.99,
+             '900寶石': 9.99, '1950寶石': 19.99, '5250寶石': 49.99, '11250寶石': 99.99}
+
 
 def generate_iap_behaviour_report(query_config, date):
     return Report(query_config, date).generate()
@@ -85,8 +88,9 @@ class Report(BaseReport):
                     iap_max_stage = self.get_result(
                         "内购玩家付费时关卡.sql", date, self.end_date, user_pseudo_id, behavior_row.event_timestamp)
                     max_stage = iap_max_stage[0].max_stage
-                    iap_line_string += "{0},{1},{2},{3},".format(
-                        behavior_row.app_version, behavior_row.product_name, max_stage, behavior_row.event_date)
+                    price = price_map.get(behavior_row.product_name, 0)
+                    iap_line_string += "{0},{1},{2},{3},{4},".format(
+                        behavior_row.app_version, behavior_row.product_name, price, max_stage, behavior_row.event_date)
 
                 line_string += "{0},{1},".format(
                     user_pseudo_id, user_id)
